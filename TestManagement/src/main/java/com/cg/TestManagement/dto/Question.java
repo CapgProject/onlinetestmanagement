@@ -17,7 +17,6 @@ public class Question {
 	public Question() {
 		
 	}
-
 	public Question(BigInteger questionId, String[] qusetionOptions, String questionTitle, Integer questionAnswer,
 			BigDecimal questionMarks, Integer chosenAnswer, BigDecimal marksScored) {
 		super();
