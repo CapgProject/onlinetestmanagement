@@ -8,22 +8,17 @@ import com.cg.TestManagement.dto.Test;
 import com.cg.TestManagement.dto.User;
 
 
-
-
 public class DaoImpl implements Dao{
 	
 	Map<BigInteger, Test> testDb = new HashMap<BigInteger, Test >();
 	Map<Long , User> userDb = new HashMap<Long, User>();
 	Map<BigInteger,Question> questionDb = new HashMap<BigInteger, Question>();
-	
-	
-	
+
 
 	public Test saveTest(Test test) {
 		// TODO Auto-generated method stub
 		testDb.put(test.getTestId(), test);
 		return test;
-		
 	}
 
 	public Test searchTest(BigInteger testId) {
@@ -72,8 +67,4 @@ public class DaoImpl implements Dao{
 		userDb.put(user.getUserId(), user);
 		return user;
 	}
-	
-	
-	
-	
 }
