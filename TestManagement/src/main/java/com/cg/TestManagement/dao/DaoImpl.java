@@ -31,7 +31,7 @@ public class DaoImpl implements Dao{
 		return testDb.remove(testId);
 	}
 
-	public Map<?, ?> showAllTest() {
+	public Map<?, ?> showTests() {
 		// TODO Auto-generated method stub
 		return testDb;
 	}
@@ -52,19 +52,24 @@ public class DaoImpl implements Dao{
 		return questionDb.remove(questId);
 	}
 
-	public Map<?, ?> showAllQuestions() {
+	public Map<?, ?> showQuestions() {
 		// TODO Auto-generated method stub
 		return questionDb;
 	}
 
-	public User searchUser(Long UserId) {
+	public User searchUser(Long userId) {
 		// TODO Auto-generated method stub
-		return  userDb.get(UserId);
+		return  userDb.get(userId);
 	}
 
 	public User saveUser(User user) {
 		// TODO Auto-generated method stub
 		userDb.put(user.getUserId(), user);
 		return user;
+	}
+
+	public Map<?, ?> showUsers() {
+		// TODO Auto-generated method stub
+		return userDb;
 	}
 }

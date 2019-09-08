@@ -2,6 +2,7 @@ package com.cg.TestManagement.service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Map;
 import java.util.Set;
 
 import com.cg.TestManagement.dto.Question;
@@ -23,5 +24,8 @@ public interface Service {
 	public BigDecimal getResult(Test test);
 	public BigDecimal calculateTotalMarks(Test test);
 	public Set<Question> showAllQuestions(Test test);
-	
+	public Map<?,?> showQuestions();
+	public Map<?,?> showTests();
+	public Map<?,?> showUsers();
+	public User searchUser(Long userId);
 }

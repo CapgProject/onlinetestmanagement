@@ -2,6 +2,7 @@ package com.cg.TestManagement.service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Map;
 import java.util.Set;
 
 import com.cg.TestManagement.dao.Dao;
@@ -142,5 +143,25 @@ public class ServiceImpl implements Service{
 	public Set<Question> showAllQuestions(Test test) {
 		// TODO Auto-generated method stub
 		return test.getTestQuestions();
+	}
+
+	public Map<?, ?> showQuestions() {
+		// TODO Auto-generated method stub
+		return dao.showQuestions();
+	}
+
+	public Map<?, ?> showTests() {
+		// TODO Auto-generated method stub
+		return dao.showTests();
+	}
+
+	public Map<?, ?> showUsers() {
+		// TODO Auto-generated method stub
+		return dao.showQuestions();
+	}
+
+	public User searchUser(Long userId) {
+		// TODO Auto-generated method stub
+		return dao.searchUser(userId);
 	}	
 }

@@ -10,12 +10,13 @@ public interface Dao {
 	public Test saveTest(Test test);
 	public Test searchTest(BigInteger testId);
 	public Test removeTest(BigInteger testId);
-	public Map<?,?>  showAllTest();
+	public Map<?,?>  showTests();
 	public Question saveQuestion(Question question);
 	public Question searchQuestion(BigInteger questId);
 	public Question removeQuestion(BigInteger questId);
-	public Map<?,?> showAllQuestions();
-	public User searchUser(Long UserId);
+	public Map<?,?> showQuestions();
+	public User searchUser(Long userId);
 	public User saveUser(User user);	
+	public Map<?,?> showUsers();
 	
 }
