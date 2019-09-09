@@ -144,23 +144,28 @@ public class ServiceImpl implements Service{
 		return test.getTestQuestions();
 	}
 
-	public Map<?, ?> showQuestions() {
+public Map<BigInteger, Question> showQuestions() {
 		// TODO Auto-generated method stub
 		return dao.showQuestions();
 	}
 
-	public Map<?, ?> showTests() {
+	public Map<BigInteger, Test> showTests() {
 		// TODO Auto-generated method stub
 		return dao.showTests();
 	}
 
-	public Map<?, ?> showUsers() {
+	public Map<Long, User> showUsers() {
 		// TODO Auto-generated method stub
-		return dao.showQuestions();
+		return dao.showUsers();
 	}
 
 	public User searchUser(Long userId) {
 		// TODO Auto-generated method stub
 		return dao.searchUser(userId);
+	}
+
+	public Test searchTest(BigInteger testId) {
+		// TODO Auto-generated method stub
+		return dao.searchTest(testId);
 	}	
 }

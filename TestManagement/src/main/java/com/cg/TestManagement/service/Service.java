@@ -24,8 +24,9 @@ public interface Service {
 	public BigDecimal getResult(Test test);
 	public BigDecimal calculateTotalMarks(Test test);
 	public Set<Question> showAllQuestions(Test test);
-	public Map<?,?> showQuestions();
-	public Map<?,?> showTests();
-	public Map<?,?> showUsers();
+	public Map<BigInteger,Question> showQuestions();
+	public Map<BigInteger,Test> showTests();
+	public Map<Long, User> showUsers();
+	public Test searchTest(BigInteger testId);
 	public User searchUser(Long userId);
 }

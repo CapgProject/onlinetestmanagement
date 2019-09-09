@@ -5,15 +5,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-import com.cg.TestManagement.dao.Dao;
-import com.cg.TestManagement.dao.DaoImpl;
 import com.cg.TestManagement.dto.Question;
 import com.cg.TestManagement.dto.Test;
 import com.cg.TestManagement.dto.User;
 import com.cg.TestManagement.service.Service;
 import com.cg.TestManagement.service.ServiceImpl;
 
-public class Application {
+public class Application{
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -106,6 +104,7 @@ public class Application {
 					         test.setTestDuration(duration);
 					         test.setStartTime(startTime);
 					         test.setEndTime(endTime);
+					         test.setTestTotalMarks(total_marks);
 					         
 					         Test addTest = service.addTest(test);
 					         if(addTest != null) {
@@ -122,7 +121,7 @@ public class Application {
 					 	 
 				case 3 : System.out.println("Enter User Id");
 						 Long userId_UpdateTest = scanner.nextLong();
-						 User updateTestUser = searchUser(userId_UpdateTest);
+						 User updateTestUser = service.searchUser(userId_UpdateTest);
 						 if(updateTestUser.getIsAdmin()) {
 							 System.out.println("Enter the Test Id to be updated");
 							 BigInteger updateTestId = scanner.nextBigInteger();
@@ -142,7 +141,7 @@ public class Application {
 						 
 				case 4 : System.out.println("Enter User Id");
 						 Long userId_DeleteTest = scanner.nextLong();
-						 User deleteTestUser = searchUser(userId_DeleteTest);
+						 User deleteTestUser = service.searchUser(userId_DeleteTest);
 						 if(deleteTestUser.getIsAdmin()) {
 							 System.out.println("Enter the Test Id to be deleted");
 							 BigInteger deleteTestId = scanner.nextBigInteger();
@@ -222,7 +221,7 @@ public class Application {
 				
 				case 7 : System.out.println("Enter User Id");
 						 Long userId_UpdateQuestion = scanner.nextLong();
-						 User updateQuestionUser = searchUser(userId_UpdateQuestion);
+						 User updateQuestionUser = service.searchUser(userId_UpdateQuestion);
 						 if(updateQuestionUser.getIsAdmin()) {
 							 System.out.println("Enter the Test Id to be updated");
 							 BigInteger updateTestQuestionId = scanner.nextBigInteger();
@@ -245,7 +244,7 @@ public class Application {
 				
 				case 8 : System.out.println("Enter User Id");
 						 Long userId_DeleteQuestion = scanner.nextLong();
-						 User deleteQuestionUser = searchUser(userId_DeleteQuestion);
+						 User deleteQuestionUser = service.searchUser(userId_DeleteQuestion);
 						 if(deleteQuestionUser.getIsAdmin()) {
 							 System.out.println("Enter the Test Id from which Question is to be deleted");
 							 BigInteger deleteTestQuestionId = scanner.nextBigInteger();
@@ -273,19 +272,20 @@ public class Application {
 				         System.out.println("The Marks Scored are "+ marksScored);				        	 
 						 break;
 				         
-				case 10 : Map<Long, User> userDatabase = service.showUsers();
-						  for (Map.Entry<Long, User> entry : userDatabase.entrySet()) {
-						      System.out.println(entry.getKey()+" : "+entry.getValue().toString());
-						  }
-		                  break;
-		                  
+				case 10 : {
+						Map<Long, User> userDatabase = service.showUsers();
+						for (Map.Entry<Long, User> entry : userDatabase.entrySet()) {
+							System.out.println(entry.getKey()+" : "+entry.getValue().toString());
+						 }	
+		                 break;
+				}
 				case 11 : Map<BigInteger, Test> testDatabase = service.showTests();
 						  for (Map.Entry<BigInteger, Test> entry : testDatabase.entrySet()) {
 						      System.out.println(entry.getKey()+" : "+entry.getValue().toString());
 						  }
 		                  break;
 					
-				case 12 : Map<BigInteger, Question> questionDatabase = service.showQuestions();
+				case 12 : Map<BigInteger, Question> questionDatabase =  service.showQuestions();
 						  for (Map.Entry<BigInteger, Question> entry : questionDatabase.entrySet()) {
 						      System.out.println(entry.getKey()+" : "+entry.getValue().toString());
 						  }
@@ -294,7 +294,8 @@ public class Application {
 				case 13 : System.exit(0);
 						  break;
 						  
-				default : break;
+				default : System.exit(0);
+						  break;
 			}
 			
 		}while(choice != 13);
