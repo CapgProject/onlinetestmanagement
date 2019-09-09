@@ -14,7 +14,6 @@ import com.cg.TestManagement.dto.User;
 public class ServiceImpl implements Service{
 
 	Dao dao = new DaoImpl();
-	
 	public User registerUser(User user) {
 		// TODO Auto-generated method stub
 		return dao.saveUser(user);
@@ -42,7 +41,7 @@ public class ServiceImpl implements Service{
 		// TODO Auto-generated method stub
 		User user = dao.searchUser(userId);
 		Test test = dao.searchTest(testId);
-		if(test == null) {
+		if(user == null || test == null) {
 			return false;
 		}
 		else {
