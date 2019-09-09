@@ -1,0 +1,5 @@
+com\cg\TestManagement\dao\DaoImpl.class
+com\cg\TestManagement\ui\Application.class
+com\cg\TestManagement\dao\Dao.class
+com\cg\TestManagement\service\ServiceImpl.class
+com\cg\TestManagement\service\Service.class
