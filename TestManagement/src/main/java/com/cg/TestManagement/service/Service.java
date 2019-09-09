@@ -2,6 +2,9 @@ package com.cg.TestManagement.service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,6 +38,8 @@ public interface Service {
 	public void validateQuestionId(BigInteger id) throws UserException;
 	public void validateUserName(String name) throws UserException;
 	public void validatePassword(String password) throws UserException;
-
+	public void validateDate(LocalDateTime startDate, LocalDateTime endDate) throws UserException;
+	public void validateTestDuration(LocalTime duration, LocalDateTime startDate, LocalDateTime endDate) throws UserException;
+	public void validateEndTime(LocalDateTime endDate) throws UserException;
 
 }

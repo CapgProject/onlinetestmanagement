@@ -2,6 +2,8 @@ package com.cg.TestManagement.service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Map;
 import java.util.Set;
 
@@ -202,4 +204,25 @@ public class ServiceImpl implements Service{
 			throw new UserException(ExceptionMessage.PASSWORDMESSAGE);
 		}
 	}
+
+	public void validateDate(LocalDateTime startDate, LocalDateTime endDate) throws UserException {
+		// TODO Auto-generated method stub
+		if(startDate.isAfter(endDate)) {
+			throw new UserException();
+		}
+	}
+
+	public void validateTestDuration(LocalTime duration, LocalDateTime startDate, LocalDateTime endDate)
+			throws UserException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void validateEndTime(LocalDateTime endDate) throws UserException {
+		// TODO Auto-generated method stub
+		if(endDate.isBefore(LocalDateTime.now())) {
+			throw new UserException();
+		}
+	}
+	
 }
