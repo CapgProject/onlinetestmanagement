@@ -31,4 +31,10 @@ public interface Service {
 	public Test searchTest(BigInteger testId);
 	public User searchUser(Long userId);
 	public void validateUserId(Long id) throws UserException;
+	public void validateTestId(BigInteger id) throws UserException;
+	public void validateQuestionId(BigInteger id) throws UserException;
+	public void validateUserName(String name) throws UserException;
+	public void validatePassword(String password) throws UserException;
+
+
 }

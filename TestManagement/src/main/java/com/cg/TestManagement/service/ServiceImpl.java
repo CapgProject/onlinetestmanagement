@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.Map;
 import java.util.Set;
 
+import com.cg.TestManagement.Exception.ExceptionMessage;
 import com.cg.TestManagement.Exception.UserException;
 import com.cg.TestManagement.dao.Dao;
 import com.cg.TestManagement.dao.DaoImpl;
@@ -14,7 +15,6 @@ import com.cg.TestManagement.dto.User;
 
 public class ServiceImpl implements Service{
 
-	private static final String idMessage = "Id cannot be negative or null";
 	Dao dao = new DaoImpl();
 	public User registerUser(User user) {
 		// TODO Auto-generated method stub
@@ -146,7 +146,7 @@ public class ServiceImpl implements Service{
 		return test.getTestQuestions();
 	}
 
-public Map<BigInteger, Question> showQuestions() {
+	public Map<BigInteger, Question> showQuestions() {
 		// TODO Auto-generated method stub
 		return dao.showQuestions();
 	}
@@ -173,7 +173,33 @@ public Map<BigInteger, Question> showQuestions() {
 	
 	public void validateUserId(Long id) throws UserException {
 		if(id <= 0) {
-			throw new UserException(idMessage);
+			throw new UserException(ExceptionMessage.IDMESSAGE);
+		}
+	}
+	
+	public void validateTestId(BigInteger id) throws UserException {
+		if(id.longValue()<=0) {
+			throw new UserException(ExceptionMessage.IDMESSAGE);
+		}
+	}
+	
+	public void validateQuestionId(BigInteger id) throws UserException {
+		if(id.longValue()<=0) {
+			throw new UserException(ExceptionMessage.IDMESSAGE);
+		}
+	}
+	
+	public void validateUserName(String name) throws UserException{
+		String pattern = "[A-Z]*";
+		if(!(name.matches(pattern) || (name == null))) {
+			throw new UserException(ExceptionMessage.NAMEMESSAGE);
+		}
+	}
+	
+	public void validatePassword(String password) throws UserException{
+		String pattern = "(?=.*[a-z])(?=.*\\\\d)(?=.*[A-Z])(?=.*[@#$%!])";
+		if(!(password.matches(pattern))) {
+			throw new UserException(ExceptionMessage.PASSWORDMESSAGE);
 		}
 	}
 }
