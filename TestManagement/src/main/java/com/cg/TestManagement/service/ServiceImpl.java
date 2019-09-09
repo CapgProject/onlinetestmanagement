@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.Map;
 import java.util.Set;
 
+import com.cg.TestManagement.Exception.UserException;
 import com.cg.TestManagement.dao.Dao;
 import com.cg.TestManagement.dao.DaoImpl;
 import com.cg.TestManagement.dto.Question;
@@ -13,6 +14,7 @@ import com.cg.TestManagement.dto.User;
 
 public class ServiceImpl implements Service{
 
+	private static final String idMessage = "Id cannot be negative or null";
 	Dao dao = new DaoImpl();
 	public User registerUser(User user) {
 		// TODO Auto-generated method stub
@@ -167,5 +169,11 @@ public Map<BigInteger, Question> showQuestions() {
 	public Test searchTest(BigInteger testId) {
 		// TODO Auto-generated method stub
 		return dao.searchTest(testId);
-	}	
+	}
+	
+	public void validateUserId(Long id) throws UserException {
+		if(id <= 0) {
+			throw new UserException(idMessage);
+		}
+	}
 }

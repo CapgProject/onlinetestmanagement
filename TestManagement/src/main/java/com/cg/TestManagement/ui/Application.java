@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
+import com.cg.TestManagement.Exception.UserException;
 import com.cg.TestManagement.dto.Question;
 import com.cg.TestManagement.dto.Test;
 import com.cg.TestManagement.dto.User;
@@ -25,7 +26,14 @@ public class Application{
 			choice = scanner.nextInt();
 			switch(choice) {
 				case 1 : System.out.println("Enter the User Id");
-				         long user_id = scanner.nextLong();
+				         Long user_id = scanner.nextLong();
+						 try {
+							 service.validateUserId(user_id);
+						 } catch (UserException e) {
+							 // TODO Auto-generated catch block
+							 System.out.println(e.getMessage());
+							 break;
+						 }
 				         System.out.println("Enter the Username");
 				         String user_name = scanner.next();
 				         System.out.println("Enter the Password");

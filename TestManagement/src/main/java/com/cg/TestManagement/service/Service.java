@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.Map;
 import java.util.Set;
 
+import com.cg.TestManagement.Exception.UserException;
 import com.cg.TestManagement.dto.Question;
 import com.cg.TestManagement.dto.Test;
 import com.cg.TestManagement.dto.User;
@@ -29,4 +30,5 @@ public interface Service {
 	public Map<Long, User> showUsers();
 	public Test searchTest(BigInteger testId);
 	public User searchUser(Long userId);
+	public void validateUserId(Long id) throws UserException;
 }
