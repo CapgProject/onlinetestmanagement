@@ -85,6 +85,7 @@ public class ServiceImpl implements Service{
 		if(temp!= null) {
 			Set<Question> quests = temp.getTestQuestions();
 			quests.add(question);
+			dao.saveQuestion(question);
 			temp.setTestQuestions(quests);
 			return question;
 		}
