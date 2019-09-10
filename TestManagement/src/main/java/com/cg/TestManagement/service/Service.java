@@ -2,7 +2,6 @@ package com.cg.TestManagement.service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Map;
@@ -22,7 +21,7 @@ public interface Service {
 	public Question updateQuestion(BigInteger testId, BigInteger questionId, Question question);
 	public Question deleteQuestion(BigInteger testId, BigInteger questionId);
 	public User registerUser(User user);
-	public Boolean answerQuestion(Test test, Question question, Integer chosenAnswer);
+	public Boolean answerQuestion(Test test, Question question, Integer chosenAnswer) throws UserException;
 	public Question showQuestion(Test test, BigInteger questionId);
 	public Boolean assignTest(Long userId, BigInteger testId);
 	public BigDecimal getResult(Test test);

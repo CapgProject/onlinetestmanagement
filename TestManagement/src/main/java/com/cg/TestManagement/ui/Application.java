@@ -35,9 +35,24 @@ public class Application{
 							 break;
 						 }
 				         System.out.println("Enter the Username");
-				         String user_name = scanner.next();
+				         scanner.nextLine();
+				         String user_name = scanner.nextLine();
+						 try {
+						 	 service.validateUserName(user_name);
+						 } catch (UserException e) {
+						 	 // TODO Auto-generated catch block
+							 System.out.println(e.getMessage());
+							 break;
+						 }
 				         System.out.println("Enter the Password");
 				         String password = scanner.next();
+						 try {
+							 service.validatePassword(password);
+						 } catch (UserException e) {
+							 // TODO Auto-generated catch block
+							 System.out.println(e.getMessage());
+							 break;
+						 }
 				         System.out.println("Are you an Admin: Enter 'y' for yes and 'n' for no");
 				         String admin = scanner.next();
 				         
@@ -64,10 +79,24 @@ public class Application{
 				         
 				case 2 : System.out.println("Enter User Id");
 					 	 Long userId_AddTest = scanner.nextLong();
+						 try {
+							 service.validateUserId(userId_AddTest);
+						 } catch (UserException e) {
+							 // TODO Auto-generated catch block
+							 System.out.println(e.getMessage());
+							 break;
+						 }
 					 	 User foundUser = service.searchUser(userId_AddTest);
 					 	 if(foundUser.getIsAdmin()) {
 					 		 System.out.println("Enter Test Id");
 					         BigInteger test_id = scanner.nextBigInteger();
+					         try {
+								service.validateTestId(test_id);
+							 } catch (UserException e) {
+								 // TODO Auto-generated catch block
+								 System.out.println(e.getMessage());
+								 break;
+							 }
 					         System.out.println("Enter Test Name");
 					         String test_name = scanner.next();
 					         System.out.println("Enter Test Duration:Hours");
@@ -112,6 +141,15 @@ public class Application{
 					         test.setTestDuration(duration);
 					         test.setStartTime(startTime);
 					         test.setEndTime(endTime);
+					         try {
+					        	 service.validateDate(startTime, endTime);
+					        	 service.validateEndTime(endTime);
+					        	 service.validateTestDuration(duration, startTime, endTime);
+					         }
+					         catch(UserException e){
+					        	 System.out.println(e.getMessage());
+					        	 break;
+					         }
 					         test.setTestTotalMarks(total_marks);
 					         
 					         Test addTest = service.addTest(test);
@@ -129,12 +167,80 @@ public class Application{
 					 	 
 				case 3 : System.out.println("Enter User Id");
 						 Long userId_UpdateTest = scanner.nextLong();
+						 try {
+							 service.validateUserId(userId_UpdateTest);
+						 } catch (UserException e) {
+							 // TODO Auto-generated catch block
+							 System.out.println(e.getMessage());
+							 break;
+						 }
 						 User updateTestUser = service.searchUser(userId_UpdateTest);
 						 if(updateTestUser.getIsAdmin()) {
 							 System.out.println("Enter the Test Id to be updated");
 							 BigInteger updateTestId = scanner.nextBigInteger();
-							 Test updateTest = service.searchTest(updateTestId);
-							 Test updatedTest = service.updateTest(updateTestId, updateTest);
+							 try {
+								 service.validateTestId(updateTestId);
+							 } catch (UserException e) {
+								 // TODO Auto-generated catch block
+								 System.out.println(e.getMessage());
+								 break;
+							 }
+							 System.out.println("Enter Test Name");
+					         String test_name = scanner.next();
+					         System.out.println("Enter Test Duration:Hours");
+					         Integer durationHour = scanner.nextInt();
+					         System.out.println("Enter Test Duration:Minutes");
+					         Integer durationMinutes = scanner.nextInt();
+					         System.out.println("Enter Test Duration:Seconds");
+					         Integer durationSeconds = scanner.nextInt();
+					         System.out.println("Enter Test Total Marks");
+					         BigDecimal total_marks = scanner.nextBigDecimal();
+					         System.out.println("Enter Start Time of Test:Year");
+					         Integer startTimeYear = scanner.nextInt();
+					         System.out.println("Enter Start Time of Test:Month");
+					         Integer startTimeMonth = scanner.nextInt();
+					         System.out.println("Enter Start Time of Test:Day");
+					         Integer startTimeDay = scanner.nextInt();
+					         System.out.println("Enter Start Time of Test:Hours");
+					         Integer startTimeHour = scanner.nextInt();
+					         System.out.println("Enter Start Time of Test:Minutes");
+					         Integer startTimeMinutes = scanner.nextInt();
+					         System.out.println("Enter Start Time of Test:Seconds");
+					         Integer startTimeSeconds = scanner.nextInt();
+					         System.out.println("Enter End Time of Test:Year");
+					         Integer endTimeYear = scanner.nextInt();
+					         System.out.println("Enter End Time of Test:Month");
+					         Integer endTimeMonth = scanner.nextInt();
+					         System.out.println("Enter End Time of Test:Day");
+					         Integer endTimeDay = scanner.nextInt();
+					         System.out.println("Enter End Time of Test:Hours");
+					         Integer endTimeHours = scanner.nextInt();
+					         System.out.println("Enter End Time of Test:Minutes");
+					         Integer endTimeMinutes = scanner.nextInt();
+					         System.out.println("Enter End Time of Test:Seconds");
+					         Integer endTimeSeconds = scanner.nextInt();
+					        
+					         LocalTime duration = LocalTime.of(durationHour, durationMinutes, durationSeconds);
+					         LocalDateTime startTime = LocalDateTime.of(startTimeYear, startTimeMonth, startTimeDay, startTimeHour, startTimeMinutes, startTimeSeconds);
+					         LocalDateTime endTime = LocalDateTime.of(endTimeYear, endTimeMonth, endTimeDay, endTimeHours, endTimeMinutes, endTimeSeconds);
+					         Test test = new Test();
+					         test.setTestId(updateTestId);
+					         test.setTestName(test_name);
+					         test.setTestDuration(duration);
+					         test.setStartTime(startTime);
+					         test.setEndTime(endTime);
+					         try {
+					        	 service.validateDate(startTime, endTime);
+					        	 service.validateEndTime(endTime);
+					        	 service.validateTestDuration(duration, startTime, endTime);
+					         }
+					         catch(UserException e){
+					        	 System.out.println(e.getMessage());
+					        	 break;
+					         }
+					         test.setTestTotalMarks(total_marks);
+					         
+							 Test updatedTest = service.updateTest(updateTestId, test);
 							 if(updatedTest != null) {
 								 System.out.println("Test Updated Successfully!");
 							 }
@@ -149,10 +255,24 @@ public class Application{
 						 
 				case 4 : System.out.println("Enter User Id");
 						 Long userId_DeleteTest = scanner.nextLong();
+						 try {
+							 service.validateUserId(userId_DeleteTest);
+						 } catch (UserException e) {
+							 // TODO Auto-generated catch block
+							 System.out.println(e.getMessage());
+							 break;
+						 }
 						 User deleteTestUser = service.searchUser(userId_DeleteTest);
 						 if(deleteTestUser.getIsAdmin()) {
 							 System.out.println("Enter the Test Id to be deleted");
 							 BigInteger deleteTestId = scanner.nextBigInteger();
+							 try {
+								 service.validateTestId(deleteTestId);
+							 } catch (UserException e) {
+								 // TODO Auto-generated catch block
+								 System.out.println(e.getMessage());
+								 break;
+							 }
 							 Test deletedTest = service.deleteTest(deleteTestId);
 							 if(deletedTest != null) {
 								 System.out.println("Test Deleted Successfully!");
@@ -168,12 +288,33 @@ public class Application{
 					
 				case 5 : System.out.println("Enter User Id");
 				         Long user_Id = scanner.nextLong();
+						 try {
+							 service.validateUserId(user_Id);
+						 } catch (UserException e) {
+							 // TODO Auto-generated catch block
+							 System.out.println(e.getMessage());
+							 break;
+						 }
 				         User assignUser = service.searchUser(user_Id);
 				         if(assignUser.getIsAdmin()) {
 				        	 System.out.println("Enter the User Id to whom test is to be alloted");
 					         Long userTestId = scanner.nextLong();
+					         try {
+								 service.validateUserId(userTestId);
+							 } catch (UserException e) {
+								 // TODO Auto-generated catch block
+								 System.out.println(e.getMessage());
+								 break;
+							 }
 					         System.out.println("Enter the Test Id of the test to be alloted");
 					         BigInteger testUserId = scanner.nextBigInteger();
+					         try {
+								 service.validateTestId(testUserId);
+							 } catch (UserException e) {
+								 // TODO Auto-generated catch block
+								 System.out.println(e.getMessage());
+								 break;
+							 }
 					         Boolean assign = service.assignTest(userTestId, testUserId);
 					         if(assign) {
 					        	 System.out.println("Test assigned to User Successfully!");
@@ -187,14 +328,35 @@ public class Application{
 				         }
 				         break;
 				         
-				case 6 : System.out.println("Enter User Id");
-				         Long userId_AddQuestion = scanner.nextLong();
-				         User addQuestionUser = service.searchUser(userId_AddQuestion);
-				         if(addQuestionUser.getIsAdmin()) {
-				        	 System.out.println("Enter Test Id to which question is to be added");
-				        	 BigInteger questionTestId = scanner.nextBigInteger();
+					case 6 : System.out.println("Enter User Id");
+					         Long userId_AddQuestion = scanner.nextLong();
+							 try {
+								 service.validateUserId(userId_AddQuestion);
+							 } catch (UserException e) {
+								 // TODO Auto-generated catch block
+								 System.out.println(e.getMessage());
+								 break;
+							 }
+					         User addQuestionUser = service.searchUser(userId_AddQuestion);
+					         if(addQuestionUser.getIsAdmin()) {
+					        	 System.out.println("Enter Test Id to which question is to be added");
+					        	 BigInteger questionTestId = scanner.nextBigInteger();
+					        	 try {
+									service.validateTestId(questionTestId);
+					        	 } catch (UserException e) {
+					        		 // TODO Auto-generated catch block
+					        		 System.out.println(e.getMessage());
+					        		 break;
+					         }
 				        	 System.out.println("Enter the Question Id to be added");
 				        	 BigInteger questionId = scanner.nextBigInteger();
+				        	 try {
+								service.validateQuestionId(questionId);
+				        	 } catch (UserException e) {
+								// TODO Auto-generated catch block
+								System.out.println(e.getMessage());
+								break;
+							 }
 				        	 System.out.println("Enter Question Options");
 				        	 String questionOptions[] = new String[4];
 					         for(int i = 0; i<4; i++) {
@@ -229,14 +391,59 @@ public class Application{
 				
 				case 7 : System.out.println("Enter User Id");
 						 Long userId_UpdateQuestion = scanner.nextLong();
+						 try {
+							 service.validateUserId(userId_UpdateQuestion);
+						 } catch (UserException e) {
+							 // TODO Auto-generated catch block
+							 System.out.println(e.getMessage());
+							 break;
+						 }
 						 User updateQuestionUser = service.searchUser(userId_UpdateQuestion);
 						 if(updateQuestionUser.getIsAdmin()) {
 							 System.out.println("Enter the Test Id to be updated");
 							 BigInteger updateTestQuestionId = scanner.nextBigInteger();
+							 try {
+								 service.validateTestId(updateTestQuestionId);
+							 } catch (UserException e) {
+								 // TODO Auto-generated catch block
+								 System.out.println(e.getMessage());
+								 break;
+							 }
 							 System.out.println("Enter Question Id to be updated");
 							 BigInteger updateQuestionId = scanner.nextBigInteger();
+							 try {
+							 	 service.validateQuestionId(updateQuestionId);
+							 } catch (UserException e) {
+								 // TODO Auto-generated catch block
+								 System.out.println(e.getMessage());
+								 break;
+							 }
+							 System.out.println("Enter the updated Question Id");
+							 BigInteger updatedQuestionId = scanner.nextBigInteger();
+							 try {
+							 	 service.validateQuestionId(updatedQuestionId);
+							 } catch (UserException e) {
+								 // TODO Auto-generated catch block
+								 System.out.println(e.getMessage());
+								 break;
+							 }
+							 System.out.println("Enter the updated Question Options");
+				        	 String updatedQuestionOptions[] = new String[4];
+					         for(int i = 0; i<4; i++) {
+					        	 updatedQuestionOptions[i] = scanner.next();
+					         }
+					         System.out.println("Enter the updated Question Title");
+					         String updatedQuestionTitle = scanner.nextLine();
+					         System.out.println("Enter the updated Question Answer");
+					         Integer updatedQuestionAnswer = scanner.nextInt();
+					         System.out.println("Enter the updated Question Marks");
+					         BigDecimal updatedQuestionMarks = scanner.nextBigDecimal();
 							 Question question = new Question();
-							 
+							 question.setQuestionId(updatedQuestionId);
+							 question.setQusetionOptions(updatedQuestionOptions);
+							 question.setQuestionTitle(updatedQuestionTitle);
+							 question.setQuestionAnswer(updatedQuestionAnswer);
+							 question.setQuestionMarks(updatedQuestionMarks);
 							 Question updatedQuestion = service.updateQuestion(updateTestQuestionId, updateQuestionId, question);
 							 if(updatedQuestion != null) {
 								 System.out.println("Question Updated Successfully!");
@@ -252,13 +459,33 @@ public class Application{
 				
 				case 8 : System.out.println("Enter User Id");
 						 Long userId_DeleteQuestion = scanner.nextLong();
+						 try {
+							 service.validateUserId(userId_DeleteQuestion);
+						 } catch (UserException e) {
+							 // TODO Auto-generated catch block
+							 System.out.println(e.getMessage());
+							 break;
+						 }
 						 User deleteQuestionUser = service.searchUser(userId_DeleteQuestion);
 						 if(deleteQuestionUser.getIsAdmin()) {
 							 System.out.println("Enter the Test Id from which Question is to be deleted");
 							 BigInteger deleteTestQuestionId = scanner.nextBigInteger();
+							 try {
+								 service.validateTestId(deleteTestQuestionId);
+							 } catch (UserException e) {
+								 // TODO Auto-generated catch block
+								 System.out.println(e.getMessage());
+								 break;
+							 }
 							 System.out.println("Enter Question Id to be deleted");
 							 BigInteger deleteQuestionId = scanner.nextBigInteger();
-							 
+							 try {
+							 	 service.validateQuestionId(deleteQuestionId);
+							 } catch (UserException e) {
+								 // TODO Auto-generated catch block
+								 System.out.println(e.getMessage());
+								 break;
+							 }
 							 Question deletedQuestion = service.deleteQuestion(deleteTestQuestionId, deleteQuestionId); 
 							 if(deletedQuestion != null) {
 								 System.out.println("Question Deleted Successfully!");
@@ -274,19 +501,24 @@ public class Application{
 				
 				case 9 : System.out.println("Enter Test Id for which the result is to be checked");
 				         BigInteger resultTestId = scanner.nextBigInteger();
-				         
+				         try {
+							 service.validateTestId(resultTestId);
+						 } catch (UserException e) {
+							 // TODO Auto-generated catch block
+							 System.out.println(e.getMessage());
+							 break;
+						 }
 				         Test resultTest = service.searchTest(resultTestId);
 				         BigDecimal marksScored = service.getResult(resultTest);
 				         System.out.println("The Marks Scored are "+ marksScored);				        	 
 						 break;
 				         
-				case 10 : {
-						Map<Long, User> userDatabase = service.showUsers();
-						for (Map.Entry<Long, User> entry : userDatabase.entrySet()) {
-							System.out.println(entry.getKey()+" : "+entry.getValue().toString());
-						 }	
-		                 break;
-				}
+				case 10 : Map<Long, User> userDatabase = service.showUsers();
+						  for (Map.Entry<Long, User> entry : userDatabase.entrySet()) {
+							  System.out.println(entry.getKey()+" : "+entry.getValue().toString());
+						  }	
+		                  break;
+		                 
 				case 11 : Map<BigInteger, Test> testDatabase = service.showTests();
 						  for (Map.Entry<BigInteger, Test> entry : testDatabase.entrySet()) {
 						      System.out.println(entry.getKey()+" : "+entry.getValue().toString());
@@ -302,7 +534,7 @@ public class Application{
 				case 13 : System.exit(0);
 						  break;
 						  
-				default : System.exit(0);
+				default : System.out.println("Please enter a choice between 1 and 13 only");
 						  break;
 			}
 			

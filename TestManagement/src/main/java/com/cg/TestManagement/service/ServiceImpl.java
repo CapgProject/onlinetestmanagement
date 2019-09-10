@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,13 +24,13 @@ public class ServiceImpl implements Service{
 		return dao.saveUser(user);
 	}
 
-	public Boolean answerQuestion(Test test, Question question, Integer chosenAnswer) {
+	public Boolean answerQuestion(Test test, Question question, Integer chosenAnswer) throws UserException {
 		// TODO Auto-generated method stub
-		if(test.getTestQuestions().contains(question)) {
-			question.setChosenAnswer(chosenAnswer);
-			return true;
+		if(!test.getTestQuestions().contains(question)) {
+			throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
 		}
-		return false;
+		question.setChosenAnswer(chosenAnswer);
+		return true;
 	}
 
 	public Question showQuestion(Test test, BigInteger questionId) {
@@ -192,14 +193,14 @@ public class ServiceImpl implements Service{
 	}
 	
 	public void validateUserName(String name) throws UserException{
-		String pattern = "[A-Z]*";
+		String pattern = "^[A-Z][A-Za-z 0-9_-]*$";
 		if(!(name.matches(pattern) || (name == null))) {
 			throw new UserException(ExceptionMessage.NAMEMESSAGE);
 		}
 	}
 	
 	public void validatePassword(String password) throws UserException{
-		String pattern = "(?=.*[a-z])(?=.*\\\\d)(?=.*[A-Z])(?=.*[@#$%!])";
+		String pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
 		if(!(password.matches(pattern))) {
 			throw new UserException(ExceptionMessage.PASSWORDMESSAGE);
 		}
@@ -208,20 +209,23 @@ public class ServiceImpl implements Service{
 	public void validateDate(LocalDateTime startDate, LocalDateTime endDate) throws UserException {
 		// TODO Auto-generated method stub
 		if(startDate.isAfter(endDate)) {
-			throw new UserException();
+			throw new UserException(ExceptionMessage.TIMEMESSAGE);
 		}
 	}
 
 	public void validateTestDuration(LocalTime duration, LocalDateTime startDate, LocalDateTime endDate)
 			throws UserException {
 		// TODO Auto-generated method stub
-		
+		long hours = ChronoUnit.HOURS.between(startDate, endDate);
+		if(duration.getHour() > hours) {
+			throw new UserException(ExceptionMessage.DURATIONMESSAGE);
+		}
 	}
 
 	public void validateEndTime(LocalDateTime endDate) throws UserException {
 		// TODO Auto-generated method stub
 		if(endDate.isBefore(LocalDateTime.now())) {
-			throw new UserException();
+			throw new UserException(ExceptionMessage.ENDTIMEMESSAGE);
 		}
 	}
 	
