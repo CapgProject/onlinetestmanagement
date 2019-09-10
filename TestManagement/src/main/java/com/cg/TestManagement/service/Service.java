@@ -15,15 +15,15 @@ import com.cg.TestManagement.dto.User;
 public interface Service {
 
 	public Test addTest(Test test);
-	public Test updateTest(BigInteger testId, Test test);
+	public Test updateTest(BigInteger testId, Test test) throws UserException;
 	public Test deleteTest(BigInteger testId);
-	public Question addQuestion(BigInteger testId, Question question);
-	public Question updateQuestion(BigInteger testId, BigInteger questionId, Question question);
-	public Question deleteQuestion(BigInteger testId, BigInteger questionId);
+	public Question addQuestion(BigInteger testId, Question question) throws UserException;
+	public Question updateQuestion(BigInteger testId, BigInteger questionId, Question question) throws UserException;
+	public Question deleteQuestion(BigInteger testId, BigInteger questionId) throws UserException;
 	public User registerUser(User user);
 	public Boolean answerQuestion(Test test, Question question, Integer chosenAnswer) throws UserException;
-	public Question showQuestion(Test test, BigInteger questionId);
-	public Boolean assignTest(Long userId, BigInteger testId);
+	public Question showQuestion(Test test, BigInteger questionId) throws UserException;
+	public Boolean assignTest(Long userId, BigInteger testId) throws UserException;
 	public BigDecimal getResult(Test test);
 	public BigDecimal calculateTotalMarks(Test test);
 	public Set<Question> showAllQuestions(Test test);

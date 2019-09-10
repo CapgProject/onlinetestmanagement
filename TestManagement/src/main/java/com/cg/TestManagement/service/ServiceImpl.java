@@ -33,21 +33,24 @@ public class ServiceImpl implements Service{
 		return true;
 	}
 
-	public Question showQuestion(Test test, BigInteger questionId) {
+	public Question showQuestion(Test test, BigInteger questionId)throws UserException {
 		// TODO Auto-generated method stub
 		Question question = dao.searchQuestion(questionId);
 		if(test.getTestQuestions().contains(question)) {
-			return question;
+			throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
 		}
-		return null;
+		return question;
 	}
 
-	public Boolean assignTest(Long userId, BigInteger testId) {
+	public Boolean assignTest(Long userId, BigInteger testId) throws UserException {
 		// TODO Auto-generated method stub
 		User user = dao.searchUser(userId);
 		Test test = dao.searchTest(testId);
-		if(user == null || test == null) {
-			return false;
+		if(user == null ) {
+			throw new UserException(ExceptionMessage.USERMESSAGE);
+		}
+		if(test == null) {
+			throw new UserException(ExceptionMessage.TESTMESSAGE);
 		}
 		else {
 			user.setUserTest(test);
@@ -59,7 +62,7 @@ public class ServiceImpl implements Service{
 		return dao.saveTest(test);
 	}
 
-	public Test updateTest(BigInteger testId, Test test) {
+	public Test updateTest(BigInteger testId, Test test) throws UserException {
 		// TODO Auto-generated method stub
 		Test temp = dao.searchTest(testId);
 		if (temp!= null){
@@ -68,7 +71,7 @@ public class ServiceImpl implements Service{
 			return test;
 		}
 		else
-			return null;
+			throw new UserException(ExceptionMessage.TESTMESSAGE);
 	}
 
 	public Test deleteTest(BigInteger testId) {
@@ -76,7 +79,7 @@ public class ServiceImpl implements Service{
 		return dao.removeTest(testId);
 	}
 
-	public Question addQuestion(BigInteger testId, Question question) {
+	public Question addQuestion(BigInteger testId, Question question) throws UserException{
 		// TODO Auto-generated method stub
 		Test temp = dao.searchTest(testId);
 		if(temp!= null) {
@@ -86,10 +89,10 @@ public class ServiceImpl implements Service{
 			return question;
 		}
 		else
-			return null;
+			throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
 	}
 
-	public Question updateQuestion(BigInteger testId, BigInteger questionId, Question question) {
+	public Question updateQuestion(BigInteger testId, BigInteger questionId, Question question) throws UserException {
 		// TODO Auto-generated method stub
 		Test temp = dao.searchTest(testId);
 		if(temp!= null) {
@@ -104,13 +107,13 @@ public class ServiceImpl implements Service{
 				return question;
 			}
 			else
-				return null;
+				throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
 		}
 		else
-			return null;
+			throw new UserException(ExceptionMessage.TESTMESSAGE);
 	}
 
-	public Question deleteQuestion(BigInteger testId, BigInteger questionId) {
+	public Question deleteQuestion(BigInteger testId, BigInteger questionId) throws UserException {
 		// TODO Auto-generated method stub
 		Test temp = dao.searchTest(testId);
 		if(temp!= null) {
@@ -123,10 +126,10 @@ public class ServiceImpl implements Service{
 				return tempQuestion;
 			}
 			else
-				return null;
+				throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
 		}
 		else
-			return null;
+			throw new UserException(ExceptionMessage.TESTMESSAGE);
 	}
 
 	public BigDecimal getResult(Test test) {

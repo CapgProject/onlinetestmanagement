@@ -240,7 +240,14 @@ public class Application{
 					         }
 					         test.setTestTotalMarks(total_marks);
 					         
-							 Test updatedTest = service.updateTest(updateTestId, test);
+							 Test updatedTest;
+							try {
+								updatedTest = service.updateTest(updateTestId, test);
+							} catch (UserException e) {
+								// TODO Auto-generated catch block
+								System.out.println(e.getMessage());
+								break;
+							}
 							 if(updatedTest != null) {
 								 System.out.println("Test Updated Successfully!");
 							 }
@@ -315,7 +322,14 @@ public class Application{
 								 System.out.println(e.getMessage());
 								 break;
 							 }
-					         Boolean assign = service.assignTest(userTestId, testUserId);
+					         Boolean assign;
+							try {
+								assign = service.assignTest(userTestId, testUserId);
+							} catch (UserException e) {
+								// TODO Auto-generated catch block
+								System.out.println(e.getMessage());
+								break;
+							}
 					         if(assign) {
 					        	 System.out.println("Test assigned to User Successfully!");
 					         }
@@ -376,7 +390,14 @@ public class Application{
 					         question.setQuestionAnswer(questionAnswer);
 					         question.setQuestionMarks(questionMarks);
 					         
-					         Question addQuestion = service.addQuestion(questionTestId, question);
+					         Question addQuestion;
+							try {
+								addQuestion = service.addQuestion(questionTestId, question);
+							} catch (UserException e) {
+								// TODO Auto-generated catch block
+								System.out.println(e.getMessage());
+								break;
+							}
 					         if(addQuestion != null) {
 					        	 System.out.println("Question added successfully!");
 					         }
@@ -444,7 +465,14 @@ public class Application{
 							 question.setQuestionTitle(updatedQuestionTitle);
 							 question.setQuestionAnswer(updatedQuestionAnswer);
 							 question.setQuestionMarks(updatedQuestionMarks);
-							 Question updatedQuestion = service.updateQuestion(updateTestQuestionId, updateQuestionId, question);
+							 Question updatedQuestion;
+							try {
+								updatedQuestion = service.updateQuestion(updateTestQuestionId, updateQuestionId, question);
+							} catch (UserException e) {
+								// TODO Auto-generated catch block
+								System.out.println(e.getMessage());
+								break;
+							}
 							 if(updatedQuestion != null) {
 								 System.out.println("Question Updated Successfully!");
 							 }
@@ -486,7 +514,14 @@ public class Application{
 								 System.out.println(e.getMessage());
 								 break;
 							 }
-							 Question deletedQuestion = service.deleteQuestion(deleteTestQuestionId, deleteQuestionId); 
+							 Question deletedQuestion;
+							try {
+								deletedQuestion = service.deleteQuestion(deleteTestQuestionId, deleteQuestionId);
+							} catch (UserException e) {
+								// TODO Auto-generated catch block
+								System.out.println(e.getMessage());
+								break;
+							} 
 							 if(deletedQuestion != null) {
 								 System.out.println("Question Deleted Successfully!");
 							 }
