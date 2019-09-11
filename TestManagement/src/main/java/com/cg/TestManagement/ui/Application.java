@@ -376,10 +376,17 @@ public class Application{
 					         for(int i = 0; i<4; i++) {
 					        	 questionOptions[i] = scanner.next();
 					         }
+					         scanner.nextLine();
 					         System.out.println("Enter Question Title");
 					         String questionTitle = scanner.nextLine();
 					         System.out.println("Enter the Question Answer");
 					         Integer questionAnswer = scanner.nextInt();
+					         try {
+								service.questionAnswerValidate(questionAnswer);
+							} catch (UserException e1) {
+								// TODO Auto-generated catch block
+								System.out.println(e1.getMessage());
+							}
 					         System.out.println("Enter the Question Marks");
 					         BigDecimal questionMarks = scanner.nextBigDecimal();
 					         
@@ -457,6 +464,12 @@ public class Application{
 					         String updatedQuestionTitle = scanner.nextLine();
 					         System.out.println("Enter the updated Question Answer");
 					         Integer updatedQuestionAnswer = scanner.nextInt();
+					         try {
+								service.questionAnswerValidate(updatedQuestionAnswer);
+							} catch (UserException e1) {
+								// TODO Auto-generated catch block
+								System.out.println(e1.getMessage());
+							}
 					         System.out.println("Enter the updated Question Marks");
 					         BigDecimal updatedQuestionMarks = scanner.nextBigDecimal();
 							 Question question = new Question();

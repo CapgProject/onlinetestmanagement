@@ -40,5 +40,7 @@ public interface Service {
 	public void validateDate(LocalDateTime startDate, LocalDateTime endDate) throws UserException;
 	public void validateTestDuration(LocalTime duration, LocalDateTime startDate, LocalDateTime endDate) throws UserException;
 	public void validateEndTime(LocalDateTime endDate) throws UserException;
+	public void questionAnswerValidate(Integer questionAnswer) throws UserException;
 
+	
 }

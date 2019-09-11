@@ -11,5 +11,5 @@ public class ExceptionMessage {
 	public static final String QUESTIONMESSAGE = "The question does not exist in the Test";
 	public static final String USERMESSAGE = "The user does not exist";
 	public static final String TESTMESSAGE = "The test does not exist";
-	
+	public static final String INVALIDQUESTIONANSWER = "The Question Answer can only be in the range of 0 to 3";
 }

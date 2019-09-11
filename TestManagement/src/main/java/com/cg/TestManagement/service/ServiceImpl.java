@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -59,6 +60,8 @@ public class ServiceImpl implements Service{
 	}
 
 	public Test addTest(Test test) {
+		Set<Question> mySet = new HashSet<Question>();
+		test.setTestQuestions(mySet);
 		return dao.saveTest(test);
 	}
 
@@ -90,7 +93,7 @@ public class ServiceImpl implements Service{
 			return question;
 		}
 		else
-			throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
+			throw new UserException(ExceptionMessage.TESTMESSAGE);
 	}
 
 	public Question updateQuestion(BigInteger testId, BigInteger questionId, Question question) throws UserException {
@@ -230,6 +233,12 @@ public class ServiceImpl implements Service{
 		// TODO Auto-generated method stub
 		if(endDate.isBefore(LocalDateTime.now())) {
 			throw new UserException(ExceptionMessage.ENDTIMEMESSAGE);
+		}
+	}
+	
+	public void questionAnswerValidate(Integer questionAnswer) throws UserException {
+		if(questionAnswer <0 || questionAnswer > 3) {
+			throw new UserException(ExceptionMessage.INVALIDQUESTIONANSWER);
 		}
 	}
 	
