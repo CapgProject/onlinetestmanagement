@@ -36,7 +36,7 @@ public class ServiceImpl implements Service{
 	public Question showQuestion(Test test, BigInteger questionId)throws UserException {
 		// TODO Auto-generated method stub
 		Question question = dao.searchQuestion(questionId);
-		if(test.getTestQuestions().contains(question)) {
+		if(!test.getTestQuestions().contains(question)) {
 			throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
 		}
 		return question;

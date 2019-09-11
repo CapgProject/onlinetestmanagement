@@ -7,7 +7,7 @@ import java.util.Arrays;
 public class Question {
 	
 	private BigInteger questionId;
-	private String[] qusetionOptions;
+	private String[] questionOptions;
 	private String questionTitle;
 	private Integer questionAnswer;
 	private BigDecimal questionMarks;
@@ -21,7 +21,7 @@ public class Question {
 			BigDecimal questionMarks, Integer chosenAnswer, BigDecimal marksScored) {
 		super();
 		this.questionId = questionId;
-		this.qusetionOptions = qusetionOptions;
+		this.questionOptions = qusetionOptions;
 		this.questionTitle = questionTitle;
 		this.questionAnswer = questionAnswer;
 		this.questionMarks = questionMarks;
@@ -38,11 +38,11 @@ public class Question {
 	}
 
 	public String[] getQusetionOptions() {
-		return qusetionOptions;
+		return questionOptions;
 	}
 
 	public void setQusetionOptions(String[] qusetionOptions) {
-		this.qusetionOptions = qusetionOptions;
+		this.questionOptions = qusetionOptions;
 	}
 
 	public String getQuestionTitle() {
