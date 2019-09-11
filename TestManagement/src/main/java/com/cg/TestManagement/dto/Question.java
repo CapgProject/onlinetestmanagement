@@ -87,7 +87,7 @@ public class Question {
 
 	@Override
 	public String toString() {
-		return "Question [questionId=" + questionId + ", qusetionOptions=" + Arrays.toString(qusetionOptions)
+		return "Question [questionId=" + questionId + ", qusetionOptions=" + Arrays.toString(questionOptions)
 				+ ", questionTitle=" + questionTitle + ", questionAnswer=" + questionAnswer + ", questionMarks="
 				+ questionMarks + ", chosenAnswer=" + chosenAnswer + ", marksScored=" + marksScored + "]";
 	}
@@ -102,7 +102,7 @@ public class Question {
 		result = prime * result + ((questionId == null) ? 0 : questionId.hashCode());
 		result = prime * result + ((questionMarks == null) ? 0 : questionMarks.hashCode());
 		result = prime * result + ((questionTitle == null) ? 0 : questionTitle.hashCode());
-		result = prime * result + Arrays.hashCode(qusetionOptions);
+		result = prime * result + Arrays.hashCode(questionOptions);
 		return result;
 	}
 
@@ -145,7 +145,7 @@ public class Question {
 				return false;
 		} else if (!questionTitle.equals(other.questionTitle))
 			return false;
-		if (!Arrays.equals(qusetionOptions, other.qusetionOptions))
+		if (!Arrays.equals(questionOptions, other.questionOptions))
 			return false;
 		return true;
 	}
