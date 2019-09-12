@@ -6,14 +6,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Map;
 import java.util.Set;
-
 import com.cg.TestManagement.Exception.UserException;
 import com.cg.TestManagement.dto.Question;
 import com.cg.TestManagement.dto.Test;
 import com.cg.TestManagement.dto.User;
 
-public interface Service {
 
+public interface Service {
 	public Test addTest(Test test);
 	public Test updateTest(BigInteger testId, Test test) throws UserException;
 	public Test deleteTest(BigInteger testId);

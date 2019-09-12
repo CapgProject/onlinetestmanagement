@@ -53,7 +53,7 @@ public class Application{
 							 System.out.println(e.getMessage());
 							 break;
 						 }
-				         System.out.println("Are you an Admin: Enter 'y' for yes and 'n' for no");
+				         System.out.println("Are you an Admin: Enter 'y' for yes");
 				         String admin = scanner.next();
 				         
 				         User user = new User();
@@ -587,6 +587,8 @@ public class Application{
 			}
 			
 		}while(choice != 13);
+		scanner.close();
+		
 		
 	}
 
