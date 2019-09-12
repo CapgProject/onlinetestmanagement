@@ -397,7 +397,7 @@ public class Application {
 					question.setQuestionId(questionId);
 					question.setQusetionOptions(questionOptions);
 					question.setQuestionTitle(questionTitle);
-					question.setQuestionAnswer(questionAnswer-1);
+					question.setQuestionAnswer(questionAnswer - 1);
 					question.setQuestionMarks(questionMarks);
 
 					Question addQuestion;
@@ -479,7 +479,7 @@ public class Application {
 					question.setQuestionId(updatedQuestionId);
 					question.setQusetionOptions(updatedQuestionOptions);
 					question.setQuestionTitle(updatedQuestionTitle);
-					question.setQuestionAnswer(updatedQuestionAnswer-1);
+					question.setQuestionAnswer(updatedQuestionAnswer - 1);
 					question.setQuestionMarks(updatedQuestionMarks);
 					Question updatedQuestion;
 					try {
@@ -593,9 +593,9 @@ public class Application {
 					System.out.println(e.getMessage());
 					break;
 				}
-				User user1 = service.searchUser(userId_AnswerQuestion);
-				if (user1 != null && !user1.getIsAdmin() && user1.getUserTest() != null) {
-					Set<Question> questions = user1.getUserTest().getTestQuestions();
+				User answerUser = service.searchUser(userId_AnswerQuestion);
+				if (answerUser != null && !answerUser.getIsAdmin() && answerUser.getUserTest() != null) {
+					Set<Question> questions = answerUser.getUserTest().getTestQuestions();
 					for (Question question : questions) {
 						System.out.println(question);
 					}
@@ -604,8 +604,8 @@ public class Application {
 					System.out.println("Choose Answer");
 					Integer answer = scanner.nextInt();
 					try {
-						service.answerQuestion(user1.getUserTest(), service.showQuestion(user1.getUserTest(), qid),
-								answer - 1);
+						service.answerQuestion(answerUser.getUserTest(),
+								service.showQuestion(answerUser.getUserTest(), qid), answer - 1);
 					} catch (UserException e) {
 						// TODO Auto-generated catch block
 						System.out.println(e.getMessage());
@@ -623,8 +623,8 @@ public class Application {
 			default:
 				System.out.println("Please enter a choice between 1 and 14 only");
 				break;
-			}
 
+			}
 		} while (choice != 14);
 		scanner.close();
 
