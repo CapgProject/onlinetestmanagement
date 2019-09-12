@@ -31,6 +31,12 @@ public class ServiceImpl implements Service{
 			throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
 		}
 		question.setChosenAnswer(chosenAnswer);
+		if(question.getChosenAnswer() == question.getQuestionAnswer()) {
+			question.setMarksScored(question.getQuestionMarks());
+		}
+		else {
+			question.setMarksScored(new BigDecimal(0.0));
+		}
 		return true;
 	}
 
@@ -138,6 +144,7 @@ public class ServiceImpl implements Service{
 
 	public BigDecimal getResult(Test test) {
 		// TODO Auto-generated method stub
+		calculateTotalMarks(test);
 		return test.getTestMarksScored();
 	}
 
@@ -147,7 +154,7 @@ public class ServiceImpl implements Service{
 		for(Question question: test.getTestQuestions()) {
 			score = score.add(question.getMarksScored());
 		}
-		test.setTestTotalMarks(score);
+		test.setTestMarksScored(score);
 		return score;
 	}
 
