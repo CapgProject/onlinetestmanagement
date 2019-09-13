@@ -8,7 +8,7 @@ import java.util.*;
 
 import com.cg.TestManagement.Exception.UserException;
 import com.cg.TestManagement.dto.Question;
-import com.cg.TestManagement.dto.Test;
+import com.cg.TestManagement.dto.OnlineTest;
 import com.cg.TestManagement.dto.User;
 import com.cg.TestManagement.service.Service;
 import com.cg.TestManagement.service.ServiceImpl;
@@ -89,7 +89,7 @@ public class Application {
 				}
 				User foundUser = service.searchUser(userId_AddTest);
 				if (foundUser.getIsAdmin()) {
-					System.out.println("Enter Test Id");
+					System.out.println("Enter OnlineTest Id");
 					BigInteger test_id = scanner.nextBigInteger();
 					try {
 						service.validateTestId(test_id);
@@ -98,39 +98,39 @@ public class Application {
 						System.out.println(e.getMessage());
 						break;
 					}
-					System.out.println("Enter Test Name");
+					System.out.println("Enter OnlineTest Name");
 					String test_name = scanner.next();
-					System.out.println("Enter Test Duration:Hours");
+					System.out.println("Enter OnlineTest Duration:Hours");
 					Integer durationHour = scanner.nextInt();
-					System.out.println("Enter Test Duration:Minutes");
+					System.out.println("Enter OnlineTest Duration:Minutes");
 					Integer durationMinutes = scanner.nextInt();
-					System.out.println("Enter Test Duration:Seconds");
+					System.out.println("Enter OnlineTest Duration:Seconds");
 					Integer durationSeconds = scanner.nextInt();
-					System.out.println("Enter Test Total Marks");
+					System.out.println("Enter OnlineTest Total Marks");
 					BigDecimal total_marks = scanner.nextBigDecimal();
-					System.out.println("Enter Start Time of Test:Year");
+					System.out.println("Enter Start Time of OnlineTest:Year");
 					Integer startTimeYear = scanner.nextInt();
-					System.out.println("Enter Start Time of Test:Month");
+					System.out.println("Enter Start Time of OnlineTest:Month");
 					Integer startTimeMonth = scanner.nextInt();
-					System.out.println("Enter Start Time of Test:Day");
+					System.out.println("Enter Start Time of OnlineTest:Day");
 					Integer startTimeDay = scanner.nextInt();
-					System.out.println("Enter Start Time of Test:Hours");
+					System.out.println("Enter Start Time of OnlineTest:Hours");
 					Integer startTimeHour = scanner.nextInt();
-					System.out.println("Enter Start Time of Test:Minutes");
+					System.out.println("Enter Start Time of OnlineTest:Minutes");
 					Integer startTimeMinutes = scanner.nextInt();
-					System.out.println("Enter Start Time of Test:Seconds");
+					System.out.println("Enter Start Time of OnlineTest:Seconds");
 					Integer startTimeSeconds = scanner.nextInt();
-					System.out.println("Enter End Time of Test:Year");
+					System.out.println("Enter End Time of OnlineTest:Year");
 					Integer endTimeYear = scanner.nextInt();
-					System.out.println("Enter End Time of Test:Month");
+					System.out.println("Enter End Time of OnlineTest:Month");
 					Integer endTimeMonth = scanner.nextInt();
-					System.out.println("Enter End Time of Test:Day");
+					System.out.println("Enter End Time of OnlineTest:Day");
 					Integer endTimeDay = scanner.nextInt();
-					System.out.println("Enter End Time of Test:Hours");
+					System.out.println("Enter End Time of OnlineTest:Hours");
 					Integer endTimeHours = scanner.nextInt();
-					System.out.println("Enter End Time of Test:Minutes");
+					System.out.println("Enter End Time of OnlineTest:Minutes");
 					Integer endTimeMinutes = scanner.nextInt();
-					System.out.println("Enter End Time of Test:Seconds");
+					System.out.println("Enter End Time of OnlineTest:Seconds");
 					Integer endTimeSeconds = scanner.nextInt();
 
 					LocalTime duration = LocalTime.of(durationHour, durationMinutes, durationSeconds);
@@ -138,13 +138,13 @@ public class Application {
 							startTimeHour, startTimeMinutes, startTimeSeconds);
 					LocalDateTime endTime = LocalDateTime.of(endTimeYear, endTimeMonth, endTimeDay, endTimeHours,
 							endTimeMinutes, endTimeSeconds);
-					Test test = new Test();
-					test.setTestId(test_id);
-					test.setTestName(test_name);
-					test.setTestDuration(duration);
-					test.setStartTime(startTime);
-					test.setEndTime(endTime);
-					test.setTestMarksScored(new BigDecimal(0.0));
+					OnlineTest onlineTest = new OnlineTest();
+					onlineTest.setTestId(test_id);
+					onlineTest.setTestName(test_name);
+					onlineTest.setTestDuration(duration);
+					onlineTest.setStartTime(startTime);
+					onlineTest.setEndTime(endTime);
+					onlineTest.setTestMarksScored(new BigDecimal(0.0));
 					try {
 						service.validateDate(startTime, endTime);
 						service.validateEndTime(endTime);
@@ -153,13 +153,13 @@ public class Application {
 						System.out.println(e.getMessage());
 						break;
 					}
-					test.setTestTotalMarks(total_marks);
+					onlineTest.setTestTotalMarks(total_marks);
 
-					Test addTest = service.addTest(test);
+					OnlineTest addTest = service.addTest(onlineTest);
 					if (addTest != null) {
-						System.out.println("Test added successfully!");
+						System.out.println("OnlineTest added successfully!");
 					} else {
-						System.out.println("Test could not be added");
+						System.out.println("OnlineTest could not be added");
 					}
 				} else {
 					System.out.println("Not allowed to perform this action");
@@ -178,7 +178,7 @@ public class Application {
 				}
 				User updateTestUser = service.searchUser(userId_UpdateTest);
 				if (updateTestUser.getIsAdmin()) {
-					System.out.println("Enter the Test Id to be updated");
+					System.out.println("Enter the OnlineTest Id to be updated");
 					BigInteger updateTestId = scanner.nextBigInteger();
 					try {
 						service.validateTestId(updateTestId);
@@ -187,39 +187,39 @@ public class Application {
 						System.out.println(e.getMessage());
 						break;
 					}
-					System.out.println("Enter Test Name");
+					System.out.println("Enter OnlineTest Name");
 					String test_name = scanner.next();
-					System.out.println("Enter Test Duration:Hours");
+					System.out.println("Enter OnlineTest Duration:Hours");
 					Integer durationHour = scanner.nextInt();
-					System.out.println("Enter Test Duration:Minutes");
+					System.out.println("Enter OnlineTest Duration:Minutes");
 					Integer durationMinutes = scanner.nextInt();
-					System.out.println("Enter Test Duration:Seconds");
+					System.out.println("Enter OnlineTest Duration:Seconds");
 					Integer durationSeconds = scanner.nextInt();
-					System.out.println("Enter Test Total Marks");
+					System.out.println("Enter OnlineTest Total Marks");
 					BigDecimal total_marks = scanner.nextBigDecimal();
-					System.out.println("Enter Start Time of Test:Year");
+					System.out.println("Enter Start Time of OnlineTest:Year");
 					Integer startTimeYear = scanner.nextInt();
-					System.out.println("Enter Start Time of Test:Month");
+					System.out.println("Enter Start Time of OnlineTest:Month");
 					Integer startTimeMonth = scanner.nextInt();
-					System.out.println("Enter Start Time of Test:Day");
+					System.out.println("Enter Start Time of OnlineTest:Day");
 					Integer startTimeDay = scanner.nextInt();
-					System.out.println("Enter Start Time of Test:Hours");
+					System.out.println("Enter Start Time of OnlineTest:Hours");
 					Integer startTimeHour = scanner.nextInt();
-					System.out.println("Enter Start Time of Test:Minutes");
+					System.out.println("Enter Start Time of OnlineTest:Minutes");
 					Integer startTimeMinutes = scanner.nextInt();
-					System.out.println("Enter Start Time of Test:Seconds");
+					System.out.println("Enter Start Time of OnlineTest:Seconds");
 					Integer startTimeSeconds = scanner.nextInt();
-					System.out.println("Enter End Time of Test:Year");
+					System.out.println("Enter End Time of OnlineTest:Year");
 					Integer endTimeYear = scanner.nextInt();
-					System.out.println("Enter End Time of Test:Month");
+					System.out.println("Enter End Time of OnlineTest:Month");
 					Integer endTimeMonth = scanner.nextInt();
-					System.out.println("Enter End Time of Test:Day");
+					System.out.println("Enter End Time of OnlineTest:Day");
 					Integer endTimeDay = scanner.nextInt();
-					System.out.println("Enter End Time of Test:Hours");
+					System.out.println("Enter End Time of OnlineTest:Hours");
 					Integer endTimeHours = scanner.nextInt();
-					System.out.println("Enter End Time of Test:Minutes");
+					System.out.println("Enter End Time of OnlineTest:Minutes");
 					Integer endTimeMinutes = scanner.nextInt();
-					System.out.println("Enter End Time of Test:Seconds");
+					System.out.println("Enter End Time of OnlineTest:Seconds");
 					Integer endTimeSeconds = scanner.nextInt();
 
 					LocalTime duration = LocalTime.of(durationHour, durationMinutes, durationSeconds);
@@ -227,13 +227,13 @@ public class Application {
 							startTimeHour, startTimeMinutes, startTimeSeconds);
 					LocalDateTime endTime = LocalDateTime.of(endTimeYear, endTimeMonth, endTimeDay, endTimeHours,
 							endTimeMinutes, endTimeSeconds);
-					Test test = new Test();
-					test.setTestId(updateTestId);
-					test.setTestName(test_name);
-					test.setTestDuration(duration);
-					test.setStartTime(startTime);
-					test.setEndTime(endTime);
-					test.setTestMarksScored(new BigDecimal(0.0));
+					OnlineTest onlineTest = new OnlineTest();
+					onlineTest.setTestId(updateTestId);
+					onlineTest.setTestName(test_name);
+					onlineTest.setTestDuration(duration);
+					onlineTest.setStartTime(startTime);
+					onlineTest.setEndTime(endTime);
+					onlineTest.setTestMarksScored(new BigDecimal(0.0));
 
 					try {
 						service.validateDate(startTime, endTime);
@@ -243,20 +243,20 @@ public class Application {
 						System.out.println(e.getMessage());
 						break;
 					}
-					test.setTestTotalMarks(total_marks);
+					onlineTest.setTestTotalMarks(total_marks);
 
-					Test updatedTest;
+					OnlineTest updatedTest;
 					try {
-						updatedTest = service.updateTest(updateTestId, test);
+						updatedTest = service.updateTest(updateTestId, onlineTest);
 					} catch (UserException e) {
 						// TODO Auto-generated catch block
 						System.out.println(e.getMessage());
 						break;
 					}
 					if (updatedTest != null) {
-						System.out.println("Test Updated Successfully!");
+						System.out.println("OnlineTest Updated Successfully!");
 					} else {
-						System.out.println("Test cannot be Updated!");
+						System.out.println("OnlineTest cannot be Updated!");
 					}
 				} else {
 					System.out.println("Not allowed to perform this action");
@@ -275,7 +275,7 @@ public class Application {
 				}
 				User deleteTestUser = service.searchUser(userId_DeleteTest);
 				if (deleteTestUser.getIsAdmin()) {
-					System.out.println("Enter the Test Id to be deleted");
+					System.out.println("Enter the OnlineTest Id to be deleted");
 					BigInteger deleteTestId = scanner.nextBigInteger();
 					try {
 						service.validateTestId(deleteTestId);
@@ -284,11 +284,11 @@ public class Application {
 						System.out.println(e.getMessage());
 						break;
 					}
-					Test deletedTest = service.deleteTest(deleteTestId);
+					OnlineTest deletedTest = service.deleteTest(deleteTestId);
 					if (deletedTest != null) {
-						System.out.println("Test Deleted Successfully!");
+						System.out.println("OnlineTest Deleted Successfully!");
 					} else {
-						System.out.println("Test could not be Deleted!");
+						System.out.println("OnlineTest could not be Deleted!");
 					}
 				} else {
 					System.out.println("Not allowed to perform this action");
@@ -316,7 +316,7 @@ public class Application {
 						System.out.println(e.getMessage());
 						break;
 					}
-					System.out.println("Enter the Test Id of the test to be alloted");
+					System.out.println("Enter the OnlineTest Id of the test to be alloted");
 					BigInteger testUserId = scanner.nextBigInteger();
 					try {
 						service.validateTestId(testUserId);
@@ -334,9 +334,9 @@ public class Application {
 						break;
 					}
 					if (assign) {
-						System.out.println("Test assigned to User Successfully!");
+						System.out.println("OnlineTest assigned to User Successfully!");
 					} else {
-						System.out.println("Test could not be assigned to the User");
+						System.out.println("OnlineTest could not be assigned to the User");
 					}
 				} else {
 					System.out.println("Not allowed to perform this action");
@@ -355,7 +355,7 @@ public class Application {
 				}
 				User addQuestionUser = service.searchUser(userId_AddQuestion);
 				if (addQuestionUser.getIsAdmin()) {
-					System.out.println("Enter Test Id to which question is to be added");
+					System.out.println("Enter OnlineTest Id to which question is to be added");
 					BigInteger questionTestId = scanner.nextBigInteger();
 					try {
 						service.validateTestId(questionTestId);
@@ -430,7 +430,7 @@ public class Application {
 				}
 				User updateQuestionUser = service.searchUser(userId_UpdateQuestion);
 				if (updateQuestionUser.getIsAdmin()) {
-					System.out.println("Enter the Test Id to be updated");
+					System.out.println("Enter the OnlineTest Id to be updated");
 					BigInteger updateTestQuestionId = scanner.nextBigInteger();
 					try {
 						service.validateTestId(updateTestQuestionId);
@@ -511,7 +511,7 @@ public class Application {
 				}
 				User deleteQuestionUser = service.searchUser(userId_DeleteQuestion);
 				if (deleteQuestionUser.getIsAdmin()) {
-					System.out.println("Enter the Test Id from which Question is to be deleted");
+					System.out.println("Enter the OnlineTest Id from which Question is to be deleted");
 					BigInteger deleteTestQuestionId = scanner.nextBigInteger();
 					try {
 						service.validateTestId(deleteTestQuestionId);
@@ -548,7 +548,7 @@ public class Application {
 				break;
 
 			case 9:
-				System.out.println("Enter Test Id for which the result is to be checked");
+				System.out.println("Enter OnlineTest Id for which the result is to be checked");
 				BigInteger resultTestId = scanner.nextBigInteger();
 				try {
 					service.validateTestId(resultTestId);
@@ -557,7 +557,7 @@ public class Application {
 					System.out.println(e.getMessage());
 					break;
 				}
-				Test resultTest = service.searchTest(resultTestId);
+				OnlineTest resultTest = service.searchTest(resultTestId);
 				BigDecimal marksScored = service.getResult(resultTest);
 				System.out.println("The Marks Scored are " + marksScored);
 				break;
@@ -570,8 +570,8 @@ public class Application {
 				break;
 
 			case 11:
-				Map<BigInteger, Test> testDatabase = service.showTests();
-				for (Map.Entry<BigInteger, Test> entry : testDatabase.entrySet()) {
+				Map<BigInteger, OnlineTest> testDatabase = service.showTests();
+				for (Map.Entry<BigInteger, OnlineTest> entry : testDatabase.entrySet()) {
 					System.out.println(entry.getKey() + " : " + entry.getValue().toString());
 				}
 				break;
@@ -633,9 +633,9 @@ public class Application {
 	public static void displayOptions() {
 		System.out.println("The available actions are:");
 		System.out.println("1 to Register as a User");
-		System.out.println("2 to Add Test");
-		System.out.println("3 to Update Test");
-		System.out.println("4 to Delete Test");
+		System.out.println("2 to Add OnlineTest");
+		System.out.println("3 to Update OnlineTest");
+		System.out.println("4 to Delete OnlineTest");
 		System.out.println("5 to Assign test to a User");
 		System.out.println("6 to Add Questions");
 		System.out.println("7 to Update Questions");

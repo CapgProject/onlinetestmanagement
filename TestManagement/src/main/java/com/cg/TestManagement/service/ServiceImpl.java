@@ -11,23 +11,23 @@ import java.util.Set;
 
 import com.cg.TestManagement.Exception.ExceptionMessage;
 import com.cg.TestManagement.Exception.UserException;
-import com.cg.TestManagement.dao.Dao;
-import com.cg.TestManagement.dao.DaoImpl;
+import com.cg.TestManagement.dao.OnlineTestDao;
+import com.cg.TestManagement.dao.OnlineTestDaoImpl;
 import com.cg.TestManagement.dto.Question;
-import com.cg.TestManagement.dto.Test;
+import com.cg.TestManagement.dto.OnlineTest;
 import com.cg.TestManagement.dto.User;
 
 public class ServiceImpl implements Service{
 
-	Dao dao = new DaoImpl();
+	OnlineTestDao onlineTestDao = new OnlineTestDaoImpl();
 	public User registerUser(User user) {
 		// TODO Auto-generated method stub
-		return dao.saveUser(user);
+		return onlineTestDao.saveUser(user);
 	}
 
-	public Boolean answerQuestion(Test test, Question question, Integer chosenAnswer) throws UserException {
+	public Boolean answerQuestion(OnlineTest onlineTest, Question question, Integer chosenAnswer) throws UserException {
 		// TODO Auto-generated method stub
-		if(!test.getTestQuestions().contains(question)) {
+		if(!onlineTest.getTestQuestions().contains(question)) {
 			throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
 		}
 		question.setChosenAnswer(chosenAnswer);
@@ -40,10 +40,10 @@ public class ServiceImpl implements Service{
 		return true;
 	}
 
-	public Question showQuestion(Test test, BigInteger questionId)throws UserException {
+	public Question showQuestion(OnlineTest onlineTest, BigInteger questionId)throws UserException {
 		// TODO Auto-generated method stub
-		Question question = dao.searchQuestion(questionId);
-		if(!test.getTestQuestions().contains(question)) {
+		Question question = onlineTestDao.searchQuestion(questionId);
+		if(!onlineTest.getTestQuestions().contains(question)) {
 			throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
 		}
 		return question;
@@ -51,50 +51,50 @@ public class ServiceImpl implements Service{
 
 	public Boolean assignTest(Long userId, BigInteger testId) throws UserException {
 		// TODO Auto-generated method stub
-		User user = dao.searchUser(userId);
-		Test test = dao.searchTest(testId);
+		User user = onlineTestDao.searchUser(userId);
+		OnlineTest onlineTest = onlineTestDao.searchTest(testId);
 		if(user == null ) {
 			throw new UserException(ExceptionMessage.USERMESSAGE);
 		}
-		if(test == null) {
+		if(onlineTest == null) {
 			throw new UserException(ExceptionMessage.TESTMESSAGE);
 		}
 		else {
-			user.setUserTest(test);
+			user.setUserTest(onlineTest);
 		}
 		return true;
 	}
 
-	public Test addTest(Test test) {
+	public OnlineTest addTest(OnlineTest onlineTest) {
 		Set<Question> mySet = new HashSet<Question>();
-		test.setTestQuestions(mySet);
-		return dao.saveTest(test);
+		onlineTest.setTestQuestions(mySet);
+		return onlineTestDao.saveTest(onlineTest);
 	}
 
-	public Test updateTest(BigInteger testId, Test test) throws UserException {
+	public OnlineTest updateTest(BigInteger testId, OnlineTest onlineTest) throws UserException {
 		// TODO Auto-generated method stub
-		Test temp = dao.searchTest(testId);
+		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if (temp!= null){
-			dao.removeTest(testId);
-			dao.saveTest(test);
-			return test;
+			onlineTestDao.removeTest(testId);
+			onlineTestDao.saveTest(onlineTest);
+			return onlineTest;
 		}
 		else
 			throw new UserException(ExceptionMessage.TESTMESSAGE);
 	}
 
-	public Test deleteTest(BigInteger testId) {
+	public OnlineTest deleteTest(BigInteger testId) {
 		// TODO Auto-generated method stub
-		return dao.removeTest(testId);
+		return onlineTestDao.removeTest(testId);
 	}
 
 	public Question addQuestion(BigInteger testId, Question question) throws UserException{
 		// TODO Auto-generated method stub
-		Test temp = dao.searchTest(testId);
+		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if(temp!= null) {
 			Set<Question> quests = temp.getTestQuestions();
 			quests.add(question);
-			dao.saveQuestion(question);
+			onlineTestDao.saveQuestion(question);
 			temp.setTestQuestions(quests);
 			return question;
 		}
@@ -104,15 +104,15 @@ public class ServiceImpl implements Service{
 
 	public Question updateQuestion(BigInteger testId, BigInteger questionId, Question question) throws UserException {
 		// TODO Auto-generated method stub
-		Test temp = dao.searchTest(testId);
+		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if(temp!= null) {
 			Set<Question> quests = temp.getTestQuestions();
-			Question tempQuestion = dao.searchQuestion(questionId);
+			Question tempQuestion = onlineTestDao.searchQuestion(questionId);
 			if (quests.contains(tempQuestion)) {
 				quests.remove(tempQuestion);
 				quests.add(question);
-				dao.removeQuestion(questionId);
-				dao.saveQuestion(question);
+				onlineTestDao.removeQuestion(questionId);
+				onlineTestDao.saveQuestion(question);
 				temp.setTestQuestions(quests);
 				return question;
 			}
@@ -125,13 +125,13 @@ public class ServiceImpl implements Service{
 
 	public Question deleteQuestion(BigInteger testId, BigInteger questionId) throws UserException {
 		// TODO Auto-generated method stub
-		Test temp = dao.searchTest(testId);
+		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if(temp!= null) {
 			Set<Question> quests = temp.getTestQuestions();
-			Question tempQuestion = dao.searchQuestion(questionId);
+			Question tempQuestion = onlineTestDao.searchQuestion(questionId);
 			if(quests.contains(tempQuestion)) {
 				quests.remove(tempQuestion);
-				dao.removeQuestion(questionId);
+				onlineTestDao.removeQuestion(questionId);
 				temp.setTestQuestions(quests);
 				return tempQuestion;
 			}
@@ -142,50 +142,50 @@ public class ServiceImpl implements Service{
 			throw new UserException(ExceptionMessage.TESTMESSAGE);
 	}
 
-	public BigDecimal getResult(Test test) {
+	public BigDecimal getResult(OnlineTest onlineTest) {
 		// TODO Auto-generated method stub
-		calculateTotalMarks(test);
-		return test.getTestMarksScored();
+		calculateTotalMarks(onlineTest);
+		return onlineTest.getTestMarksScored();
 	}
 
-	public BigDecimal calculateTotalMarks(Test test) {
+	public BigDecimal calculateTotalMarks(OnlineTest onlineTest) {
 		// TODO Auto-generated method stub
 		BigDecimal score = new BigDecimal(0.0);
-		for(Question question: test.getTestQuestions()) {
+		for(Question question: onlineTest.getTestQuestions()) {
 			score = score.add(question.getMarksScored());
 		}
-		test.setTestMarksScored(score);
+		onlineTest.setTestMarksScored(score);
 		return score;
 	}
 
-	public Set<Question> showAllQuestions(Test test) {
+	public Set<Question> showAllQuestions(OnlineTest onlineTest) {
 		// TODO Auto-generated method stub
-		return test.getTestQuestions();
+		return onlineTest.getTestQuestions();
 	}
 
 	public Map<BigInteger, Question> showQuestions() {
 		// TODO Auto-generated method stub
-		return dao.showQuestions();
+		return onlineTestDao.showQuestions();
 	}
 
-	public Map<BigInteger, Test> showTests() {
+	public Map<BigInteger, OnlineTest> showTests() {
 		// TODO Auto-generated method stub
-		return dao.showTests();
+		return onlineTestDao.showTests();
 	}
 
 	public Map<Long, User> showUsers() {
 		// TODO Auto-generated method stub
-		return dao.showUsers();
+		return onlineTestDao.showUsers();
 	}
 
 	public User searchUser(Long userId) {
 		// TODO Auto-generated method stub
-		return dao.searchUser(userId);
+		return onlineTestDao.searchUser(userId);
 	}
 
-	public Test searchTest(BigInteger testId) {
+	public OnlineTest searchTest(BigInteger testId) {
 		// TODO Auto-generated method stub
-		return dao.searchTest(testId);
+		return onlineTestDao.searchTest(testId);
 	}
 	
 	public void validateUserId(Long id) throws UserException {

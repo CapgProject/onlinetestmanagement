@@ -4,12 +4,12 @@ public class User {
 	private Long userId;
 	private String userName;
 	private String userPassword;
-	private Test userTest;
+	private OnlineTest userTest;
 	private Boolean isAdmin;
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
-	public User(Long userId, String userName, String userPassword, Test userTest, Boolean isAdmin) {
+	public User(Long userId, String userName, String userPassword, OnlineTest userTest, Boolean isAdmin) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
@@ -35,10 +35,10 @@ public class User {
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
-	public Test getUserTest() {
+	public OnlineTest getUserTest() {
 		return userTest;
 	}
-	public void setUserTest(Test userTest) {
+	public void setUserTest(OnlineTest userTest) {
 		this.userTest = userTest;
 	}
 	public Boolean getIsAdmin() {

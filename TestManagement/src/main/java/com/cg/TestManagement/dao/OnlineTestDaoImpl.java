@@ -4,34 +4,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cg.TestManagement.dto.Question;
-import com.cg.TestManagement.dto.Test;
+import com.cg.TestManagement.dto.OnlineTest;
 import com.cg.TestManagement.dto.User;
 
 
-public class DaoImpl implements Dao{
+public class OnlineTestDaoImpl implements OnlineTestDao{
 	
-	Map<BigInteger, Test> testDb = new HashMap<BigInteger, Test >();
+	Map<BigInteger, OnlineTest> testDb = new HashMap<BigInteger, OnlineTest >();
 	Map<Long , User> userDb = new HashMap<Long, User>();
 	Map<BigInteger,Question> questionDb = new HashMap<BigInteger, Question>();
 
 
-	public Test saveTest(Test test) {
+	public OnlineTest saveTest(OnlineTest onlineTest) {
 		// TODO Auto-generated method stub
-		testDb.put(test.getTestId(), test);
-		return test;
+		testDb.put(onlineTest.getTestId(), onlineTest);
+		return onlineTest;
 	}
 
-	public Test searchTest(BigInteger testId) {
+	public OnlineTest searchTest(BigInteger testId) {
 		// TODO Auto-generated method stub
 		return  testDb.get(testId);
 	}
 
-	public Test removeTest(BigInteger testId) {
+	public OnlineTest removeTest(BigInteger testId) {
 		// TODO Auto-generated method stub
 		return testDb.remove(testId);
 	}
 
-	public Map<BigInteger, Test> showTests() {
+	public Map<BigInteger, OnlineTest> showTests() {
 		// TODO Auto-generated method stub
 		return testDb;
 	}

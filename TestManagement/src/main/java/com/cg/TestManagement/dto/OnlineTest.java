@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Set;
 
-public class Test {
+public class OnlineTest {
 	private BigInteger testId;
 	private String testName;
 	private LocalTime testDuration;
@@ -16,10 +16,10 @@ public class Test {
 	private Question currentQuestion;
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
-	public Test() {
+	public OnlineTest() {
 		// TODO Auto-generated constructor stub
 	}
-	public Test(BigInteger testId, String testName, LocalTime testDuration, Set<Question> testQuestions,
+	public OnlineTest(BigInteger testId, String testName, LocalTime testDuration, Set<Question> testQuestions,
 			BigDecimal testTotalMarks, BigDecimal testMarksScored, Question currentQuestion, LocalDateTime startTime,
 			LocalDateTime endTime) {
 		super();
@@ -89,7 +89,7 @@ public class Test {
 	}
 	@Override
 	public String toString() {
-		return "Test [testId=" + testId + ", testName=" + testName + ", testDuration=" + testDuration
+		return "OnlineTest [testId=" + testId + ", testName=" + testName + ", testDuration=" + testDuration
 				+ ", testQuestions=" + testQuestions + ", testTotalMarks=" + testTotalMarks + ", testMarksScored="
 				+ testMarksScored + ", currentQuestion=" + currentQuestion + ", startTime=" + startTime + ", endTime="
 				+ endTime + "]";
@@ -117,7 +117,7 @@ public class Test {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Test other = (Test) obj;
+		OnlineTest other = (OnlineTest) obj;
 		if (currentQuestion == null) {
 			if (other.currentQuestion != null)
 				return false;
