@@ -35,7 +35,7 @@ public class ServiceImpl implements Service{
 			question.setMarksScored(question.getQuestionMarks());
 		}
 		else {
-			question.setMarksScored(new BigDecimal(0.0));
+			question.setMarksScored(new Double(0.0));
 		}
 		return true;
 	}
@@ -59,8 +59,12 @@ public class ServiceImpl implements Service{
 		if(onlineTest == null) {
 			throw new UserException(ExceptionMessage.TESTMESSAGE);
 		}
+		if(onlineTest.getIsTestAssigned()) {
+			throw new UserException(ExceptionMessage.TESTASSIGNEDMESSAGE);
+		}
 		else {
 			user.setUserTest(onlineTest);
+			onlineTest.setIsTestAssigned(true);
 		}
 		return true;
 	}
@@ -142,17 +146,17 @@ public class ServiceImpl implements Service{
 			throw new UserException(ExceptionMessage.TESTMESSAGE);
 	}
 
-	public BigDecimal getResult(OnlineTest onlineTest) {
+	public Double getResult(OnlineTest onlineTest) {
 		// TODO Auto-generated method stub
 		calculateTotalMarks(onlineTest);
 		return onlineTest.getTestMarksScored();
 	}
 
-	public BigDecimal calculateTotalMarks(OnlineTest onlineTest) {
+	public Double calculateTotalMarks(OnlineTest onlineTest) {
 		// TODO Auto-generated method stub
-		BigDecimal score = new BigDecimal(0.0);
+		Double score = new Double(0.0);
 		for(Question question: onlineTest.getTestQuestions()) {
-			score = score.add(question.getMarksScored());
+			score = score + question.getMarksScored();
 		}
 		onlineTest.setTestMarksScored(score);
 		return score;
@@ -216,7 +220,7 @@ public class ServiceImpl implements Service{
 	public void validatePassword(String password) throws UserException{
 		String pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
 		if(!(password.matches(pattern))) {
-			throw new UserException(ExceptionMessage.PASSWORDMESSAGE);
+			throw new UserException(ExceptionMessage.VALIDATEMESSAGE);
 		}
 	}
 

@@ -1,25 +1,23 @@
 package com.cg.TestManagement.dto;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 
 public class Question {
 	
-	private BigInteger questionId;
-	
+	private BigInteger questionId;	
 	private String[] questionOptions;
 	private String questionTitle;
 	private Integer questionAnswer;
-	private BigDecimal questionMarks;
+	private Double questionMarks;
 	private Integer chosenAnswer;
-	private BigDecimal marksScored;
+	private Double marksScored;
 	
 	public Question() {
 		
 	}
 	public Question(BigInteger questionId, String[] questionOptions, String questionTitle, Integer questionAnswer,
-			BigDecimal questionMarks, Integer chosenAnswer, BigDecimal marksScored) {
+			Double questionMarks, Integer chosenAnswer, Double marksScored) {
 		super();
 		this.questionId = questionId;
 		this.questionOptions = questionOptions;
@@ -62,11 +60,11 @@ public class Question {
 		this.questionAnswer = questionAnswer;
 	}
 
-	public BigDecimal getQuestionMarks() {
+	public Double getQuestionMarks() {
 		return questionMarks;
 	}
 
-	public void setQuestionMarks(BigDecimal questionMarks) {
+	public void setQuestionMarks(Double questionMarks) {
 		this.questionMarks = questionMarks;
 	}
 
@@ -78,11 +76,11 @@ public class Question {
 		this.chosenAnswer = chosenAnswer;
 	}
 
-	public BigDecimal getMarksScored() {
+	public Double getMarksScored() {
 		return marksScored;
 	}
 
-	public void setMarksScored(BigDecimal marksScored) {
+	public void setMarksScored(Double marksScored) {
 		this.marksScored = marksScored;
 	}
 

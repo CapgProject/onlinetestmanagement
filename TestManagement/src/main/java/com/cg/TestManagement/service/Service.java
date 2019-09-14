@@ -23,8 +23,8 @@ public interface Service {
 	public Boolean answerQuestion(OnlineTest onlineTest, Question question, Integer chosenAnswer) throws UserException;
 	public Question showQuestion(OnlineTest onlineTest, BigInteger questionId) throws UserException;
 	public Boolean assignTest(Long userId, BigInteger testId) throws UserException;
-	public BigDecimal getResult(OnlineTest onlineTest);
-	public BigDecimal calculateTotalMarks(OnlineTest onlineTest);
+	public Double getResult(OnlineTest onlineTest);
+	public Double calculateTotalMarks(OnlineTest onlineTest);
 	public Set<Question> showAllQuestions(OnlineTest onlineTest);
 	public Map<BigInteger,Question> showQuestions();
 	public Map<BigInteger,OnlineTest> showTests();

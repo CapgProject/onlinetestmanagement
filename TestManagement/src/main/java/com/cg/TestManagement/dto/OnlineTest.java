@@ -1,6 +1,5 @@
 package com.cg.TestManagement.dto; 
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -11,17 +10,17 @@ public class OnlineTest {
 	private String testName;
 	private LocalTime testDuration;
 	private Set<Question> testQuestions;
-	private BigDecimal testTotalMarks;
-	private BigDecimal testMarksScored;
-	private Question currentQuestion;
+	private Double testTotalMarks;
+	private Double testMarksScored;
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
+	private Boolean isTestAssigned;
 	public OnlineTest() {
 		// TODO Auto-generated constructor stub
 	}
 	public OnlineTest(BigInteger testId, String testName, LocalTime testDuration, Set<Question> testQuestions,
-			BigDecimal testTotalMarks, BigDecimal testMarksScored, Question currentQuestion, LocalDateTime startTime,
-			LocalDateTime endTime) {
+			Double testTotalMarks, Double testMarksScored, LocalDateTime startTime, LocalDateTime endTime,
+			Boolean isTestAssigned) {
 		super();
 		this.testId = testId;
 		this.testName = testName;
@@ -29,9 +28,9 @@ public class OnlineTest {
 		this.testQuestions = testQuestions;
 		this.testTotalMarks = testTotalMarks;
 		this.testMarksScored = testMarksScored;
-		this.currentQuestion = currentQuestion;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.isTestAssigned = isTestAssigned;
 	}
 	public BigInteger getTestId() {
 		return testId;
@@ -57,23 +56,17 @@ public class OnlineTest {
 	public void setTestQuestions(Set<Question> testQuestions) {
 		this.testQuestions = testQuestions;
 	}
-	public BigDecimal getTestTotalMarks() {
+	public Double getTestTotalMarks() {
 		return testTotalMarks;
 	}
-	public void setTestTotalMarks(BigDecimal testTotalMarks) {
+	public void setTestTotalMarks(Double testTotalMarks) {
 		this.testTotalMarks = testTotalMarks;
 	}
-	public BigDecimal getTestMarksScored() {
+	public Double getTestMarksScored() {
 		return testMarksScored;
 	}
-	public void setTestMarksScored(BigDecimal testMarksScored) {
+	public void setTestMarksScored(Double testMarksScored) {
 		this.testMarksScored = testMarksScored;
-	}
-	public Question getCurrentQuestion() {
-		return currentQuestion;
-	}
-	public void setCurrentQuestion(Question currentQuestion) {
-		this.currentQuestion = currentQuestion;
 	}
 	public LocalDateTime getStartTime() {
 		return startTime;
@@ -87,19 +80,25 @@ public class OnlineTest {
 	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
+	public Boolean getIsTestAssigned() {
+		return isTestAssigned;
+	}
+	public void setIsTestAssigned(Boolean isTestAssigned) {
+		this.isTestAssigned = isTestAssigned;
+	}
 	@Override
 	public String toString() {
 		return "OnlineTest [testId=" + testId + ", testName=" + testName + ", testDuration=" + testDuration
 				+ ", testQuestions=" + testQuestions + ", testTotalMarks=" + testTotalMarks + ", testMarksScored="
-				+ testMarksScored + ", currentQuestion=" + currentQuestion + ", startTime=" + startTime + ", endTime="
-				+ endTime + "]";
+				+ testMarksScored + ", startTime=" + startTime + ", endTime=" + endTime + ", isTestAssigned="
+				+ isTestAssigned + "]";
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((currentQuestion == null) ? 0 : currentQuestion.hashCode());
 		result = prime * result + ((endTime == null) ? 0 : endTime.hashCode());
+		result = prime * result + ((isTestAssigned == null) ? 0 : isTestAssigned.hashCode());
 		result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
 		result = prime * result + ((testDuration == null) ? 0 : testDuration.hashCode());
 		result = prime * result + ((testId == null) ? 0 : testId.hashCode());
@@ -118,15 +117,15 @@ public class OnlineTest {
 		if (getClass() != obj.getClass())
 			return false;
 		OnlineTest other = (OnlineTest) obj;
-		if (currentQuestion == null) {
-			if (other.currentQuestion != null)
-				return false;
-		} else if (!currentQuestion.equals(other.currentQuestion))
-			return false;
 		if (endTime == null) {
 			if (other.endTime != null)
 				return false;
 		} else if (!endTime.equals(other.endTime))
+			return false;
+		if (isTestAssigned == null) {
+			if (other.isTestAssigned != null)
+				return false;
+		} else if (!isTestAssigned.equals(other.isTestAssigned))
 			return false;
 		if (startTime == null) {
 			if (other.startTime != null)
@@ -165,7 +164,4 @@ public class OnlineTest {
 			return false;
 		return true;
 	}
-	
-	
-
 }
