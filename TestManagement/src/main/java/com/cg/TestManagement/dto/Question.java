@@ -36,11 +36,11 @@ public class Question {
 		this.questionId = questionId;
 	}
 
-	public String[] getQusetionOptions() {
+	public String[] getQuestionOptions() {
 		return questionOptions;
 	}
 
-	public void setQusetionOptions(String[] questionOptions) {
+	public void setQuestionOptions(String[] questionOptions) {
 		this.questionOptions = questionOptions;
 	}
 
