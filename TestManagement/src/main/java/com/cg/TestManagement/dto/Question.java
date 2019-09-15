@@ -4,20 +4,22 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 public class Question {
-	
-	private BigInteger questionId;	
+
+	private BigInteger questionId;
 	private String[] questionOptions;
 	private String questionTitle;
 	private Integer questionAnswer;
 	private Double questionMarks;
 	private Integer chosenAnswer;
 	private Double marksScored;
-	
+	private BigInteger testId;
+
 	public Question() {
-		
+
 	}
+
 	public Question(BigInteger questionId, String[] questionOptions, String questionTitle, Integer questionAnswer,
-			Double questionMarks, Integer chosenAnswer, Double marksScored) {
+			Double questionMarks, Integer chosenAnswer, Double marksScored, BigInteger testId) {
 		super();
 		this.questionId = questionId;
 		this.questionOptions = questionOptions;
@@ -26,6 +28,7 @@ public class Question {
 		this.questionMarks = questionMarks;
 		this.chosenAnswer = chosenAnswer;
 		this.marksScored = marksScored;
+		this.testId = testId;
 	}
 
 	public BigInteger getQuestionId() {
@@ -84,11 +87,20 @@ public class Question {
 		this.marksScored = marksScored;
 	}
 
+	public BigInteger getTestId() {
+		return testId;
+	}
+
+	public void setTestId(BigInteger testId) {
+		this.testId = testId;
+	}
+
 	@Override
 	public String toString() {
 		return "Question [questionId=" + questionId + ", questionOptions=" + Arrays.toString(questionOptions)
 				+ ", questionTitle=" + questionTitle + ", questionAnswer=" + questionAnswer + ", questionMarks="
-				+ questionMarks + ", chosenAnswer=" + chosenAnswer + ", marksScored=" + marksScored + "]";
+				+ questionMarks + ", chosenAnswer=" + chosenAnswer + ", marksScored=" + marksScored + ", testId="
+				+ testId + "]";
 	}
 
 	@Override
@@ -100,8 +112,9 @@ public class Question {
 		result = prime * result + ((questionAnswer == null) ? 0 : questionAnswer.hashCode());
 		result = prime * result + ((questionId == null) ? 0 : questionId.hashCode());
 		result = prime * result + ((questionMarks == null) ? 0 : questionMarks.hashCode());
-		result = prime * result + ((questionTitle == null) ? 0 : questionTitle.hashCode());
 		result = prime * result + Arrays.hashCode(questionOptions);
+		result = prime * result + ((questionTitle == null) ? 0 : questionTitle.hashCode());
+		result = prime * result + ((testId == null) ? 0 : testId.hashCode());
 		return result;
 	}
 
@@ -139,14 +152,19 @@ public class Question {
 				return false;
 		} else if (!questionMarks.equals(other.questionMarks))
 			return false;
+		if (!Arrays.equals(questionOptions, other.questionOptions))
+			return false;
 		if (questionTitle == null) {
 			if (other.questionTitle != null)
 				return false;
 		} else if (!questionTitle.equals(other.questionTitle))
 			return false;
-		if (!Arrays.equals(questionOptions, other.questionOptions))
+		if (testId == null) {
+			if (other.testId != null)
+				return false;
+		} else if (!testId.equals(other.testId))
 			return false;
 		return true;
 	}
-	
+
 }

@@ -242,7 +242,7 @@ public class Application {
 	public static void addTest() throws UserException {
 		System.out.println("Enter User Id");
 		try {
-			Long userId_AddTest = scanner.nextLong();
+			BigInteger userId_AddTest = scanner.nextBigInteger();
 			try {
 				service.validateUserId(userId_AddTest);
 			} catch (UserException e) {
@@ -314,7 +314,7 @@ public class Application {
 	public static void updateTest() throws UserException {
 		System.out.println("Enter User Id");
 		try {
-			Long userId_UpdateTest = scanner.nextLong();
+			BigInteger userId_UpdateTest = scanner.nextBigInteger();
 			try {
 				service.validateUserId(userId_UpdateTest);
 			} catch (UserException e) {
@@ -393,7 +393,7 @@ public class Application {
 	public static void deleteTest() throws UserException {
 		System.out.println("Enter User Id");
 		try {
-			Long userId_DeleteTest = scanner.nextLong();
+			BigInteger userId_DeleteTest = scanner.nextBigInteger();
 			try {
 				service.validateUserId(userId_DeleteTest);
 			} catch (UserException e) {
@@ -429,7 +429,7 @@ public class Application {
 	public static void assignTestToUser() throws UserException {
 		System.out.println("Enter User Id");
 		try {
-			Long user_Id = scanner.nextLong();
+			BigInteger user_Id = scanner.nextBigInteger();
 			try {
 				service.validateUserId(user_Id);
 			} catch (UserException e) {
@@ -440,7 +440,7 @@ public class Application {
 			User assignUser = service.searchUser(user_Id);
 			if (assignUser != null && assignUser.getIsAdmin()) {
 				System.out.println("Enter the User Id to whom test is to be assigned");
-				Long userTestId = scanner.nextLong();
+				BigInteger userTestId = scanner.nextBigInteger();
 				try {
 					service.validateUserId(userTestId);
 				} catch (UserException e) {
@@ -485,7 +485,7 @@ public class Application {
 	public static void addQuestion() throws UserException {
 		System.out.println("Enter User Id");
 		try {
-			Long userId_AddQuestion = scanner.nextLong();
+			BigInteger userId_AddQuestion = scanner.nextBigInteger();
 			try {
 				service.validateUserId(userId_AddQuestion);
 			} catch (UserException e) {
@@ -555,7 +555,7 @@ public class Application {
 	public static void updateQuestion() throws UserException {
 		System.out.println("Enter User Id");
 		try {
-			Long userId_UpdateQuestion = scanner.nextLong();
+			BigInteger userId_UpdateQuestion = scanner.nextBigInteger();
 			try {
 				service.validateUserId(userId_UpdateQuestion);
 			} catch (UserException e) {
@@ -629,7 +629,7 @@ public class Application {
 	public static void deleteQuestion() throws UserException {
 		System.out.println("Enter User Id");
 		try {
-			Long userId_DeleteQuestion = scanner.nextLong();
+			BigInteger userId_DeleteQuestion = scanner.nextBigInteger();
 			try {
 				service.validateUserId(userId_DeleteQuestion);
 			} catch (UserException e) {
@@ -673,7 +673,7 @@ public class Application {
 	public static void registerUser() throws UserException {
 		System.out.println("Enter the User Id");
 		try {
-			Long user_id = scanner.nextLong();
+			BigInteger user_id = scanner.nextBigInteger();
 			try {
 				service.validateUserId(user_id);
 			} catch (UserException e) {
@@ -708,11 +708,12 @@ public class Application {
 				user.setIsAdmin(false);
 			}
 
-			User register_user = service.registerUser(user);
-			if (register_user != null) {
-				System.out.println("User added successfully!!");
-			} else {
-				System.out.println("User registration failed!!");
+			try{
+				service.registerUser(user);
+				System.out.println("User added successfully!");
+			}
+			catch (UserException e) {
+				System.out.println(e.getMessage());
 			}
 		} catch (InputMismatchException e) {
 			throw new UserException(ExceptionMessage.INVALIDINPUTMESSAGE);
@@ -722,7 +723,7 @@ public class Application {
 	public static void giveTest() throws UserException {
 		System.out.println("Enter User Id");
 		try {
-			Long userId_AnswerQuestion = scanner.nextLong();
+			BigInteger userId_AnswerQuestion = scanner.nextBigInteger();
 			try {
 				service.validateUserId(userId_AnswerQuestion);
 			} catch (UserException e) {

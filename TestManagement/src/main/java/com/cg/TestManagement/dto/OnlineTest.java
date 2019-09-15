@@ -1,4 +1,4 @@
-package com.cg.TestManagement.dto; 
+package com.cg.TestManagement.dto;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -15,9 +15,11 @@ public class OnlineTest {
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
 	private Boolean isTestAssigned;
+
 	public OnlineTest() {
 		// TODO Auto-generated constructor stub
 	}
+
 	public OnlineTest(BigInteger testId, String testName, LocalTime testDuration, Set<Question> testQuestions,
 			Double testTotalMarks, Double testMarksScored, LocalDateTime startTime, LocalDateTime endTime,
 			Boolean isTestAssigned) {
@@ -32,60 +34,79 @@ public class OnlineTest {
 		this.endTime = endTime;
 		this.isTestAssigned = isTestAssigned;
 	}
+
 	public BigInteger getTestId() {
 		return testId;
 	}
+
 	public void setTestId(BigInteger testId) {
 		this.testId = testId;
 	}
+
 	public String getTestName() {
 		return testName;
 	}
+
 	public void setTestName(String testName) {
 		this.testName = testName;
 	}
+
 	public LocalTime getTestDuration() {
 		return testDuration;
 	}
+
 	public void setTestDuration(LocalTime testDuration) {
 		this.testDuration = testDuration;
 	}
+
 	public Set<Question> getTestQuestions() {
 		return testQuestions;
 	}
+
 	public void setTestQuestions(Set<Question> testQuestions) {
 		this.testQuestions = testQuestions;
 	}
+
 	public Double getTestTotalMarks() {
 		return testTotalMarks;
 	}
+
 	public void setTestTotalMarks(Double testTotalMarks) {
 		this.testTotalMarks = testTotalMarks;
 	}
+
 	public Double getTestMarksScored() {
 		return testMarksScored;
 	}
+
 	public void setTestMarksScored(Double testMarksScored) {
 		this.testMarksScored = testMarksScored;
 	}
+
 	public LocalDateTime getStartTime() {
 		return startTime;
 	}
+
 	public void setStartTime(LocalDateTime startTime) {
 		this.startTime = startTime;
 	}
+
 	public LocalDateTime getEndTime() {
 		return endTime;
 	}
+
 	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
+
 	public Boolean getIsTestAssigned() {
 		return isTestAssigned;
 	}
+
 	public void setIsTestAssigned(Boolean isTestAssigned) {
 		this.isTestAssigned = isTestAssigned;
 	}
+
 	@Override
 	public String toString() {
 		return "OnlineTest [testId=" + testId + ", testName=" + testName + ", testDuration=" + testDuration
@@ -93,6 +114,7 @@ public class OnlineTest {
 				+ testMarksScored + ", startTime=" + startTime + ", endTime=" + endTime + ", isTestAssigned="
 				+ isTestAssigned + "]";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -108,6 +130,7 @@ public class OnlineTest {
 		result = prime * result + ((testTotalMarks == null) ? 0 : testTotalMarks.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
