@@ -259,8 +259,6 @@ public class Application {
 					String durationPattern = scanner.next();
 					DateTimeFormatter durationFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 					LocalTime duration = LocalTime.parse(durationPattern, durationFormatter);
-					System.out.println("Enter OnlineTest Total Marks");
-					Double total_marks = scanner.nextDouble();
 					scanner.nextLine();
 					System.out.println("Enter Start Time in the Format : "+DATEMESSAGE);
 					String startPattern = scanner.nextLine();
@@ -280,7 +278,7 @@ public class Application {
 					onlineTest.setStartTime(startTime);
 					onlineTest.setEndTime(endTime);
 					onlineTest.setTestMarksScored(0.0);
-					onlineTest.setTestTotalMarks(total_marks);
+					onlineTest.setTestTotalMarks(0.0);
 					OnlineTest addTest = service.addTest(onlineTest);
 					if (addTest != null) {
 						System.out.println("OnlineTest added successfully!");
@@ -333,8 +331,6 @@ public class Application {
 						String durationPattern = scanner.nextLine();
 						DateTimeFormatter durationFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 						LocalTime duration = LocalTime.parse(durationPattern, durationFormatter);
-						System.out.println("Enter OnlineTest Total Marks");
-						Double total_marks = scanner.nextDouble();
 						System.out.println("Enter Start Time in the Format : "+DATEMESSAGE);
 						scanner.nextLine();
 						String startPattern = scanner.nextLine();
@@ -355,7 +351,6 @@ public class Application {
 						onlineTest.setStartTime(startTime);
 						onlineTest.setEndTime(endTime);
 						onlineTest.setTestMarksScored(0.0);
-						onlineTest.setTestTotalMarks(total_marks);
 						OnlineTest updatedTest;
 						try {
 							updatedTest = service.updateTest(updateTestId, onlineTest);
@@ -557,13 +552,6 @@ public class Application {
 				} catch (UserException e) {
 					throw new UserException(e.getMessage());
 				}
-				System.out.println("Enter the updated Question Id");
-				BigInteger updatedQuestionId = scanner.nextBigInteger();
-				try {
-					service.validateQuestionId(updatedQuestionId);
-				} catch (UserException e) {
-					throw new UserException(e.getMessage());
-				}
 				System.out.println("Enter the updated Question Title");
 				scanner.nextLine();
 				String updatedQuestionTitle = scanner.nextLine();
@@ -582,7 +570,6 @@ public class Application {
 				System.out.println("Enter the updated Question Marks");
 				Double updatedQuestionMarks = scanner.nextDouble();
 				Question question = new Question();
-				question.setQuestionId(updatedQuestionId);
 				question.setQuestionOptions(updatedQuestionOptions);
 				question.setQuestionTitle(updatedQuestionTitle);
 				question.setQuestionAnswer(updatedQuestionAnswer - 1);

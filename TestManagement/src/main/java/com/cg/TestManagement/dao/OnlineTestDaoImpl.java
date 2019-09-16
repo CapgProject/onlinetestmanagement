@@ -267,7 +267,7 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 			if (resultSet.next()) {
 				question.setQuestionId(BigInteger.valueOf(resultSet.getLong("question_id")));
 				question.setQuestionTitle(resultSet.getString("question_title"));
-				question.setQuestionAnswer(resultSet.getInt("queston_correct_answer"));
+				question.setQuestionAnswer(resultSet.getInt("question_correct_answer"));
 				question.setChosenAnswer(resultSet.getInt("question_chosen_answer"));
 				question.setQuestionMarks(resultSet.getDouble("question_marks"));
 				question.setMarksScored(resultSet.getDouble("question_marks_scored"));

@@ -88,6 +88,7 @@ public class ServiceImpl implements Service {
 		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if (temp != null) {
 			onlineTest.setIsTestAssigned(temp.getIsTestAssigned());
+			onlineTest.setTestTotalMarks(temp.getTestTotalMarks());
 			onlineTestDao.updateTest(onlineTest);
 			return onlineTest;
 		} else
@@ -111,8 +112,10 @@ public class ServiceImpl implements Service {
 			quests.add(question);
 			question.setChosenAnswer(-1);
 			question.setMarksScored(0.0);
+			question.setTestId(testId);
+			temp.setTestTotalMarks(temp.getTestTotalMarks() + question.getQuestionMarks());
 			onlineTestDao.saveQuestion(question);
-			temp.setTestQuestions(quests);
+			onlineTestDao.updateTest(temp);
 			return question;
 		} else
 			throw new UserException(ExceptionMessage.TESTMESSAGE);
@@ -126,8 +129,13 @@ public class ServiceImpl implements Service {
 			if (tempQuestion != null && quests.contains(tempQuestion)) {
 				quests.remove(tempQuestion);
 				quests.add(question);
+				question.setChosenAnswer(tempQuestion.getChosenAnswer());
+				question.setMarksScored(tempQuestion.getMarksScored());
+				question.setTestId(testId);
+				question.setQuestionId(questionId);
 				onlineTestDao.updateQuestion(question);
-				temp.setTestQuestions(quests);
+				temp.setTestTotalMarks(temp.getTestTotalMarks()-tempQuestion.getQuestionMarks() + question.getQuestionMarks());
+				onlineTestDao.updateTest(temp);
 				return question;
 			} else
 				throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
@@ -143,6 +151,8 @@ public class ServiceImpl implements Service {
 			if (tempQuestion != null && quests.contains(tempQuestion)) {
 				quests.remove(tempQuestion);
 				temp.setTestQuestions(quests);
+				temp.setTestTotalMarks(temp.getTestTotalMarks()- tempQuestion.getQuestionMarks());
+				onlineTestDao.updateTest(temp);
 				return onlineTestDao.removeQuestion(questionId);
 			} else
 				throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
