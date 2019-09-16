@@ -163,6 +163,8 @@ public class ServiceImpl implements Service {
 	public Double getResult(OnlineTest onlineTest) throws UserException {
 		// TODO Auto-generated method stub
 		calculateTotalMarks(onlineTest);
+		onlineTest.setIsTestAssigned(false);
+		onlineTestDao.updateTest(onlineTest);
 		return onlineTest.getTestMarksScored();
 	}
 
