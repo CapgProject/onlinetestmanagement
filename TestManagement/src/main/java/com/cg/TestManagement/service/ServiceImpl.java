@@ -21,7 +21,7 @@ public class ServiceImpl implements Service {
 
 	public User registerUser(User user) throws UserException {
 		User returnedUser;
-		if ((returnedUser = onlineTestDao.saveUser(user)) == null)
+		if ((returnedUser = onlineTestDao.saveUser(user)) != null)
 			return returnedUser;
 		else {
 			throw new UserException(ExceptionMessage.DATABASEMESSAGE);
@@ -29,7 +29,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public Boolean answerQuestion(OnlineTest onlineTest, Question question, Integer chosenAnswer) throws UserException {
-		// TODO Auto-generated method stub
+		
+		// answerQuestion method is used to check whether the chosen answer is correct or not
+		
 		if (!onlineTest.getTestQuestions().contains(question)) {
 			throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
 		}
@@ -44,7 +46,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public Question showQuestion(OnlineTest onlineTest, BigInteger questionId) throws UserException {
-		// TODO Auto-generated method stub
+		
+		// showQuestion method is used to show questions in a Test
+		
 		Question question = onlineTestDao.searchQuestion(questionId);
 		if (question == null || !onlineTest.getTestQuestions().contains(question)) {
 			throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
@@ -53,6 +57,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public Boolean assignTest(BigInteger userId, BigInteger testId) throws UserException {
+		
+		// assignTest method is used to assign a test to a User
+		
 		User user = onlineTestDao.searchUser(userId);
 		OnlineTest onlineTest = onlineTestDao.searchTest(testId);
 		if (user == null) {
@@ -73,6 +80,10 @@ public class ServiceImpl implements Service {
 	}
 
 	public OnlineTest addTest(OnlineTest onlineTest) throws UserException {
+		
+		// addTest method is used to add a Test
+		
+		
 		Set<Question> mySet = new HashSet<Question>();
 		onlineTest.setTestQuestions(mySet);
 		onlineTest.setIsTestAssigned(false);
@@ -84,7 +95,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public OnlineTest updateTest(BigInteger testId, OnlineTest onlineTest) throws UserException {
-		// TODO Auto-generated method stub
+		
+		// updateTest method is used to update a Test
+		
 		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if (temp != null) {
 			onlineTest.setIsTestAssigned(temp.getIsTestAssigned());
@@ -96,7 +109,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public OnlineTest deleteTest(BigInteger testId) throws UserException {
-		// TODO Auto-generated method stub
+		
+		//deleteTest method is used to delete a Test
+		
 		OnlineTest returnedTest = onlineTestDao.removeTest(testId);
 		if (returnedTest == null) {
 			throw new UserException(ExceptionMessage.TESTMESSAGE);
@@ -105,7 +120,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public Question addQuestion(BigInteger testId, Question question) throws UserException {
-		// TODO Auto-generated method stub
+		
+		// addQuestion method is used to add question to a Test
+		
 		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if (temp != null) {
 			Set<Question> quests = temp.getTestQuestions();
@@ -122,6 +139,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public Question updateQuestion(BigInteger testId, BigInteger questionId, Question question) throws UserException {
+		
+		//updateQuestion method is used to update a question
+		
 		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if (temp != null) {
 			Set<Question> quests = temp.getTestQuestions();
@@ -144,6 +164,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public Question deleteQuestion(BigInteger testId, BigInteger questionId) throws UserException {
+		
+		// deleteQuestion method is used to delete a question
+		
 		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if (temp != null) {
 			Set<Question> quests = temp.getTestQuestions();
@@ -161,7 +184,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public Double getResult(OnlineTest onlineTest) throws UserException {
-		// TODO Auto-generated method stub
+		
+		// getResult method is used to get the marks scored by the User
+		
 		calculateTotalMarks(onlineTest);
 		onlineTest.setIsTestAssigned(false);
 		onlineTestDao.updateTest(onlineTest);
@@ -169,7 +194,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public Double calculateTotalMarks(OnlineTest onlineTest) throws UserException {
-		// TODO Auto-generated method stub
+		
+		// calculateTotalMarks method is used to calculate the total marks 
+
 		Double score = new Double(0.0);
 		for (Question question : onlineTest.getTestQuestions()) {
 			score = score + question.getMarksScored();
@@ -180,6 +207,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public User searchUser(BigInteger userId) throws UserException {
+		
+		//searchUser method is used to search a user
+		
 		User returnedUser = onlineTestDao.searchUser(userId);
 		if (returnedUser != null) {
 			return returnedUser;
@@ -190,6 +220,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public OnlineTest searchTest(BigInteger testId) throws UserException {
+
+		//searchTest method is used to search a test
+		
 		OnlineTest returnedTest = onlineTestDao.searchTest(testId);
 		if (returnedTest != null) {
 			return returnedTest;
@@ -199,24 +232,36 @@ public class ServiceImpl implements Service {
 	}
 
 	public void validateUserId(BigInteger id) throws UserException {
+		
+		// validateUserId method is used to validate user id as it can't be negative or null
+		
 		if (id.longValue() <= 0) {
 			throw new UserException(ExceptionMessage.IDMESSAGE);
 		}
 	}
 
 	public void validateTestId(BigInteger id) throws UserException {
+		
+		// validateTestId method is used to validate test id as it can't be negative or null
+		
 		if (id.longValue() <= 0) {
 			throw new UserException(ExceptionMessage.IDMESSAGE);
 		}
 	}
 
 	public void validateQuestionId(BigInteger id) throws UserException {
+
+		// validateQuestionId method is used to validate question id as it can't be negative or null
+		
 		if (id.longValue() <= 0) {
 			throw new UserException(ExceptionMessage.IDMESSAGE);
 		}
 	}
 
 	public void validateUserName(String name) throws UserException {
+
+		// validateUser method is used to validate user name to ensure that it contains only alphabets and the first character is in uuper case
+		
 		String pattern = "^[A-Z][A-Za-z 0-9_-]*$";
 		if (!(name.matches(pattern) || (name == null))) {
 			throw new UserException(ExceptionMessage.NAMEMESSAGE);
@@ -224,6 +269,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public void validatePassword(String password) throws UserException {
+
+		// validatePassword method is used to validate password to ensure that it contains at least one upper case character, one lower case character, one numeric character, one special character and length should be at least eight characters
+		
 		String pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
 		if (!(password.matches(pattern))) {
 			throw new UserException(ExceptionMessage.VALIDATEMESSAGE);
@@ -231,7 +279,9 @@ public class ServiceImpl implements Service {
 	}
 
 	public void validateDate(LocalDateTime startDate, LocalDateTime endDate) throws UserException {
-		// TODO Auto-generated method stub
+		
+		// validateDate method is used to validate date as End date cannot be before start date
+		
 		if (startDate.isAfter(endDate)) {
 			throw new UserException(ExceptionMessage.TIMEMESSAGE);
 		}
@@ -239,7 +289,9 @@ public class ServiceImpl implements Service {
 
 	public void validateTestDuration(LocalTime duration, LocalDateTime startDate, LocalDateTime endDate)
 			throws UserException {
-		// TODO Auto-generated method stub
+
+		// validateTestDuration is used to validate date as the test duration cannot be more than the time between the start and end time
+		
 		long hours = ChronoUnit.HOURS.between(startDate, endDate);
 		if (duration.getHour() > hours) {
 			throw new UserException(ExceptionMessage.DURATIONMESSAGE);
@@ -247,19 +299,26 @@ public class ServiceImpl implements Service {
 	}
 
 	public void validateEndTime(LocalDateTime endDate) throws UserException {
-		// TODO Auto-generated method stub
+		
+		// validateEndTime method is used to validate end time as End date cannot be in the past
+		
 		if (endDate.isBefore(LocalDateTime.now())) {
 			throw new UserException(ExceptionMessage.ENDTIMEMESSAGE);
 		}
 	}
 
 	public void questionAnswerValidate(Integer questionAnswer) throws UserException {
+		
+		//  validateAnswerValidate method is used to validate answer as the Question Answer can only be in the range of 0 to 3
+		
 		if (questionAnswer < 0 || questionAnswer > 3) {
 			throw new UserException(ExceptionMessage.INVALIDQUESTIONANSWER);
 		}
 	}
 	
 	public User updateProfile(User user) throws UserException {
+		
+		// updateProfile method is used to update the profile of the user
 		
 		User returnedUser = onlineTestDao.updateUser(user);
 		if(returnedUser == null) {
