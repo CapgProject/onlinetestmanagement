@@ -33,6 +33,6 @@ public interface Service {
 	public void validateTestDuration(LocalTime duration, LocalDateTime startDate, LocalDateTime endDate) throws UserException;
 	public void validateEndTime(LocalDateTime endDate) throws UserException;
 	public void questionAnswerValidate(Integer questionAnswer) throws UserException;
-
+	public User updateProfile(User user) throws UserException;
 	
 }

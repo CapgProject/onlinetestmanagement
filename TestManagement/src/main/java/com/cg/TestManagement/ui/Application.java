@@ -32,7 +32,7 @@ public class Application {
 		int choice = 0;
 		do {
 			System.out.println("Enter your choice");
-			System.out.println("1.Admin\t\t\t2.User\t\t\t3.Exit");
+			System.out.println("1.Admin\t\t\t2.User\t\t\t3.Update Profile\t\t\t4.Exit");
 			try {
 				choice = scanner.nextInt();
 				switch (choice) {
@@ -45,18 +45,26 @@ public class Application {
 					displayUserOptions(userChoice);
 					break;
 				case 3:
+					try {
+						updateUserProfile();
+					} catch (UserException e) {
+						System.out.println(e.getMessage());
+						scanner.nextLine();
+					}
+					break;
+				case 4:
 					System.exit(0);
 					break;
 
 				default:
-					System.out.println("Enter a choice between 1 and 3 only!");
+					System.out.println("Enter a choice between 1 and 4 only!");
 					break;
 				}
 			} catch (InputMismatchException e) {
 				System.out.println(ExceptionMessage.INVALIDINPUTMESSAGE);
 				scanner.nextLine();
 			}
-		} while (choice != 3);
+		} while (choice != 4);
 		scanner.close();
 	}
 
@@ -724,5 +732,32 @@ public class Application {
 		} catch (InputMismatchException e) {
 			throw new UserException(ExceptionMessage.INVALIDINPUTMESSAGE);
 		}
+	}
+	
+	public static void updateUserProfile() throws UserException {
+		User updateUser;
+		System.out.println("Enter your User Id");
+		BigInteger id = scanner.nextBigInteger();
+		try {
+			updateUser = service.searchUser(id);
+			System.out.println("Enter the updated username");
+			String updatedUsername = scanner.next();
+			service.validateUserName(updatedUsername);
+			updateUser.setUserName(updatedUsername);
+			System.out.println("Do you want to change your password?");
+			System.out.println("Enter 'y' to update password");
+			String choice = scanner.next();
+			if(choice.equalsIgnoreCase("y")) {
+				System.out.println("Enter new password");
+				String updatedPassword = scanner.next();
+				service.validatePassword(updatedPassword);
+				updateUser.setUserPassword(updatedPassword); 
+			}
+			service.updateProfile(updateUser);
+			System.out.println("User updated succesfully!");
+		} catch (UserException e) {
+			throw new UserException(e.getMessage());
+		}
+		
 	}
 }

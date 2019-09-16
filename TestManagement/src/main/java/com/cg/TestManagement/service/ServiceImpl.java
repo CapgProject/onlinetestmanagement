@@ -258,5 +258,14 @@ public class ServiceImpl implements Service {
 			throw new UserException(ExceptionMessage.INVALIDQUESTIONANSWER);
 		}
 	}
+	
+	public User updateProfile(User user) throws UserException {
+		
+		User returnedUser = onlineTestDao.updateUser(user);
+		if(returnedUser == null) {
+			throw new UserException(ExceptionMessage.USERMESSAGE);
+		}
+		return returnedUser;		
+	}
 
 }
