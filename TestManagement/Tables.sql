@@ -7,12 +7,12 @@ create table Test( test_id bigint PRIMARY KEY AUTO_INCREMENT, test_name varchar(
 
 User:
  
-create table User(user_id bigint PRIMARY KEY AUTO_INCREMENT, user_name varchar(50), user_password varchar(20), user_is_admin bit, test_id bigint,is_deleted bit default 0,FOREIGN KEY(test_id) REFERENCES Test(test_id));
+create table User(user_id bigint PRIMARY KEY AUTO_INCREMENT, user_name varchar(50), user_password varchar(20), user_is_admin bit default 0, test_id bigint,is_deleted bit default 0,FOREIGN KEY(test_id) REFERENCES Test(test_id));
 
 
 Question:
 
-create table Question(question_id bigint PRIMARY KEY AUTO_INCREMENT,question_title varchar(50), question_option_a char, question_option_b char,  question_option_c char,  question_option_d char, question_chosen_answer int, question_marks double, question_correct_answer int, question_marks_scored double,test_id bigint, is_deleted bit default 0, FOREIGN KEY(test_id) REFERENCES Test(test_id));
+create table Question(question_id bigint PRIMARY KEY AUTO_INCREMENT,question_title varchar(50), question_option_a varchar(50), question_option_b varchar(50),  question_option_c varchar(50),  question_option_d varchar(50), question_chosen_answer int, question_correct_answer int, question_marks double, question_marks_scored double,test_id bigint, is_deleted bit default 0, FOREIGN KEY(test_id) REFERENCES Test(test_id));
 
 insert into Test(test_id, test_name, test_duration, test_total_marks, test_marks_scored, test_start_date_time, test_end_date_time) values(1,'Java', "0:30:00", 30, 30, "2019-09-14 19:30:10", "2019:10:16 19:30:10");
 
