@@ -109,6 +109,8 @@ public class ServiceImpl implements Service {
 		if (temp != null) {
 			Set<Question> quests = temp.getTestQuestions();
 			quests.add(question);
+			question.setChosenAnswer(-1);
+			question.setMarksScored(0.0);
 			onlineTestDao.saveQuestion(question);
 			temp.setTestQuestions(quests);
 			return question;

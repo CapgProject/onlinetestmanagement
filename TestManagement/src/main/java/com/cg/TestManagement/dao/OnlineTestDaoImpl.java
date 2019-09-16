@@ -183,7 +183,7 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 	@Override
 	public OnlineTest updateTest(OnlineTest test) throws UserException {
 		// TODO Auto-generated method stub
-		String sql = "update question set test_name=? AND test_duration=? AND test_total_marks = ? AND test_marks_scored = ? AND test_start_time = ? AND test_end_time = ? AND test_is_assigned = ? where test_id=? and is_deleted = 0";
+		String sql = "update test set test_name=? ,test_duration=? , test_total_marks = ? , test_marks_scored = ? , test_start_date_time = ? , test_end_date_time = ?, test_is_assigned = ? where test_id=? and is_deleted = 0";
 		try {
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, test.getTestName());
@@ -323,7 +323,7 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 	@Override
 	public Question updateQuestion(Question question) throws UserException {
 		// TODO Auto-generated method stub
-		String sql = "update question set question_title=? AND question_option_a=? AND question_option_b = ? AND question_option_c = ? AND question_option_d = ? AND question_chosen_answer = ? and question_correct_answer = ? and question_marks= ? and question_marks_scored = ? and test_id = ? where question_id=? and is_deleted = 0";
+		String sql = "update question set question_title=? , question_option_a=? , question_option_b = ? , question_option_c = ? , question_option_d = ? , question_chosen_answer = ? , question_correct_answer = ? , question_marks= ? , question_marks_scored = ? , test_id = ? where question_id=? and is_deleted = 0";
 		try {
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, question.getQuestionTitle());
@@ -459,7 +459,7 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 	@Override
 	public User updateUser(User user) throws UserException {
 		// TODO Auto-generated method stub
-		String sql = "update user set user_name=? AND user_password=? where user_id=? and is_deleted = 0";
+		String sql = "update user set user_name=? , user_password=? where user_id=? and is_deleted = 0";
 		try {
 
 			// transaction boundary starts
