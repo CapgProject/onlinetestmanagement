@@ -21,7 +21,7 @@ insert into Test(test_name, test_duration, test_total_marks, test_marks_scored, 
 
 insert into Question(question_id,question_title, question_option_a, question_option_b, question_option_c, question_option_d, question_chosen_answer, question_correct_answer, question_marks, question_marks_scored, test_id) values(101,'Java is  _____ Language','Assembly','Procedural','Object Oriented','Declarative',3,3,30,30,1);
 
-insert into Question(question_title, question_option_a, question_option_b, question_option_c, question_option_d, question_chosen_answer, question_correct_answer, question_marks, question_marks_scored, test_id) values(C is ____ Language ','Assembly','Procedural','Object Oriented','Declarative',2,2,30,30,2);
+insert into Question(question_title, question_option_a, question_option_b, question_option_c, question_option_d, question_chosen_answer, question_correct_answer, question_marks, question_marks_scored, test_id) values('	C is ____ Language ','Assembly','Procedural','Object Oriented','Declarative',2,2,30,30,2);
 
 insert into User(user_name, user_password, user_is_admin) values('Piyush','Piyush@123', 1);
 

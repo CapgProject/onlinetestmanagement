@@ -1,6 +1,7 @@
 package com.cg.TestManagement.ui;
 
 import java.math.BigInteger;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -251,14 +252,6 @@ public class Application {
 			}
 			User foundUser = service.searchUser(userId_AddTest);
 			if (foundUser != null && foundUser.getIsAdmin()) {
-				System.out.println("Enter OnlineTest Id");
-				BigInteger test_id = scanner.nextBigInteger();
-				try {
-					service.validateTestId(test_id);
-				} catch (UserException e) {
-					// System.out.println(e.getMessage());
-					throw new UserException(e.getMessage());
-				}
 				System.out.println("Enter OnlineTest Name");
 				String test_name = scanner.next();
 				System.out.println("Enter Test Duration in the format : "+DURATIONMESSAGE);
@@ -282,7 +275,6 @@ public class Application {
 					service.validateEndTime(endTime);
 					service.validateTestDuration(duration, startTime, endTime);
 					OnlineTest onlineTest = new OnlineTest();
-					onlineTest.setTestId(test_id);
 					onlineTest.setTestName(test_name);
 					onlineTest.setTestDuration(duration);
 					onlineTest.setStartTime(startTime);
@@ -318,74 +310,76 @@ public class Application {
 			try {
 				service.validateUserId(userId_UpdateTest);
 			} catch (UserException e) {
-				// System.out.println(e.getMessage());
 				throw new UserException(e.getMessage());
 			}
-			User updateTestUser = service.searchUser(userId_UpdateTest);
-			if (updateTestUser != null && updateTestUser.getIsAdmin()) {
-				System.out.println("Enter the OnlineTest Id to be updated");
-				BigInteger updateTestId = scanner.nextBigInteger();
-				try {
-					service.validateTestId(updateTestId);
-				} catch (UserException e) {
-					// System.out.println(e.getMessage());
-					throw new UserException(e.getMessage());
-				}
-				System.out.println("Enter OnlineTest Name");
-				String test_name = scanner.next();
-				try {
-					System.out.println("Enter Test Duration in the format : "+DURATIONMESSAGE);
-					String durationPattern = scanner.next();
-					DateTimeFormatter durationFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-					LocalTime duration = LocalTime.parse(durationPattern, durationFormatter);
-					System.out.println("Enter OnlineTest Total Marks");
-					Double total_marks = scanner.nextDouble();
-					System.out.println("Enter Start Time in the Format : "+DATEMESSAGE);
-					String startPattern = scanner.nextLine();
-					DateTimeFormatter startTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-					LocalDateTime startTime = LocalDateTime.parse(startPattern, startTimeFormatter);
-					System.out.println("Enter End Time in the Format : "+DATEMESSAGE);
-					String endPattern = scanner.nextLine();
-					DateTimeFormatter endTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-					LocalDateTime endTime = LocalDateTime.parse(endPattern, endTimeFormatter);
-
-					service.validateDate(startTime, endTime);
-					service.validateEndTime(endTime);
-					service.validateTestDuration(duration, startTime, endTime);
-					OnlineTest onlineTest = new OnlineTest();
-					onlineTest.setTestId(updateTestId);
-					onlineTest.setTestName(test_name);
-					onlineTest.setTestDuration(duration);
-					onlineTest.setStartTime(startTime);
-					onlineTest.setEndTime(endTime);
-					onlineTest.setTestMarksScored(0.0);
-					onlineTest.setTestTotalMarks(total_marks);
-					OnlineTest updatedTest;
+			User updateTestUser;
+			try{
+				updateTestUser = service.searchUser(userId_UpdateTest);
+			
+				if (updateTestUser != null && updateTestUser.getIsAdmin()) {
+					System.out.println("Enter the OnlineTest Id to be updated");
+					BigInteger updateTestId = scanner.nextBigInteger();
 					try {
-						updatedTest = service.updateTest(updateTestId, onlineTest);
-						if (updatedTest != null) {
-							System.out.println("OnlineTest Updated Successfully!");
-						} else {
-							System.out.println("OnlineTest cannot be Updated!");
-						}
+						service.validateTestId(updateTestId);
 					} catch (UserException e) {
-						// TODO Auto-generated catch block
-						// System.out.println(e.getMessage());
 						throw new UserException(e.getMessage());
 					}
-				} catch (UserException e) {
-					// System.out.println(e.getMessage());
-					throw new UserException(e.getMessage());
-				} catch (Exception exception) {
-					// System.out.println("Input entered in wrong format!");
-					throw new UserException(ExceptionMessage.INVALIDDATEMESSAGE);
+					System.out.println("Enter OnlineTest Name");
+					scanner.nextLine();
+					String test_name = scanner.nextLine();
+					try {
+						System.out.println("Enter Test Duration in the format : "+DURATIONMESSAGE);
+						
+						String durationPattern = scanner.nextLine();
+						DateTimeFormatter durationFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+						LocalTime duration = LocalTime.parse(durationPattern, durationFormatter);
+						System.out.println("Enter OnlineTest Total Marks");
+						Double total_marks = scanner.nextDouble();
+						System.out.println("Enter Start Time in the Format : "+DATEMESSAGE);
+						scanner.nextLine();
+						String startPattern = scanner.nextLine();
+						DateTimeFormatter startTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+						LocalDateTime startTime = LocalDateTime.parse(startPattern, startTimeFormatter);
+						System.out.println("Enter End Time in the Format : "+DATEMESSAGE);
+						String endPattern = scanner.nextLine();
+						DateTimeFormatter endTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+						LocalDateTime endTime = LocalDateTime.parse(endPattern, endTimeFormatter);
+	
+						service.validateDate(startTime, endTime);
+						service.validateEndTime(endTime);
+						service.validateTestDuration(duration, startTime, endTime);
+						OnlineTest onlineTest = new OnlineTest();
+						onlineTest.setTestId(updateTestId);
+						onlineTest.setTestName(test_name);
+						onlineTest.setTestDuration(duration);
+						onlineTest.setStartTime(startTime);
+						onlineTest.setEndTime(endTime);
+						onlineTest.setTestMarksScored(0.0);
+						onlineTest.setTestTotalMarks(total_marks);
+						OnlineTest updatedTest;
+						try {
+							updatedTest = service.updateTest(updateTestId, onlineTest);
+							if (updatedTest != null) {
+								System.out.println("OnlineTest Updated Successfully!");
+							} else {
+								System.out.println("OnlineTest cannot be Updated!");
+							}
+						} catch (UserException e) {
+							throw new UserException(e.getMessage());
+						}
+					} catch (UserException e) {
+						throw new UserException(e.getMessage());
+					} catch (DateTimeException exception) {
+						throw new UserException(ExceptionMessage.INVALIDDATEMESSAGE);
+					}
+	
+				} else {
+					System.out.println("Not allowed to perform this action");
 				}
-
-			} else {
-				System.out.println("Not allowed to perform this action");
+			}catch(UserException e) {
+				System.out.println(e.getMessage());
 			}
 		} catch (InputMismatchException e) {
-			// System.out.println("Invalid Input Type!");
 			throw new UserException(ExceptionMessage.INVALIDINPUTMESSAGE);
 		}
 	}
@@ -397,8 +391,6 @@ public class Application {
 			try {
 				service.validateUserId(userId_DeleteTest);
 			} catch (UserException e) {
-				// TODO Auto-generated catch block
-				// System.out.println(e.getMessage());
 				throw new UserException(e.getMessage());
 			}
 			User deleteTestUser = service.searchUser(userId_DeleteTest);
@@ -408,8 +400,6 @@ public class Application {
 				try {
 					service.validateTestId(deleteTestId);
 				} catch (UserException e) {
-					// TODO Auto-generated catch block
-					// System.out.println(e.getMessage());
 					throw new UserException(e.getMessage());
 				}
 				OnlineTest deletedTest = service.deleteTest(deleteTestId);
@@ -433,8 +423,6 @@ public class Application {
 			try {
 				service.validateUserId(user_Id);
 			} catch (UserException e) {
-				// TODO Auto-generated catch block
-				// System.out.println(e.getMessage());
 				throw new UserException(e.getMessage());
 			}
 			User assignUser = service.searchUser(user_Id);
@@ -500,13 +488,6 @@ public class Application {
 				} catch (UserException e) {
 					throw new UserException(e.getMessage());
 				}
-				System.out.println("Enter the Question Id to be added");
-				BigInteger questionId = scanner.nextBigInteger();
-				try {
-					service.validateQuestionId(questionId);
-				} catch (UserException e) {
-					throw new UserException(e.getMessage());
-				}
 				System.out.println("Enter Question Title");
 				scanner.nextLine();
 				String questionTitle = scanner.nextLine();
@@ -527,7 +508,6 @@ public class Application {
 				Double questionMarks = scanner.nextDouble();
 
 				Question question = new Question();
-				question.setQuestionId(questionId);
 				question.setQuestionOptions(questionOptions);
 				question.setQuestionTitle(questionTitle);
 				question.setQuestionAnswer(questionAnswer - 1);
@@ -671,17 +651,10 @@ public class Application {
 	}
 
 	public static void registerUser() throws UserException {
-		System.out.println("Enter the User Id");
 		try {
-			BigInteger user_id = scanner.nextBigInteger();
-			try {
-				service.validateUserId(user_id);
-			} catch (UserException e) {
-				throw new UserException(e.getMessage());
-			}
 			System.out.println("Enter the Username");
 			scanner.nextLine();
-			String user_name = scanner.next();
+			String user_name = scanner.nextLine();
 			try {
 				service.validateUserName(user_name);
 			} catch (UserException e) {
@@ -694,20 +667,11 @@ public class Application {
 			} catch (UserException e) {
 				throw new UserException(e.getMessage());
 			}
-			System.out.println("Are you an Admin: Enter 'y' for yes");
-			String admin = scanner.next();
-
 			User user = new User();
-			user.setUserId(user_id);
 			user.setUserName(user_name);
 			user.setUserPassword(password);
 			user.setUserTest(null);
-			if (admin.equalsIgnoreCase("y")) {
-				user.setIsAdmin(true);
-			} else {
-				user.setIsAdmin(false);
-			}
-
+			user.setIsAdmin(false);	
 			try{
 				service.registerUser(user);
 				System.out.println("User added successfully!");
@@ -745,8 +709,6 @@ public class Application {
 						throw new UserException(e.getMessage());
 					}
 				}
-				// System.out.println("Choose the question");
-				// BigInteger qid = scanner.nextBigInteger();
 			} else {
 				System.out.println("Cannot answer question!");
 			}

@@ -114,7 +114,7 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 					Question question = new Question();
 					question.setQuestionId(BigInteger.valueOf(questionResult.getLong("question_id")));
 					question.setQuestionTitle(questionResult.getString("question_title"));
-					question.setQuestionAnswer(questionResult.getInt("queston_correct_answer"));
+					question.setQuestionAnswer(questionResult.getInt("question_correct_answer"));
 					question.setChosenAnswer(questionResult.getInt("question_chosen_answer"));
 					question.setQuestionMarks(questionResult.getDouble("question_marks"));
 					question.setMarksScored(questionResult.getDouble("question_marks_scored"));
@@ -408,7 +408,7 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				user.setUserId(BigInteger.valueOf(resultSet.getLong("user_id")));
-				user.setIsAdmin(resultSet.getBoolean("is_admin"));
+				user.setIsAdmin(resultSet.getBoolean("user_is_admin"));
 				user.setUserName(resultSet.getString("user_name"));
 				user.setUserPassword(resultSet.getString("user_password"));
 				user.setUserTest(searchTest(BigInteger.valueOf(resultSet.getLong("test_id"))));

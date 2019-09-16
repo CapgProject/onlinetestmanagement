@@ -21,7 +21,7 @@ class OnlineTestManagementUnitTest {
 	}
 
 	@Test
-	void assignTestUnitTest(){
+	void assignTestUnitTest() throws UserException{
 		OnlineTest test = new OnlineTest();
 		test.setIsTestAssigned(false);
 		User user = new User();

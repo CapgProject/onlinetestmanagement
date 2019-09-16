@@ -6,6 +6,7 @@ com\cg\TestManagement\service\ServiceImpl.class
 com\cg\TestManagement\dto\User.class
 com\cg\TestManagement\dao\OnlineTestDao.class
 com\cg\TestManagement\dto\Question.class
+com\cg\TestManagement\util\DbUtil.class
 com\cg\TestManagement\dto\OnlineTest.class
 com\cg\TestManagement\service\Service.class
 com\cg\TestManagement\dao\OnlineTestDaoImpl.class
