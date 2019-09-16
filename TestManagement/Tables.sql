@@ -7,7 +7,7 @@ create table Test( test_id bigint PRIMARY KEY AUTO_INCREMENT, test_name varchar(
 
 User:
  
-create table User(user_id bigint PRIMARY KEY AUTO_INCREMENT, user_name varchar(50), user_password varchar(20), user_is_admin bit default 0, test_id bigint,is_deleted bit default 0,FOREIGN KEY(test_id) REFERENCES Test(test_id));
+create table User(user_id bigint PRIMARY KEY AUTO_INCREMENT, user_name varchar(50), user_password varchar(20), user_is_admin bit default 0, test_id bigint,is_deleted bit de  n   fault 0,FOREIGN KEY(test_id) REFERENCES Test(test_id));
 
 
 Question:

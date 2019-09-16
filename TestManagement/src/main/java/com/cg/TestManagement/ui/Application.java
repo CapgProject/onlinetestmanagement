@@ -7,6 +7,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import com.cg.TestManagement.Exception.ExceptionMessage;
 import com.cg.TestManagement.Exception.UserException;
 import com.cg.TestManagement.dto.Question;
@@ -17,8 +20,16 @@ import com.cg.TestManagement.service.ServiceImpl;
 
 public class Application {
 	private static Scanner scanner;
-	static Service service;
-
+	private static Service service;
+	private static Logger myLogger;
+    static{
+  	
+  	  Properties props = System.getProperties();
+  	  String userDir= props.getProperty("user.dir")+"/src/main/resources/";
+  	  System.out.println("Current working directory is " +userDir);
+  	  PropertyConfigurator.configure(userDir+"log4j.properties");
+		myLogger=Logger.getLogger("Application.class");
+		}
 	static {
 		scanner = new Scanner(System.in);
 		service = new ServiceImpl();
@@ -48,7 +59,8 @@ public class Application {
 					try {
 						updateUserProfile();
 					} catch (UserException e) {
-						System.out.println(e.getMessage());
+						myLogger.error(e);
+						System.err.println(e.getMessage());
 						scanner.nextLine();
 					}
 					break;
@@ -61,6 +73,7 @@ public class Application {
 					break;
 				}
 			} catch (InputMismatchException e) {
+				myLogger.error(e);
 				System.out.println(ExceptionMessage.INVALIDINPUTMESSAGE);
 				scanner.nextLine();
 			}
@@ -91,6 +104,7 @@ public class Application {
 					try {
 						assignTestToUser();
 					} catch (UserException e) {
+						myLogger.error(e);
 						System.out.println(e.getMessage());
 						scanner.nextLine();
 					}
@@ -102,6 +116,7 @@ public class Application {
 					break;
 				}
 			} catch (InputMismatchException e) {
+				myLogger.error(e);
 				System.out.println(ExceptionMessage.INVALIDINPUTMESSAGE);
 				scanner.nextLine();
 			}
@@ -121,6 +136,7 @@ public class Application {
 					try {
 						addTest();
 					} catch (UserException e) {
+						myLogger.error(e);
 						System.out.println(e.getMessage());
 						scanner.nextLine();
 					}
@@ -129,6 +145,7 @@ public class Application {
 					try {
 						updateTest();
 					} catch (UserException e) {
+						myLogger.error(e);
 						System.out.println(e.getMessage());
 						scanner.nextLine();
 					}
@@ -137,6 +154,7 @@ public class Application {
 					try {
 						deleteTest();
 					} catch (UserException e) {
+						myLogger.error(e);
 						System.out.println(e.getMessage());
 						scanner.nextLine();
 					}
@@ -148,6 +166,7 @@ public class Application {
 					break;
 				}
 			} catch (InputMismatchException e) {
+				myLogger.error(e);
 				System.out.println(ExceptionMessage.INVALIDINPUTMESSAGE);
 				scanner.nextLine();
 			}
@@ -167,6 +186,7 @@ public class Application {
 					try {
 						addQuestion();
 					} catch (UserException e) {
+						myLogger.error(e);
 						System.out.println(e.getMessage());
 						scanner.nextLine();
 					}
@@ -175,6 +195,7 @@ public class Application {
 					try {
 						updateQuestion();
 					} catch (UserException e) {
+						myLogger.error(e);
 						System.out.println(e.getMessage());
 						scanner.nextLine();
 					}
@@ -183,6 +204,7 @@ public class Application {
 					try {
 						deleteQuestion();
 					} catch (UserException e) {
+						myLogger.error(e);
 						System.out.println(e.getMessage());
 						scanner.nextLine();
 					}
@@ -194,6 +216,7 @@ public class Application {
 					break;
 				}
 			} catch (InputMismatchException e) {
+				myLogger.error(e);
 				System.out.println(ExceptionMessage.INVALIDINPUTMESSAGE);
 				scanner.nextLine();
 			}
@@ -215,6 +238,7 @@ public class Application {
 					try {
 						registerUser();
 					} catch (UserException e) {
+						myLogger.error(e);
 						System.out.println(e.getMessage());
 						scanner.nextLine();
 					}
@@ -223,6 +247,7 @@ public class Application {
 					try {
 						giveTest();
 					} catch (UserException e) {
+						myLogger.error(e);
 						System.out.println(e.getMessage());
 						scanner.nextLine();
 					}
@@ -231,6 +256,7 @@ public class Application {
 					try {
 						checkResult();
 					} catch (UserException e) {
+						myLogger.error(e);
 						System.out.println(e.getMessage());
 						scanner.nextLine();
 					}
@@ -242,6 +268,7 @@ public class Application {
 					break;
 				}
 			} catch (InputMismatchException e) {
+				myLogger.error(e);
 				System.out.println(ExceptionMessage.INVALIDINPUTMESSAGE);
 				scanner.nextLine();
 			}
@@ -255,8 +282,7 @@ public class Application {
 			try {
 				service.validateUserId(userId_AddTest);
 			} catch (UserException e) {
-				// System.out.println(e.getMessage());
-				throw new UserException(e.getMessage());
+				throw e;
 			}
 			User foundUser = service.searchUser(userId_AddTest);
 			if (foundUser != null && foundUser.getIsAdmin()) {
@@ -294,10 +320,9 @@ public class Application {
 						System.out.println("OnlineTest could not be added");
 					}
 				} catch (UserException e) {
-					// System.out.println(e.getMessage());
-					throw new UserException(e.getMessage());
+					throw e;
 				} catch (Exception e) {
-					// System.out.println("Input entered in wrong format!");
+					myLogger.error(e);
 					throw new UserException(ExceptionMessage.INVALIDDATEMESSAGE);
 				}
 
@@ -305,6 +330,7 @@ public class Application {
 				System.out.println("Not allowed to perform this action");
 			}
 		} catch (InputMismatchException e) {
+			myLogger.error(e);
 			throw new UserException(ExceptionMessage.INVALIDINPUTMESSAGE);
 		}
 	}
@@ -316,7 +342,7 @@ public class Application {
 			try {
 				service.validateUserId(userId_UpdateTest);
 			} catch (UserException e) {
-				throw new UserException(e.getMessage());
+				throw e;
 			}
 			User updateTestUser;
 			try{
@@ -328,14 +354,14 @@ public class Application {
 					try {
 						service.validateTestId(updateTestId);
 					} catch (UserException e) {
-						throw new UserException(e.getMessage());
+						
+						throw e;
 					}
 					System.out.println("Enter OnlineTest Name");
 					scanner.nextLine();
 					String test_name = scanner.nextLine();
 					try {
-						System.out.println("Enter Test Duration in the format : "+DURATIONMESSAGE);
-						
+						System.out.println("Enter Test Duration in the format : "+DURATIONMESSAGE);			
 						String durationPattern = scanner.nextLine();
 						DateTimeFormatter durationFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 						LocalTime duration = LocalTime.parse(durationPattern, durationFormatter);
@@ -368,11 +394,12 @@ public class Application {
 								System.out.println("OnlineTest cannot be Updated!");
 							}
 						} catch (UserException e) {
-							throw new UserException(e.getMessage());
+							throw e;
 						}
 					} catch (UserException e) {
-						throw new UserException(e.getMessage());
+						throw e;
 					} catch (DateTimeException exception) {
+						myLogger.info(exception);
 						throw new UserException(ExceptionMessage.INVALIDDATEMESSAGE);
 					}
 	
@@ -380,9 +407,11 @@ public class Application {
 					System.out.println("Not allowed to perform this action");
 				}
 			}catch(UserException e) {
+				myLogger.info(e);
 				System.out.println(e.getMessage());
 			}
 		} catch (InputMismatchException e) {
+			myLogger.error(e);
 			throw new UserException(ExceptionMessage.INVALIDINPUTMESSAGE);
 		}
 	}
@@ -394,7 +423,7 @@ public class Application {
 			try {
 				service.validateUserId(userId_DeleteTest);
 			} catch (UserException e) {
-				throw new UserException(e.getMessage());
+				throw e;
 			}
 			User deleteTestUser = service.searchUser(userId_DeleteTest);
 			if (deleteTestUser != null && deleteTestUser.getIsAdmin()) {
@@ -403,7 +432,7 @@ public class Application {
 				try {
 					service.validateTestId(deleteTestId);
 				} catch (UserException e) {
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 				OnlineTest deletedTest = service.deleteTest(deleteTestId);
 				if (deletedTest != null) {
@@ -415,6 +444,7 @@ public class Application {
 				System.out.println("Not allowed to perform this action");
 			}
 		} catch (InputMismatchException e) {
+			myLogger.error(e);
 			throw new UserException(ExceptionMessage.INVALIDINPUTMESSAGE);
 		}
 	}
@@ -426,7 +456,7 @@ public class Application {
 			try {
 				service.validateUserId(user_Id);
 			} catch (UserException e) {
-				throw new UserException(e.getMessage());
+				throw e;
 			}
 			User assignUser = service.searchUser(user_Id);
 			if (assignUser != null && assignUser.getIsAdmin()) {
@@ -435,18 +465,14 @@ public class Application {
 				try {
 					service.validateUserId(userTestId);
 				} catch (UserException e) {
-					// TODO Auto-generated catch block
-					// System.out.println(e.getMessage());
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 				System.out.println("Enter the OnlineTest Id of the test to be alloted");
 				BigInteger testUserId = scanner.nextBigInteger();
 				try {
 					service.validateTestId(testUserId);
 				} catch (UserException e) {
-					// TODO Auto-generated catch block
-					// System.out.println(e.getMessage());
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 				Boolean assign = false;
 				try {
@@ -456,9 +482,7 @@ public class Application {
 					}
 					assign = service.assignTest(userTestId, testUserId);
 				} catch (UserException e) {
-					// TODO Auto-generated catch block
-					// System.out.println(e.getMessage());
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 				if (assign) {
 					System.out.println("OnlineTest assigned to User Successfully!");
@@ -469,6 +493,7 @@ public class Application {
 				System.out.println("Not allowed to perform this action");
 			}
 		} catch (InputMismatchException e) {
+			myLogger.error(e);
 			throw new UserException(ExceptionMessage.INVALIDINPUTMESSAGE);
 		}
 	}
@@ -480,7 +505,7 @@ public class Application {
 			try {
 				service.validateUserId(userId_AddQuestion);
 			} catch (UserException e) {
-				throw new UserException(e.getMessage());
+				throw e;
 			}
 			User addQuestionUser = service.searchUser(userId_AddQuestion);
 			if (addQuestionUser != null && addQuestionUser.getIsAdmin()) {
@@ -489,7 +514,7 @@ public class Application {
 				try {
 					service.validateTestId(questionTestId);
 				} catch (UserException e) {
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 				System.out.println("Enter Question Title");
 				scanner.nextLine();
@@ -505,7 +530,7 @@ public class Application {
 				try {
 					service.questionAnswerValidate(questionAnswer);
 				} catch (UserException e) {
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 				System.out.println("Enter the Question Marks");
 				Double questionMarks = scanner.nextDouble();
@@ -525,12 +550,13 @@ public class Application {
 						System.out.println("Question could not be added!");
 					}
 				} catch (UserException e) {
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 			} else {
 				System.out.println("Not allowed to perform this action");
 			}
 		} catch (InputMismatchException e) {
+			myLogger.error(e);
 			throw new UserException(ExceptionMessage.INVALIDINPUTMESSAGE);
 		}
 	}
@@ -542,7 +568,7 @@ public class Application {
 			try {
 				service.validateUserId(userId_UpdateQuestion);
 			} catch (UserException e) {
-				throw new UserException(e.getMessage());
+				throw e;
 			}
 			User updateQuestionUser = service.searchUser(userId_UpdateQuestion);
 			if (updateQuestionUser != null && updateQuestionUser.getIsAdmin()) {
@@ -551,14 +577,14 @@ public class Application {
 				try {
 					service.validateTestId(updateTestQuestionId);
 				} catch (UserException e) {
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 				System.out.println("Enter Question Id to be updated");
 				BigInteger updateQuestionId = scanner.nextBigInteger();
 				try {
 					service.validateQuestionId(updateQuestionId);
 				} catch (UserException e) {
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 				System.out.println("Enter the updated Question Title");
 				scanner.nextLine();
@@ -573,7 +599,7 @@ public class Application {
 				try {
 					service.questionAnswerValidate(updatedQuestionAnswer);
 				} catch (UserException e) {
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 				System.out.println("Enter the updated Question Marks");
 				Double updatedQuestionMarks = scanner.nextDouble();
@@ -591,12 +617,13 @@ public class Application {
 						System.out.println("Question could not be Updated!");
 					}
 				} catch (UserException e) {
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 			} else {
 				System.out.println("Not allowed to perform this action");
 			}
 		} catch (InputMismatchException e) {
+			myLogger.error(e);
 			throw new UserException(ExceptionMessage.INVALIDINPUTMESSAGE);
 		}
 	}
@@ -608,7 +635,7 @@ public class Application {
 			try {
 				service.validateUserId(userId_DeleteQuestion);
 			} catch (UserException e) {
-				throw new UserException(e.getMessage());
+				throw e;
 			}
 			User deleteQuestionUser = service.searchUser(userId_DeleteQuestion);
 			if (deleteQuestionUser != null && deleteQuestionUser.getIsAdmin()) {
@@ -617,14 +644,14 @@ public class Application {
 				try {
 					service.validateTestId(deleteTestQuestionId);
 				} catch (UserException e) {
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 				System.out.println("Enter Question Id to be deleted");
 				BigInteger deleteQuestionId = scanner.nextBigInteger();
 				try {
 					service.validateQuestionId(deleteQuestionId);
 				} catch (UserException e) {
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 				Question deletedQuestion;
 				try {
@@ -635,12 +662,13 @@ public class Application {
 						System.out.println("Question could not be Deleted!");
 					}
 				} catch (UserException e) {
-					throw new UserException(e.getMessage());
+					throw e;
 				}
 			} else {
 				System.out.println("Not allowed to perform this action");
 			}
 		} catch (InputMismatchException e) {
+			myLogger.error(e);
 			throw new UserException(ExceptionMessage.INVALIDINPUTMESSAGE);
 		}
 	}
@@ -653,14 +681,14 @@ public class Application {
 			try {
 				service.validateUserName(user_name);
 			} catch (UserException e) {
-				throw new UserException(e.getMessage());
+				throw e;
 			}
 			System.out.println("Enter the Password");
 			String password = scanner.next();
 			try {
 				service.validatePassword(password);
 			} catch (UserException e) {
-				throw new UserException(e.getMessage());
+				throw e;
 			}
 			User user = new User();
 			user.setUserName(user_name);
@@ -672,9 +700,11 @@ public class Application {
 				System.out.println("User added successfully!");
 			}
 			catch (UserException e) {
+				myLogger.error(e);
 				System.out.println(e.getMessage());
 			}
 		} catch (InputMismatchException e) {
+			myLogger.error(e);
 			throw new UserException(ExceptionMessage.INVALIDINPUTMESSAGE);
 		}
 	}
@@ -686,7 +716,7 @@ public class Application {
 			try {
 				service.validateUserId(userId_AnswerQuestion);
 			} catch (UserException e) {
-				throw new UserException(e.getMessage());
+				throw e;
 			}
 			User answerUser = service.searchUser(userId_AnswerQuestion);
 			if (answerUser != null && !answerUser.getIsAdmin() && answerUser.getUserTest() != null) {
@@ -701,16 +731,16 @@ public class Application {
 						service.answerQuestion(answerUser.getUserTest(),
 								service.showQuestion(answerUser.getUserTest(), qid), answer - 1);
 					} catch (UserException e) {
-						throw new UserException(e.getMessage());
+						throw e;
 					}
 				}
 			} else {
 				System.out.println("Cannot answer question!");
 			}
 		} catch (InputMismatchException e) {
+			myLogger.error(e);
 			throw new UserException(ExceptionMessage.INVALIDINPUTMESSAGE);
 		}
-
 	}
 
 	public static void checkResult() throws UserException {
@@ -720,7 +750,7 @@ public class Application {
 			try {
 				service.validateTestId(resultTestId);
 			} catch (UserException e) {
-				throw new UserException(e.getMessage());
+				throw e;
 			}
 			OnlineTest resultTest = service.searchTest(resultTestId);
 			if (resultTest != null) {
@@ -730,12 +760,14 @@ public class Application {
 				System.out.println("The test does not exist!");
 			}
 		} catch (InputMismatchException e) {
+			myLogger.error(e);
 			throw new UserException(ExceptionMessage.INVALIDINPUTMESSAGE);
 		}
 	}
 	
 	public static void updateUserProfile() throws UserException {
 		User updateUser;
+		try {
 		System.out.println("Enter your User Id");
 		BigInteger id = scanner.nextBigInteger();
 		try {
@@ -747,7 +779,7 @@ public class Application {
 			System.out.println("Do you want to change your password?");
 			System.out.println("Enter 'y' to update password");
 			String choice = scanner.next();
-			if(choice.equalsIgnoreCase("y")) {
+			if("y".equalsIgnoreCase(choice)) {
 				System.out.println("Enter new password");
 				String updatedPassword = scanner.next();
 				service.validatePassword(updatedPassword);
@@ -756,8 +788,11 @@ public class Application {
 			service.updateProfile(updateUser);
 			System.out.println("User updated succesfully!");
 		} catch (UserException e) {
-			throw new UserException(e.getMessage());
+			throw e;
 		}
-		
+		}catch(InputMismatchException e) {
+			myLogger.error(e);
+			System.err.println(ExceptionMessage.INVALIDINPUTMESSAGE);
+		}
 	}
 }

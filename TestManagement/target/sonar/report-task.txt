@@ -1,5 +1,5 @@
 projectKey=com.cg.testmanagement:TestManagement
 serverUrl=http://localhost:9000
 dashboardUrl=http://localhost:9000/dashboard/index/com.cg.testmanagement:TestManagement
-ceTaskId=AW04LeQKhEjc-3vWgivn
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AW04LeQKhEjc-3vWgivn
+ceTaskId=AW06CrE1hEjc-3vWgiv3
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AW06CrE1hEjc-3vWgiv3

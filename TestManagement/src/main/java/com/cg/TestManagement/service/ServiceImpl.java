@@ -21,7 +21,7 @@ public class ServiceImpl implements Service {
 
 	public User registerUser(User user) throws UserException {
 		User returnedUser;
-		if ((returnedUser = onlineTestDao.saveUser(user)) == null)
+		if ((returnedUser = onlineTestDao.saveUser(user)) != null)
 			return returnedUser;
 		else {
 			throw new UserException(ExceptionMessage.DATABASEMESSAGE);
