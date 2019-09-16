@@ -10,7 +10,7 @@ public class User {
 	private Boolean isAdmin;
 
 	public User() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	public User(BigInteger userId, String userName, String userPassword, OnlineTest userTest, Boolean isAdmin) {
@@ -70,51 +70,15 @@ public class User {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((isAdmin == null) ? 0 : isAdmin.hashCode());
-		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
-		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
-		result = prime * result + ((userPassword == null) ? 0 : userPassword.hashCode());
-		result = prime * result + ((userTest == null) ? 0 : userTest.hashCode());
-		return result;
+		return this.userId.intValue();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (isAdmin == null) {
-			if (other.isAdmin != null)
-				return false;
-		} else if (!isAdmin.equals(other.isAdmin))
-			return false;
-		if (userId == null) {
-			if (other.userId != null)
-				return false;
-		} else if (!userId.equals(other.userId))
-			return false;
-		if (userName == null) {
-			if (other.userName != null)
-				return false;
-		} else if (!userName.equals(other.userName))
-			return false;
-		if (userPassword == null) {
-			if (other.userPassword != null)
-				return false;
-		} else if (!userPassword.equals(other.userPassword))
-			return false;
-		if (userTest == null) {
-			if (other.userTest != null)
-				return false;
-		} else if (!userTest.equals(other.userTest))
-			return false;
-		return true;
+		if(obj != null) {
+			return this.hashCode() == obj.hashCode();
+		}
+		return false;
 	}
 
 }

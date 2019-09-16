@@ -1,14 +1,19 @@
-package com.cg.TestManagement.Exception;
+package com.cg.TestManagement.exception;
 
 public class UserException extends Exception{
 
-	String exceptionMessage;
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -713445405585046419L;
+
 	public UserException() {
-		
+		super();
 	}
 	
 	public UserException(String exceptionMessage) {
 		super(exceptionMessage);
-		this.exceptionMessage = exceptionMessage;
 	}
 }

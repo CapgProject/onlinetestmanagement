@@ -8,7 +8,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import com.cg.TestManagement.Exception.UserException;
+import com.cg.TestManagement.exception.UserException;
 
 public class DbUtil {
 	private static Logger myLogger;
@@ -17,38 +17,30 @@ public class DbUtil {
 
 		Properties props = System.getProperties();
 		String userDir = props.getProperty("user.dir") + "/src/main/resources/";
-		System.out.println("Current working directory is " + userDir);
 		PropertyConfigurator.configure(userDir + "log4j.properties");
 		myLogger = Logger.getLogger("DbUtil.class");
 	}
 
+	private DbUtil() {
+		super();
+	}
 	public static Connection getConnection() throws UserException {
 
 		String url, username, password;
 		try {
-			// creating properties and load the properties
 			Properties prop = DbUtil.loadProp();
-
-			// get properties from file
-			// driver = prop.getProperty("driver");
 			url = prop.getProperty("url");
 			username = prop.getProperty("user");
 			password = prop.getProperty("password");
 
-			// loading and registering the driver
-			// Class.forName(driver);
-
-			// getConnection
 			connection = DriverManager.getConnection(url, username, password);
 			myLogger.info("connection Obtained! : " + connection);
-			// System.out.println("connection Obtained!");
 
 		} catch (Exception e) {
 			myLogger.error("sorry!!! Something went wrong" + " with the connection" + e);
 		}
 		return connection;
-	}// end of method
-		// method for loading property file
+	}
 
 	private static Properties loadProp() throws UserException {
 		Properties props = System.getProperties();

@@ -17,14 +17,13 @@ public class OnlineTest {
 	private Boolean isTestAssigned;
 
 	public OnlineTest() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public OnlineTest(BigInteger testId, String testName, LocalTime testDuration, Set<Question> testQuestions,
-			Double testTotalMarks, Double testMarksScored, LocalDateTime startTime, LocalDateTime endTime,
-			Boolean isTestAssigned) {
+	public OnlineTest(String testName, LocalTime testDuration, Set<Question> testQuestions,
+			Double testTotalMarks, Double testMarksScored, LocalDateTime startTime, LocalDateTime endTime) {
 		super();
-		this.testId = testId;
+		this.testId = null;
 		this.testName = testName;
 		this.testDuration = testDuration;
 		this.testQuestions = testQuestions;
@@ -32,7 +31,7 @@ public class OnlineTest {
 		this.testMarksScored = testMarksScored;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		this.isTestAssigned = isTestAssigned;
+		this.isTestAssigned = false;
 	}
 
 	public BigInteger getTestId() {
@@ -117,74 +116,17 @@ public class OnlineTest {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((endTime == null) ? 0 : endTime.hashCode());
-		result = prime * result + ((isTestAssigned == null) ? 0 : isTestAssigned.hashCode());
-		result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
-		result = prime * result + ((testDuration == null) ? 0 : testDuration.hashCode());
-		result = prime * result + ((testId == null) ? 0 : testId.hashCode());
-		result = prime * result + ((testMarksScored == null) ? 0 : testMarksScored.hashCode());
-		result = prime * result + ((testName == null) ? 0 : testName.hashCode());
-		result = prime * result + ((testQuestions == null) ? 0 : testQuestions.hashCode());
-		result = prime * result + ((testTotalMarks == null) ? 0 : testTotalMarks.hashCode());
-		return result;
+		return this.testId.intValue();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
+		if(obj != null)
+		{
+			return this.hashCode() == obj.hashCode();
+		}
+		else {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		OnlineTest other = (OnlineTest) obj;
-		if (endTime == null) {
-			if (other.endTime != null)
-				return false;
-		} else if (!endTime.equals(other.endTime))
-			return false;
-		if (isTestAssigned == null) {
-			if (other.isTestAssigned != null)
-				return false;
-		} else if (!isTestAssigned.equals(other.isTestAssigned))
-			return false;
-		if (startTime == null) {
-			if (other.startTime != null)
-				return false;
-		} else if (!startTime.equals(other.startTime))
-			return false;
-		if (testDuration == null) {
-			if (other.testDuration != null)
-				return false;
-		} else if (!testDuration.equals(other.testDuration))
-			return false;
-		if (testId == null) {
-			if (other.testId != null)
-				return false;
-		} else if (!testId.equals(other.testId))
-			return false;
-		if (testMarksScored == null) {
-			if (other.testMarksScored != null)
-				return false;
-		} else if (!testMarksScored.equals(other.testMarksScored))
-			return false;
-		if (testName == null) {
-			if (other.testName != null)
-				return false;
-		} else if (!testName.equals(other.testName))
-			return false;
-		if (testQuestions == null) {
-			if (other.testQuestions != null)
-				return false;
-		} else if (!testQuestions.equals(other.testQuestions))
-			return false;
-		if (testTotalMarks == null) {
-			if (other.testTotalMarks != null)
-				return false;
-		} else if (!testTotalMarks.equals(other.testTotalMarks))
-			return false;
-		return true;
+		}
 	}
 }

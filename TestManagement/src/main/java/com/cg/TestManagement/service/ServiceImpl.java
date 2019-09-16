@@ -7,18 +7,19 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.cg.TestManagement.Exception.ExceptionMessage;
-import com.cg.TestManagement.Exception.UserException;
 import com.cg.TestManagement.dao.OnlineTestDao;
 import com.cg.TestManagement.dao.OnlineTestDaoImpl;
 import com.cg.TestManagement.dto.Question;
 import com.cg.TestManagement.dto.OnlineTest;
 import com.cg.TestManagement.dto.User;
+import com.cg.TestManagement.exception.ExceptionMessage;
+import com.cg.TestManagement.exception.UserException;
 
 public class ServiceImpl implements Service {
 
 	OnlineTestDao onlineTestDao = new OnlineTestDaoImpl();
 
+	@Override
 	public User registerUser(User user) throws UserException {
 		User returnedUser;
 		if ((returnedUser = onlineTestDao.saveUser(user)) != null)
@@ -28,8 +29,8 @@ public class ServiceImpl implements Service {
 		}
 	}
 
+	@Override
 	public Boolean answerQuestion(OnlineTest onlineTest, Question question, Integer chosenAnswer) throws UserException {
-		// TODO Auto-generated method stub
 		if (!onlineTest.getTestQuestions().contains(question)) {
 			throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
 		}
@@ -43,8 +44,8 @@ public class ServiceImpl implements Service {
 		return true;
 	}
 
+	@Override
 	public Question showQuestion(OnlineTest onlineTest, BigInteger questionId) throws UserException {
-		// TODO Auto-generated method stub
 		Question question = onlineTestDao.searchQuestion(questionId);
 		if (question == null || !onlineTest.getTestQuestions().contains(question)) {
 			throw new UserException(ExceptionMessage.QUESTIONMESSAGE);
@@ -52,6 +53,7 @@ public class ServiceImpl implements Service {
 		return question;
 	}
 
+	@Override
 	public Boolean assignTest(BigInteger userId, BigInteger testId) throws UserException {
 		User user = onlineTestDao.searchUser(userId);
 		OnlineTest onlineTest = onlineTestDao.searchTest(testId);
@@ -72,6 +74,7 @@ public class ServiceImpl implements Service {
 		return true;
 	}
 
+	@Override
 	public OnlineTest addTest(OnlineTest onlineTest) throws UserException {
 		Set<Question> mySet = new HashSet<Question>();
 		onlineTest.setTestQuestions(mySet);
@@ -83,8 +86,8 @@ public class ServiceImpl implements Service {
 		return returnedTest;
 	}
 
+	@Override
 	public OnlineTest updateTest(BigInteger testId, OnlineTest onlineTest) throws UserException {
-		// TODO Auto-generated method stub
 		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if (temp != null) {
 			onlineTest.setIsTestAssigned(temp.getIsTestAssigned());
@@ -95,8 +98,8 @@ public class ServiceImpl implements Service {
 			throw new UserException(ExceptionMessage.TESTMESSAGE);
 	}
 
+	@Override
 	public OnlineTest deleteTest(BigInteger testId) throws UserException {
-		// TODO Auto-generated method stub
 		OnlineTest returnedTest = onlineTestDao.removeTest(testId);
 		if (returnedTest == null) {
 			throw new UserException(ExceptionMessage.TESTMESSAGE);
@@ -104,8 +107,8 @@ public class ServiceImpl implements Service {
 		return returnedTest;
 	}
 
+	@Override
 	public Question addQuestion(BigInteger testId, Question question) throws UserException {
-		// TODO Auto-generated method stub
 		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if (temp != null) {
 			Set<Question> quests = temp.getTestQuestions();
@@ -121,6 +124,7 @@ public class ServiceImpl implements Service {
 			throw new UserException(ExceptionMessage.TESTMESSAGE);
 	}
 
+	@Override
 	public Question updateQuestion(BigInteger testId, BigInteger questionId, Question question) throws UserException {
 		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if (temp != null) {
@@ -134,7 +138,8 @@ public class ServiceImpl implements Service {
 				question.setTestId(testId);
 				question.setQuestionId(questionId);
 				onlineTestDao.updateQuestion(question);
-				temp.setTestTotalMarks(temp.getTestTotalMarks()-tempQuestion.getQuestionMarks() + question.getQuestionMarks());
+				temp.setTestTotalMarks(
+						temp.getTestTotalMarks() - tempQuestion.getQuestionMarks() + question.getQuestionMarks());
 				onlineTestDao.updateTest(temp);
 				return question;
 			} else
@@ -143,6 +148,7 @@ public class ServiceImpl implements Service {
 			throw new UserException(ExceptionMessage.TESTMESSAGE);
 	}
 
+	@Override
 	public Question deleteQuestion(BigInteger testId, BigInteger questionId) throws UserException {
 		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if (temp != null) {
@@ -151,7 +157,7 @@ public class ServiceImpl implements Service {
 			if (tempQuestion != null && quests.contains(tempQuestion)) {
 				quests.remove(tempQuestion);
 				temp.setTestQuestions(quests);
-				temp.setTestTotalMarks(temp.getTestTotalMarks()- tempQuestion.getQuestionMarks());
+				temp.setTestTotalMarks(temp.getTestTotalMarks() - tempQuestion.getQuestionMarks());
 				onlineTestDao.updateTest(temp);
 				return onlineTestDao.removeQuestion(questionId);
 			} else
@@ -160,16 +166,16 @@ public class ServiceImpl implements Service {
 			throw new UserException(ExceptionMessage.TESTMESSAGE);
 	}
 
+	@Override
 	public Double getResult(OnlineTest onlineTest) throws UserException {
-		// TODO Auto-generated method stub
 		calculateTotalMarks(onlineTest);
 		onlineTest.setIsTestAssigned(false);
 		onlineTestDao.updateTest(onlineTest);
 		return onlineTest.getTestMarksScored();
 	}
 
+	@Override
 	public Double calculateTotalMarks(OnlineTest onlineTest) throws UserException {
-		// TODO Auto-generated method stub
 		Double score = new Double(0.0);
 		for (Question question : onlineTest.getTestQuestions()) {
 			score = score + question.getMarksScored();
@@ -179,6 +185,7 @@ public class ServiceImpl implements Service {
 		return score;
 	}
 
+	@Override
 	public User searchUser(BigInteger userId) throws UserException {
 		User returnedUser = onlineTestDao.searchUser(userId);
 		if (returnedUser != null) {
@@ -189,6 +196,7 @@ public class ServiceImpl implements Service {
 
 	}
 
+	@Override
 	public OnlineTest searchTest(BigInteger testId) throws UserException {
 		OnlineTest returnedTest = onlineTestDao.searchTest(testId);
 		if (returnedTest != null) {
@@ -198,24 +206,28 @@ public class ServiceImpl implements Service {
 		}
 	}
 
+	@Override
 	public void validateUserId(BigInteger id) throws UserException {
 		if (id.longValue() <= 0) {
 			throw new UserException(ExceptionMessage.IDMESSAGE);
 		}
 	}
 
+	@Override
 	public void validateTestId(BigInteger id) throws UserException {
 		if (id.longValue() <= 0) {
 			throw new UserException(ExceptionMessage.IDMESSAGE);
 		}
 	}
 
+	@Override
 	public void validateQuestionId(BigInteger id) throws UserException {
 		if (id.longValue() <= 0) {
 			throw new UserException(ExceptionMessage.IDMESSAGE);
 		}
 	}
 
+	@Override
 	public void validateUserName(String name) throws UserException {
 		String pattern = "^[A-Z][A-Za-z 0-9_-]*$";
 		if (!(name.matches(pattern) || (name == null))) {
@@ -223,6 +235,7 @@ public class ServiceImpl implements Service {
 		}
 	}
 
+	@Override
 	public void validatePassword(String password) throws UserException {
 		String pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
 		if (!(password.matches(pattern))) {
@@ -230,42 +243,44 @@ public class ServiceImpl implements Service {
 		}
 	}
 
+	@Override
 	public void validateDate(LocalDateTime startDate, LocalDateTime endDate) throws UserException {
-		// TODO Auto-generated method stub
 		if (startDate.isAfter(endDate)) {
 			throw new UserException(ExceptionMessage.TIMEMESSAGE);
 		}
 	}
 
+	@Override
 	public void validateTestDuration(LocalTime duration, LocalDateTime startDate, LocalDateTime endDate)
 			throws UserException {
-		// TODO Auto-generated method stub
 		long hours = ChronoUnit.HOURS.between(startDate, endDate);
 		if (duration.getHour() > hours) {
 			throw new UserException(ExceptionMessage.DURATIONMESSAGE);
 		}
 	}
 
+	@Override
 	public void validateEndTime(LocalDateTime endDate) throws UserException {
-		// TODO Auto-generated method stub
 		if (endDate.isBefore(LocalDateTime.now())) {
 			throw new UserException(ExceptionMessage.ENDTIMEMESSAGE);
 		}
 	}
 
+	@Override
 	public void questionAnswerValidate(Integer questionAnswer) throws UserException {
 		if (questionAnswer < 0 || questionAnswer > 3) {
 			throw new UserException(ExceptionMessage.INVALIDQUESTIONANSWER);
 		}
 	}
-	
+
+	@Override
 	public User updateProfile(User user) throws UserException {
-		
+
 		User returnedUser = onlineTestDao.updateUser(user);
-		if(returnedUser == null) {
+		if (returnedUser == null) {
 			throw new UserException(ExceptionMessage.USERMESSAGE);
 		}
-		return returnedUser;		
+		return returnedUser;
 	}
 
 }

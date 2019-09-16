@@ -16,13 +16,14 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.cg.TestManagement.dto.Question;
-import com.cg.TestManagement.Exception.UserException;
 import com.cg.TestManagement.dto.OnlineTest;
 import com.cg.TestManagement.dto.User;
+import com.cg.TestManagement.exception.UserException;
 import com.cg.TestManagement.util.DbUtil;
 
 public class OnlineTestDaoImpl implements OnlineTestDao {
 
+	private static final String TESTID = "test_id";
 	private static Connection connection;
 	private PreparedStatement preparedStatement;
 	private ResultSet resultSet;
@@ -32,7 +33,6 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 
 		Properties props = System.getProperties();
 		String userDir = props.getProperty("user.dir") + "/src/main/resources/";
-		System.out.println("Current working directory is " + userDir);
 		PropertyConfigurator.configure(userDir + "log4j.properties");
 		myLogger = Logger.getLogger("OnlineTestDaoImpl.class");
 	}
@@ -42,18 +42,25 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 			connection = DbUtil.getConnection();
 			myLogger.info("Connection obtained");
 		} catch (UserException e) {
-			// TODO Auto-generated catch block
-			myLogger.error("Connection not obtained at Employee Dao");
-			System.out.println("Connection not obtained at Employee Dao" + e);
+			myLogger.error("Connection not obtained at Employee Dao" + e);
 		}
 	}
 
-	public Set<Question> getQuestionSet(BigInteger testId) throws UserException{
+	public void closePreparedStatement() {
+		if (preparedStatement != null) {
+			try {
+				preparedStatement.close();
+			} catch (SQLException e) {
+				myLogger.error(e);
+			}
+		}
+	}
+	
+	public Set<Question> getQuestionSet(BigInteger testId) throws UserException {
 		PreparedStatement questionStatement = null;
-		String questionSql = "Select * from question where test_id =? and is_deleted = 0";
 		Set<Question> testQuestions = new HashSet<Question>();
 		try {
-			questionStatement = connection.prepareStatement(questionSql);
+			questionStatement = connection.prepareStatement(SqlUtil.QUESTIONSETSQL);
 			questionStatement.setLong(1, testId.longValue());
 			ResultSet questionResult = questionStatement.executeQuery();
 			while (questionResult.next()) {
@@ -65,33 +72,30 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 				question.setQuestionMarks(questionResult.getDouble("question_marks"));
 				question.setMarksScored(questionResult.getDouble("question_marks_scored"));
 				String[] questionOptions = { questionResult.getString("question_option_a"),
-						questionResult.getString("question_option_b"),
-						questionResult.getString("question_option_c"),
+						questionResult.getString("question_option_b"), questionResult.getString("question_option_c"),
 						questionResult.getString("question_option_d") };
 				question.setQuestionOptions(questionOptions);
 				question.setTestId(testId);
 				testQuestions.add(question);
 			}
 		} catch (SQLException e) {
-			System.err.println("Error at search question in searchTest DAO " + e);
+			myLogger.error("Error at search question in searchTest DAO " + e);
 		} finally {
 			if (questionStatement != null) {
 				try {
 					questionStatement.close();
 				} catch (Exception e2) {
 					myLogger.error(e2);
-					System.out.println("Error at search Test Dao Method " + e2);
 				}
 			}
 		}
 		return testQuestions;
 	}
+
 	@Override
 	public OnlineTest saveTest(OnlineTest onlineTest) throws UserException {
-		// TODO Auto-generated method stub
-		String sql = "insert into test(test_name, test_duration, test_total_marks,test_marks_scored, test_start_date_time, test_end_date_time) values(?,?,?,?,?,?)";
 		try {
-			preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			preparedStatement = connection.prepareStatement(SqlUtil.SAVETESTSQL, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, onlineTest.getTestName());
 			preparedStatement.setTime(2, Time.valueOf(onlineTest.getTestDuration()));
 			preparedStatement.setDouble(3, onlineTest.getTestTotalMarks());
@@ -106,37 +110,25 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 			resultSet = preparedStatement.getGeneratedKeys();
 			if (resultSet.next()) {
 				generatedId = BigInteger.valueOf(resultSet.getLong(1));
-				System.out.println("Auto generated id : " + generatedId);
 			}
 			onlineTest.setTestId(generatedId);
-			System.out.println("Added Test to the database with id as : " + generatedId);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Error at add Test Dao method: " + e);
+			myLogger.error("Error at add Test Dao method: " + e);
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					System.out.println("Error at add Test Dao method: " + e);
-				}
-			}
+			closePreparedStatement();
 		}
 		return onlineTest;
 	}
-	
+
 	@Override
 	public OnlineTest searchTest(BigInteger testId) throws UserException {
-		// TODO Auto-generated method stub
-		String sql = "Select * from test where test_id = ? and is_deleted = 0";
 		OnlineTest onlineTest = new OnlineTest();
 		try {
-			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement = connection.prepareStatement(SqlUtil.SEARCHTESTSQL);
 			preparedStatement.setLong(1, testId.longValue());
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
-				onlineTest.setTestId(BigInteger.valueOf(resultSet.getLong("test_id")));
+				onlineTest.setTestId(BigInteger.valueOf(resultSet.getLong(TESTID)));
 				onlineTest.setTestName(resultSet.getString("test_name"));
 				onlineTest.setTestDuration(resultSet.getTime("test_duration").toLocalTime());
 				onlineTest.setTestTotalMarks(resultSet.getDouble("test_total_marks"));
@@ -151,42 +143,31 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 
 		} catch (SQLException e) {
 			myLogger.error("Error at search Test Dao method: " + e);
-			System.out.println("Error at search Test Dao method: " + e);
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					myLogger.error("Error at search Test Dao method: " + e);
-					System.out.println("Error at search Test Dao method: " + e);
-				}
-			}
+			closePreparedStatement();
 		}
 		return onlineTest;
 	}
 
 	@Override
 	public OnlineTest removeTest(BigInteger testId) throws UserException {
-		String sql = "update test set is_deleted = 1 where test_id = ? and is_deleted = 0";
 		OnlineTest onlineTest = searchTest(testId);
 		if (onlineTest == null) {
 			return onlineTest;
 		}
 		try {
-			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement = connection.prepareStatement(SqlUtil.REMOVETESTSQL);
 			preparedStatement.setLong(1, testId.longValue());
 
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			
-			System.out.println(" Error at remove test Dao method : " + e);
+			myLogger.error("Error at remove Test Dao method: " + e);
 		} finally {
 			if (preparedStatement != null) {
 				try {
 					preparedStatement.close();
 				} catch (SQLException e) {
 					myLogger.error("Error at remove test Dao method" + e);
-					System.out.println(" Error at remove test Dao method : " + e);
 				}
 			}
 		}
@@ -195,9 +176,8 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 
 	@Override
 	public OnlineTest updateTest(OnlineTest test) throws UserException {
-		String sql = "update test set test_name=? ,test_duration=? , test_total_marks = ? , test_marks_scored = ? , test_start_date_time = ? , test_end_date_time = ?, test_is_assigned = ? where test_id=? and is_deleted = 0";
 		try {
-			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement = connection.prepareStatement(SqlUtil.UPDATETESTSQL);
 			preparedStatement.setString(1, test.getTestName());
 			preparedStatement.setTime(2, Time.valueOf(test.getTestDuration()));
 			preparedStatement.setDouble(3, test.getTestTotalMarks());
@@ -212,26 +192,16 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 			}
 		} catch (SQLException e) {
 			myLogger.error("Error at update test Dao method : " + e);
-			System.out.println("Error at update test Dao method : " + e);
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					myLogger.error("Error at update test Dao method : " + e);
-					System.out.println(" Error at update test Dao method : " + e);
-				}
-			}
+			closePreparedStatement();
 		}
 		return test;
 	}
 
 	@Override
 	public Question saveQuestion(Question question) throws UserException {
-		// TODO Auto-generated method stub
-		String sql = "insert into Question(question_title, question_option_a, question_option_b, question_option_c, question_option_d, question_chosen_answer, question_correct_answer, question_marks, question_marks_scored, test_id) values(?,?,?,?,?,?,?,?,?,?)";
 		try {
-			preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			preparedStatement = connection.prepareStatement(SqlUtil.SAVEQUESTIONSQL, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, question.getQuestionTitle());
 			preparedStatement.setString(2, question.getQuestionOptions()[0]);
 			preparedStatement.setString(3, question.getQuestionOptions()[1]);
@@ -250,32 +220,21 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 			resultSet = preparedStatement.getGeneratedKeys();
 			if (resultSet.next()) {
 				generatedId = BigInteger.valueOf(resultSet.getLong(1));
-				System.out.println("Auto generated id : " + generatedId);
 			}
 			question.setQuestionId(generatedId);
-			System.out.println("Added Question to the database with id as : " + generatedId);
 		} catch (SQLException e) {
 			myLogger.error("Error at add Question Dao method: " + e);
-			System.out.println("Error at add Question Dao method: " + e);
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					myLogger.error("Error at add Question Dao method: " + e);
-					System.out.println("Error at add Question Dao method: " + e);
-				}
-			}
+			closePreparedStatement();
 		}
 		return question;
 	}
 
 	@Override
 	public Question searchQuestion(BigInteger questId) throws UserException {
-		String sql = "Select * from question where question_id = ? and is_deleted = 0";
 		Question question = new Question();
 		try {
-			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement = connection.prepareStatement(SqlUtil.SEARCHQUESTIONSQL);
 			preparedStatement.setLong(1, questId.longValue());
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
@@ -289,58 +248,41 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 						resultSet.getString("question_option_b"), resultSet.getString("question_option_c"),
 						resultSet.getString("question_option_d") };
 				question.setQuestionOptions(questionOptions);
-				question.setTestId(BigInteger.valueOf(resultSet.getLong("test_id")));
+				question.setTestId(BigInteger.valueOf(resultSet.getLong(TESTID)));
 			} else {
 				question = null;
 			}
 		} catch (SQLException e) {
 			myLogger.error("Error at search Question Dao method: " + e);
-			System.out.println("Error at search Question Dao method: " + e);
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					myLogger.error("Error at search Question Dao method: " + e);
-					System.out.println("Error at search Question Dao method: " + e);
-				}
-			}
+			closePreparedStatement();
 		}
 		return question;
 	}
 
 	@Override
 	public Question removeQuestion(BigInteger questId) throws UserException {
-		String sql = "update question set is_deleted = 1 where question_id = ? and is_deleted = 0";
 		Question question = searchQuestion(questId);
 		if (question == null) {
 			return question;
 		}
 		try {
-			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement = connection.prepareStatement(SqlUtil.REMOVEQUESTIONSQL);
 			preparedStatement.setLong(1, questId.longValue());
 
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(" Error at remove question Dao method : " + e);
+			myLogger.error("Error at add remove question method: " + e);
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					System.out.println(" Error at remove user Dao method : " + e);
-				}
-			}
+			closePreparedStatement();
 		}
 		return question;
 	}
 
 	@Override
 	public Question updateQuestion(Question question) throws UserException {
-		// TODO Auto-generated method stub
-		String sql = "update question set question_title=? , question_option_a=? , question_option_b = ? , question_option_c = ? , question_option_d = ? , question_chosen_answer = ? , question_correct_answer = ? , question_marks= ? , question_marks_scored = ? , test_id = ? where question_id=? and is_deleted = 0";
 		try {
-			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement = connection.prepareStatement(SqlUtil.UPDATEQUESTIONSQL);
 			preparedStatement.setString(1, question.getQuestionTitle());
 			preparedStatement.setString(2, question.getQuestionOptions()[0]);
 			preparedStatement.setString(3, question.getQuestionOptions()[1]);
@@ -357,25 +299,17 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 				question = null;
 			}
 		} catch (SQLException e) {
-			System.out.println(" Error at updateBook Dao method : " + e);
+			myLogger.error("Error at update question Dao method: " + e);
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					System.out.println(" Error at updateBook Dao method : " + e);
-				}
-			}
+			closePreparedStatement();
 		}
 		return question;
 	}
 
 	@Override
 	public User saveUser(User user) throws UserException {
-		// TODO Auto-generated method stub
-		String sql = "insert into User(user_name, user_password, user_is_admin, test_id) values(?,?,?,?)";
 		try {
-			preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			preparedStatement = connection.prepareStatement(SqlUtil.SAVEUSERSQL, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, user.getUserName());
 			preparedStatement.setString(2, user.getUserPassword());
 			preparedStatement.setBoolean(3, user.getIsAdmin());
@@ -393,34 +327,22 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 			resultSet = preparedStatement.getGeneratedKeys();
 			if (resultSet.next()) {
 				generatedId = BigInteger.valueOf(resultSet.getLong(1));
-				System.out.println("Auto generated id : " + generatedId);
 			}
 
 			user.setUserId(generatedId);
-			System.out.println("Added User to the database with id as : " + generatedId);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Error at add User Dao method: " + e);
+			myLogger.error("Error at add User Dao method: " + e);
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					System.out.println("Error at add User Dao method: " + e);
-				}
-			}
+			closePreparedStatement();
 		}
 		return user;
 	}
 
 	@Override
 	public User searchUser(BigInteger userId) throws UserException {
-		// TODO Auto-generated method stub
-		String sql = "Select * from user where user_id = ? and is_deleted = 0";
 		User user = new User();
 		try {
-			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement = connection.prepareStatement(SqlUtil.SEARCHUSERSQL);
 			preparedStatement.setLong(1, userId.longValue());
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
@@ -428,60 +350,43 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 				user.setIsAdmin(resultSet.getBoolean("user_is_admin"));
 				user.setUserName(resultSet.getString("user_name"));
 				user.setUserPassword(resultSet.getString("user_password"));
-				user.setUserTest(searchTest(BigInteger.valueOf(resultSet.getLong("test_id"))));
+				user.setUserTest(searchTest(BigInteger.valueOf(resultSet.getLong(TESTID))));
 			} else {
 				user = null;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Error at search Question Dao method: " + e);
+			myLogger.error("Error at search User Dao method: " + e);
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					System.out.println("Error at search Question Dao method: " + e);
-				}
-			}
+			closePreparedStatement();
 		}
 		return user;
 	}
-	
+
 	@Override
 	public User removeUser(BigInteger userId) throws UserException {
-		// TODO Auto-generated method stub
-		String sql = "update user set is_deleted = 1 where user_id = ? and is_deleted = 0";
 		User user = searchUser(userId);
 		if (user == null) {
 			return user;
 		}
 		try {
-			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement = connection.prepareStatement(SqlUtil.REMOVEUSERSQL);
 			preparedStatement.setLong(1, userId.longValue());
 
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(" Error at remove user Dao method : " + e);
+			myLogger.error("Error at remove User Dao method: " + e);
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					System.out.println(" Error at remove user Dao method : " + e);
-				}
-			}
+			closePreparedStatement();
 		}
 		return user;
 	}
 
 	@Override
 	public User updateUser(User user) throws UserException {
-		// TODO Auto-generated method stub
-		String sql = "update user set user_name=? , user_password=? where user_id=? and is_deleted = 0";
 		try {
 
 			// transaction boundary starts
-			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement = connection.prepareStatement(SqlUtil.UPDATEUSERSQL);
 			preparedStatement.setString(1, user.getUserName());
 			preparedStatement.setString(2, user.getUserPassword());
 			preparedStatement.setLong(3, user.getUserId().longValue());
@@ -490,15 +395,9 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 				user = null;
 			}
 		} catch (SQLException e) {
-			System.out.println(" Error at updateBook Dao method : " + e);
+			myLogger.error("Error at update User Dao method: " + e);
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					System.out.println(" Error at updateBook Dao method : " + e);
-				}
-			}
+			closePreparedStatement();
 		}
 		return user;
 	}

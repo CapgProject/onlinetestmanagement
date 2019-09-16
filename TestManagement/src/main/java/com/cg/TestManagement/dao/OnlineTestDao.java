@@ -1,8 +1,9 @@
 package com.cg.TestManagement.dao;
-import com.cg.TestManagement.Exception.UserException;
 import com.cg.TestManagement.dto.OnlineTest;
 import com.cg.TestManagement.dto.Question;
 import com.cg.TestManagement.dto.User;
+import com.cg.TestManagement.exception.UserException;
+
 import java.math.BigInteger;
 
 public interface OnlineTestDao {

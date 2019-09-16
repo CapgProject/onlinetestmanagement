@@ -1,4 +1,4 @@
-package com.cg.TestManagement.Exception;
+package com.cg.TestManagement.exception;
 
 public class ExceptionMessage {
 
@@ -16,4 +16,9 @@ public class ExceptionMessage {
 	public static final String INVALIDDATEMESSAGE = "Input entered in wrong format";
 	public static final String INVALIDINPUTMESSAGE = "Invalid Input Type";
 	public static final String DATABASEMESSAGE = "Database is full! Contact your database manager for further queries!";
+
+	private ExceptionMessage() {
+		super();
+	}
+
 }

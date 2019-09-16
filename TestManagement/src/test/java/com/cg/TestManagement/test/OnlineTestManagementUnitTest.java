@@ -5,9 +5,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.cg.TestManagement.Exception.UserException;
 import com.cg.TestManagement.dto.OnlineTest;
 import com.cg.TestManagement.dto.User;
+import com.cg.TestManagement.exception.UserException;
 import com.cg.TestManagement.service.Service;
 import com.cg.TestManagement.service.ServiceImpl;
 
