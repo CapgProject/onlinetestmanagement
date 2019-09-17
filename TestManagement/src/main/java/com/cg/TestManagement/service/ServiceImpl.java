@@ -17,8 +17,10 @@ import com.cg.TestManagement.exception.UserException;
 
 public class ServiceImpl implements Service {
 
-	OnlineTestDao onlineTestDao = new OnlineTestDaoImpl();
-
+	public static OnlineTestDao onlineTestDao;
+	static {
+		onlineTestDao = new OnlineTestDaoImpl();
+	}
 	@Override
 	public User registerUser(User user) throws UserException {
 		User returnedUser;
@@ -59,6 +61,9 @@ public class ServiceImpl implements Service {
 		OnlineTest onlineTest = onlineTestDao.searchTest(testId);
 		if (user == null) {
 			throw new UserException(ExceptionMessage.USERMESSAGE);
+		}
+		if(user.getIsAdmin()) {
+			throw new UserException(ExceptionMessage.ADMINMESSAGE);
 		}
 		if (onlineTest == null) {
 			throw new UserException(ExceptionMessage.TESTMESSAGE);
@@ -111,8 +116,6 @@ public class ServiceImpl implements Service {
 	public Question addQuestion(BigInteger testId, Question question) throws UserException {
 		OnlineTest temp = onlineTestDao.searchTest(testId);
 		if (temp != null) {
-			Set<Question> quests = temp.getTestQuestions();
-			quests.add(question);
 			question.setChosenAnswer(-1);
 			question.setMarksScored(0.0);
 			question.setTestId(testId);
@@ -131,8 +134,6 @@ public class ServiceImpl implements Service {
 			Set<Question> quests = temp.getTestQuestions();
 			Question tempQuestion = onlineTestDao.searchQuestion(questionId);
 			if (tempQuestion != null && quests.contains(tempQuestion)) {
-				quests.remove(tempQuestion);
-				quests.add(question);
 				question.setChosenAnswer(tempQuestion.getChosenAnswer());
 				question.setMarksScored(tempQuestion.getMarksScored());
 				question.setTestId(testId);
@@ -155,8 +156,6 @@ public class ServiceImpl implements Service {
 			Set<Question> quests = temp.getTestQuestions();
 			Question tempQuestion = onlineTestDao.searchQuestion(questionId);
 			if (tempQuestion != null && quests.contains(tempQuestion)) {
-				quests.remove(tempQuestion);
-				temp.setTestQuestions(quests);
 				temp.setTestTotalMarks(temp.getTestTotalMarks() - tempQuestion.getQuestionMarks());
 				onlineTestDao.updateTest(temp);
 				return onlineTestDao.removeQuestion(questionId);

@@ -1,0 +1,62 @@
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@56f4468b
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-ERROR-DbUtil.class:com.cg.TestManagement.exception.UserException: Only Alphabets are allowed and the first character should be capitalized
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@56f4468b
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-ERROR-DbUtil.class:java.util.InputMismatchException
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@56f4468b
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-ERROR-DbUtil.class:com.cg.TestManagement.exception.UserException: UserPassword should contain at least one upper case character, one lower case character, one numeric character, one special character and length should be at least eight characters
+2019-09-17-main-ERROR-OnlineTestDaoImpl.class:Error at update question Dao method: java.sql.SQLException: No value specified for parameter 11
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@56f4468b
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-ERROR-DbUtil.class:com.cg.TestManagement.exception.UserException: ADmin cannot be assigned a test
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@56f4468b
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-ERROR-DbUtil.class:com.cg.TestManagement.exception.UserException: Admin cannot be assigned a test
+2019-09-17-main-ERROR-DbUtil.class:com.cg.TestManagement.exception.UserException: The test is already assigned
+2019-09-17-main-ERROR-DbUtil.class:com.cg.TestManagement.exception.UserException: The test does not exist or is already assigned
+2019-09-17-main-ERROR-DbUtil.class:com.cg.TestManagement.exception.UserException: The test does not exist or is already assigned
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@56f4468b
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-ERROR-DbUtil.class:com.cg.TestManagement.exception.UserException: The test is already assigned
+2019-09-17-main-ERROR-DbUtil.class:java.time.format.DateTimeParseException: Text '01' could not be parsed at index 2
+2019-09-17-main-ERROR-OnlineTestDaoImpl.class:Error at update question Dao method: java.sql.SQLException: No value specified for parameter 11
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@15bb6bea
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-ERROR-OnlineTestDaoImpl.class:Error at update question Dao method: java.sql.SQLException: No value specified for parameter 11
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@15bb6bea
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-ERROR-OnlineTestDaoImpl.class:Error at update question Dao method: java.sql.SQLException: No value specified for parameter 11
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@15bb6bea
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-ERROR-OnlineTestDaoImpl.class:Error at update question Dao method: java.sql.SQLException: No value specified for parameter 11
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@56f4468b
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-ERROR-OnlineTestDaoImpl.class:Error at update question Dao method: java.sql.SQLException: No value specified for parameter 11
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@15bb6bea
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-ERROR-OnlineTestDaoImpl.class:Error at update question Dao method: java.sql.SQLException: No value specified for parameter 11
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@56f4468b
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@56f4468b
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-INFO -DbUtil.class:Property File loaded : 
+2019-09-17-main-INFO -DbUtil.class:connection Obtained! : com.mysql.cj.jdbc.ConnectionImpl@56f4468b
+2019-09-17-main-INFO -OnlineTestDaoImpl.class:Connection obtained
+2019-09-17-main-ERROR-DbUtil.class:com.cg.TestManagement.exception.UserException: Only Alphabets are allowed and the first character should be capitalized
+2019-09-17-main-ERROR-DbUtil.class:com.cg.TestManagement.exception.UserException: UserPassword should contain at least one upper case character, one lower case character, one numeric character, one special character and length should be at least eight characters
+2019-09-17-main-ERROR-DbUtil.class:com.cg.TestManagement.exception.UserException: The test is already assigned

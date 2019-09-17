@@ -13,7 +13,7 @@ public class SqlUtil {
 	public static final String SAVEUSERSQL = "insert into User(user_name, user_password, user_is_admin, test_id) values(?,?,?,?)";
 	public static final String SEARCHUSERSQL = "Select * from user where user_id = ? and is_deleted = 0";
 	public static final String REMOVEUSERSQL = "update user set is_deleted = 1 where user_id = ? and is_deleted = 0";
-	public static final String UPDATEUSERSQL = "update user set user_name=? , user_password=? where user_id=? and is_deleted = 0";
+	public static final String UPDATEUSERSQL = "update user set user_name=? , user_password=?, test_id = ? where user_id=? and is_deleted = 0";
 	public static final String QUESTIONSETSQL = "Select * from question where test_id =? and is_deleted = 0";
 	
 	private SqlUtil(){

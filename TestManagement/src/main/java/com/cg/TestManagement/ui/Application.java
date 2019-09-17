@@ -1,6 +1,7 @@
 package com.cg.TestManagement.ui;
 
 import java.math.BigInteger;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -20,7 +21,7 @@ import com.cg.TestManagement.service.ServiceImpl;
 public class Application {
 	private static Scanner scanner;
 	static Service service;
-	private static final String LINE = "-----------------------------------------------------------------";
+	private static final String LINE = "------------------------------------------------------------------------------";
 	private static Logger myLogger;
 	static {
 
@@ -40,6 +41,7 @@ public class Application {
 	public static final String CHOICEMESSAGE = "Enter choice between 1 and 4 to perform available actions:";
 	public static final String GOBACKMESSAGE = "4.Go Back";
 	public static final String INVALIDENTRYMESSAGE = "Please enter a choice between 1 and 4 only!";
+	public static final String INPUTUSERID = "Enter User Id";
 
 	private Application() {
 		super();
@@ -56,6 +58,7 @@ public class Application {
 			System.out.println("2.User");
 			System.out.println("3.Update Profile");
 			System.out.println("4.Exit");
+			System.out.println(LINE);
 			try {
 				choice = scanner.nextInt();
 				switch (choice) {
@@ -71,8 +74,7 @@ public class Application {
 					updateUserProfile();
 					break;
 				case 4:
-					if (exitApplication())
-						System.exit(0);
+					choice = exitApplication();
 					break;
 				default:
 					System.out.println(INVALIDENTRYMESSAGE);
@@ -96,7 +98,7 @@ public class Application {
 			System.out.println("2.Perform Actions on Question");
 			System.out.println("3.Assign Test to a User");
 			System.out.println(GOBACKMESSAGE);
-
+			System.out.println(LINE);
 			try {
 				adminChoice = scanner.nextInt();
 				switch (adminChoice) {
@@ -134,6 +136,7 @@ public class Application {
 			System.out.println("2.Update Test");
 			System.out.println("3.Delete Test");
 			System.out.println(GOBACKMESSAGE);
+			System.out.println(LINE);
 			try {
 				testChoice = scanner.nextInt();
 				switch (testChoice) {
@@ -169,6 +172,7 @@ public class Application {
 			System.out.println("2.Update Question");
 			System.out.println("3.Delete Question");
 			System.out.println(GOBACKMESSAGE);
+			System.out.println(LINE);
 			try {
 				questionChoice = scanner.nextInt();
 				switch (questionChoice) {
@@ -206,7 +210,7 @@ public class Application {
 			System.out.println("2.Give Test");
 			System.out.println("3.Check Result");
 			System.out.println(GOBACKMESSAGE);
-
+			System.out.println(LINE);
 			try {
 				userChoice = scanner.nextInt();
 				switch (userChoice) {
@@ -233,18 +237,19 @@ public class Application {
 		} while (userChoice != 4);
 	}
 
-	public static Boolean exitApplication() {
+	public static int exitApplication() {
 		System.out.println("Do you really want to exit? Enter 'y' to exit");
 		String exitChoice = scanner.next();
 		if ("y".equalsIgnoreCase(exitChoice)) {
 			System.out.println("Thank You for using our Application!!");
-			return true;
+			return 4;
+		} else {
+			return 0;
 		}
-		return false;
 	}
 
 	public static void addTest() {
-		System.out.println("Enter User Id");
+		System.out.println(INPUTUSERID);
 		try {
 			BigInteger userId_AddTest = scanner.nextBigInteger();
 
@@ -252,33 +257,7 @@ public class Application {
 
 			User foundUser = service.searchUser(userId_AddTest);
 			if (foundUser != null && foundUser.getIsAdmin()) {
-				System.out.println("Enter OnlineTest Name");
-				String test_name = scanner.next();
-				System.out.println("Enter Test Duration in the format : " + DURATIONMESSAGE);
-
-				String durationPattern = scanner.next();
-				DateTimeFormatter durationFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-				LocalTime duration = LocalTime.parse(durationPattern, durationFormatter);
-				scanner.nextLine();
-				System.out.println("Enter Start Time in the Format : " + DATEMESSAGE);
-				String startPattern = scanner.nextLine();
-				DateTimeFormatter startTimeFormatter = DateTimeFormatter.ofPattern(DATEMESSAGE);
-				LocalDateTime startTime = LocalDateTime.parse(startPattern, startTimeFormatter);
-				System.out.println("Enter End Time in the Format : " + DATEMESSAGE);
-				String endPattern = scanner.nextLine();
-				DateTimeFormatter endTimeFormatter = DateTimeFormatter.ofPattern(DATEMESSAGE);
-				LocalDateTime endTime = LocalDateTime.parse(endPattern, endTimeFormatter);
-
-				service.validateDate(startTime, endTime);
-				service.validateEndTime(endTime);
-				service.validateTestDuration(duration, startTime, endTime);
-				OnlineTest onlineTest = new OnlineTest();
-				onlineTest.setTestName(test_name);
-				onlineTest.setTestDuration(duration);
-				onlineTest.setStartTime(startTime);
-				onlineTest.setEndTime(endTime);
-				onlineTest.setTestMarksScored(0.0);
-				onlineTest.setTestTotalMarks(0.0);
+				OnlineTest onlineTest = inputTest();
 				OnlineTest addTest = service.addTest(onlineTest);
 				if (addTest != null) {
 					System.out.println("OnlineTest added successfully!");
@@ -289,23 +268,29 @@ public class Application {
 			} else {
 				System.out.println("Not allowed to perform this action");
 			}
-		} catch (InputMismatchException e) {
-			myLogger.error(e);
-			System.err.println(ExceptionMessage.INVALIDINPUTMESSAGE);
-			scanner.nextLine();
-		} catch (UserException e) {
-			myLogger.error(e);
-			System.err.println(e.getMessage());
-			scanner.nextLine();
-		} catch (Exception e) {
-			myLogger.error(e);
-			System.err.println(ExceptionMessage.INVALIDDATEMESSAGE);
-			scanner.nextLine();
+		} catch (InputMismatchException | UserException | DateTimeException e) {
+			catchBlock(e);
 		}
 	}
 
+	public static void catchBlock(Exception e) {
+		if (e.getClass() == InputMismatchException.class){
+			myLogger.error(e);
+			System.err.println(ExceptionMessage.INVALIDINPUTMESSAGE);
+		}
+		else if(e.getClass() == UserException.class) {
+			myLogger.error(e);
+			System.err.println(e.getMessage());
+		}
+		else {
+			myLogger.error(e);
+			System.err.println(ExceptionMessage.INVALIDDATEMESSAGE);				
+		}
+		scanner.nextLine();	
+	}
+	
 	public static void updateTest() {
-		System.out.println("Enter User Id");
+		System.out.println(INPUTUSERID);
 		try {
 			BigInteger userId_UpdateTest = scanner.nextBigInteger();
 			service.validateUserId(userId_UpdateTest);
@@ -318,35 +303,8 @@ public class Application {
 
 				service.validateTestId(updateTestId);
 
-				System.out.println("Enter OnlineTest Name");
-				scanner.nextLine();
-				String test_name = scanner.nextLine();
-
-				System.out.println("Enter Test Duration in the format : " + DURATIONMESSAGE);
-
-				String durationPattern = scanner.nextLine();
-				DateTimeFormatter durationFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-				LocalTime duration = LocalTime.parse(durationPattern, durationFormatter);
-				System.out.println("Enter Start Time in the Format : " + DATEMESSAGE);
-				scanner.nextLine();
-				String startPattern = scanner.nextLine();
-				DateTimeFormatter startTimeFormatter = DateTimeFormatter.ofPattern(DATEMESSAGE);
-				LocalDateTime startTime = LocalDateTime.parse(startPattern, startTimeFormatter);
-				System.out.println("Enter End Time in the Format : " + DATEMESSAGE);
-				String endPattern = scanner.nextLine();
-				DateTimeFormatter endTimeFormatter = DateTimeFormatter.ofPattern(DATEMESSAGE);
-				LocalDateTime endTime = LocalDateTime.parse(endPattern, endTimeFormatter);
-
-				service.validateDate(startTime, endTime);
-				service.validateEndTime(endTime);
-				service.validateTestDuration(duration, startTime, endTime);
-				OnlineTest onlineTest = new OnlineTest();
+				OnlineTest onlineTest = inputTest();
 				onlineTest.setTestId(updateTestId);
-				onlineTest.setTestName(test_name);
-				onlineTest.setTestDuration(duration);
-				onlineTest.setStartTime(startTime);
-				onlineTest.setEndTime(endTime);
-				onlineTest.setTestMarksScored(0.0);
 				OnlineTest updatedTest;
 
 				updatedTest = service.updateTest(updateTestId, onlineTest);
@@ -360,23 +318,13 @@ public class Application {
 				System.out.println("Not allowed to perform this action");
 			}
 
-		} catch (InputMismatchException e) {
-			myLogger.error(e);
-			System.err.println(ExceptionMessage.INVALIDINPUTMESSAGE);
-			scanner.nextLine();
-		} catch (UserException e) {
-			myLogger.error(e);
-			System.err.println(e.getMessage());
-			scanner.nextLine();
-		} catch (Exception e) {
-			myLogger.error(e);
-			System.err.println(ExceptionMessage.INVALIDDATEMESSAGE);
-			scanner.nextLine();
+		} catch (InputMismatchException | UserException | DateTimeException e) {
+			catchBlock(e);
 		}
 	}
 
 	public static void deleteTest() {
-		System.out.println("Enter User Id");
+		System.out.println(INPUTUSERID);
 		try {
 			BigInteger userId_DeleteTest = scanner.nextBigInteger();
 
@@ -414,7 +362,7 @@ public class Application {
 	}
 
 	public static void assignTestToUser() {
-		System.out.println("Enter User Id");
+		System.out.println(INPUTUSERID);
 		try {
 			BigInteger user_Id = scanner.nextBigInteger();
 			service.validateUserId(user_Id);
@@ -441,19 +389,13 @@ public class Application {
 			} else {
 				System.out.println("Not allowed to perform this action");
 			}
-		} catch (InputMismatchException e) {
-			myLogger.error(e);
-			System.err.println(ExceptionMessage.INVALIDINPUTMESSAGE);
-			scanner.nextLine();
-		} catch (UserException e) {
-			myLogger.error(e);
-			System.err.println(e.getMessage());
-			scanner.nextLine();
+		} catch (InputMismatchException | UserException | DateTimeException e) {
+			catchBlock(e);
 		}
 	}
 
 	public static void addQuestion() {
-		System.out.println("Enter User Id");
+		System.out.println(INPUTUSERID);
 		try {
 			BigInteger userId_AddQuestion = scanner.nextBigInteger();
 
@@ -501,19 +443,13 @@ public class Application {
 			} else {
 				System.out.println("Not allowed to perform this action");
 			}
-		} catch (InputMismatchException e) {
-			myLogger.error(e);
-			System.err.println(ExceptionMessage.INVALIDINPUTMESSAGE);
-			scanner.nextLine();
-		} catch (UserException e) {
-			myLogger.error(e);
-			System.err.println(e.getMessage());
-			scanner.nextLine();
+		} catch (InputMismatchException | UserException | DateTimeException e) {
+			catchBlock(e);
 		}
 	}
 
 	public static void updateQuestion() {
-		System.out.println("Enter User Id");
+		System.out.println(INPUTUSERID);
 		try {
 			BigInteger userId_UpdateQuestion = scanner.nextBigInteger();
 
@@ -563,19 +499,13 @@ public class Application {
 			} else {
 				System.out.println("Not allowed to perform this action");
 			}
-		} catch (InputMismatchException e) {
-			myLogger.error(e);
-			System.err.println(ExceptionMessage.INVALIDINPUTMESSAGE);
-			scanner.nextLine();
-		} catch (UserException e) {
-			myLogger.error(e);
-			System.err.println(e.getMessage());
-			scanner.nextLine();
+		} catch (InputMismatchException | UserException | DateTimeException e) {
+			catchBlock(e);
 		}
 	}
 
 	public static void deleteQuestion() {
-		System.out.println("Enter User Id");
+		System.out.println(INPUTUSERID);
 		try {
 			BigInteger userId_DeleteQuestion = scanner.nextBigInteger();
 
@@ -605,14 +535,8 @@ public class Application {
 			} else {
 				System.out.println("Not allowed to perform this action");
 			}
-		} catch (InputMismatchException e) {
-			myLogger.error(e);
-			System.err.println(ExceptionMessage.INVALIDINPUTMESSAGE);
-			scanner.nextLine();
-		} catch (UserException e) {
-			myLogger.error(e);
-			System.err.println(e.getMessage());
-			scanner.nextLine();
+		} catch (InputMismatchException | UserException | DateTimeException e) {
+			catchBlock(e);
 		}
 	}
 
@@ -638,19 +562,13 @@ public class Application {
 			service.registerUser(user);
 			System.out.println("User added successfully!");
 
-		} catch (InputMismatchException e) {
-			myLogger.error(e);
-			System.err.println(ExceptionMessage.INVALIDINPUTMESSAGE);
-			scanner.nextLine();
-		} catch (UserException e) {
-			myLogger.error(e);
-			System.err.println(e.getMessage());
-			scanner.nextLine();
+		} catch (InputMismatchException | UserException | DateTimeException e) {
+			catchBlock(e);
 		}
 	}
 
 	public static void giveTest() {
-		System.out.println("Enter User Id");
+		System.out.println(INPUTUSERID);
 		try {
 			BigInteger userId_AnswerQuestion = scanner.nextBigInteger();
 
@@ -673,14 +591,8 @@ public class Application {
 			} else {
 				System.out.println("Cannot answer question!");
 			}
-		} catch (InputMismatchException e) {
-			myLogger.error(e);
-			System.err.println(ExceptionMessage.INVALIDINPUTMESSAGE);
-			scanner.nextLine();
-		} catch (UserException e) {
-			myLogger.error(e);
-			System.err.println(e.getMessage());
-			scanner.nextLine();
+		} catch (InputMismatchException | UserException | DateTimeException e) {
+			catchBlock(e);
 		}
 
 	}
@@ -698,14 +610,8 @@ public class Application {
 			} else {
 				System.out.println("The test does not exist!");
 			}
-		} catch (InputMismatchException e) {
-			myLogger.error(e);
-			System.err.println(ExceptionMessage.INVALIDINPUTMESSAGE);
-			scanner.nextLine();
-		} catch (UserException e) {
-			myLogger.error(e);
-			System.err.println(e.getMessage());
-			scanner.nextLine();
+		} catch (InputMismatchException | UserException | DateTimeException e) {
+			catchBlock(e);
 		}
 	}
 
@@ -732,13 +638,38 @@ public class Application {
 			service.updateProfile(updateUser);
 			System.out.println("User updated succesfully!");
 
-		} catch (InputMismatchException e) {
-			myLogger.error(e);
-			System.err.println(ExceptionMessage.INVALIDINPUTMESSAGE);
-		} catch (UserException e) {
-			myLogger.error(e);
-			System.err.println(e.getMessage());
+		} catch (InputMismatchException | UserException | DateTimeException e) {
+			catchBlock(e);
 		}
 
+	}
+
+	private static OnlineTest inputTest() throws UserException, InputMismatchException {
+		System.out.println("Enter OnlineTest Name");
+		String test_name = scanner.next();
+		System.out.println("Enter Test Duration in the format : " + DURATIONMESSAGE);
+		String durationPattern = scanner.next();
+		DateTimeFormatter durationFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+		LocalTime duration = LocalTime.parse(durationPattern, durationFormatter);
+		scanner.nextLine();
+		System.out.println("Enter Start Time in the Format : " + DATEMESSAGE);
+		String startPattern = scanner.nextLine();
+		DateTimeFormatter startTimeFormatter = DateTimeFormatter.ofPattern(DATEMESSAGE);
+		LocalDateTime startTime = LocalDateTime.parse(startPattern, startTimeFormatter);
+		System.out.println("Enter End Time in the Format : " + DATEMESSAGE);
+		String endPattern = scanner.nextLine();
+		DateTimeFormatter endTimeFormatter = DateTimeFormatter.ofPattern(DATEMESSAGE);
+		LocalDateTime endTime = LocalDateTime.parse(endPattern, endTimeFormatter);
+		service.validateDate(startTime, endTime);
+		service.validateEndTime(endTime);
+		service.validateTestDuration(duration, startTime, endTime);
+		OnlineTest onlineTest = new OnlineTest();
+		onlineTest.setTestName(test_name);
+		onlineTest.setTestDuration(duration);
+		onlineTest.setStartTime(startTime);
+		onlineTest.setEndTime(endTime);
+		onlineTest.setTestMarksScored(0.0);
+		onlineTest.setTestTotalMarks(0.0);
+		return onlineTest;
 	}
 }

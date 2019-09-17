@@ -138,7 +138,7 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 				onlineTest.setIsTestAssigned(resultSet.getBoolean("test_is_assigned"));
 				onlineTest.setTestQuestions(getQuestionSet(testId));
 			} else {
-				onlineTest = null;
+				return null;
 			}
 
 		} catch (SQLException e) {
@@ -188,7 +188,7 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 			preparedStatement.setLong(8, test.getTestId().longValue());
 			int noOfRec = preparedStatement.executeUpdate();
 			if (noOfRec == 0) {
-				test = null;
+				return null;
 			}
 		} catch (SQLException e) {
 			myLogger.error("Error at update test Dao method : " + e);
@@ -250,7 +250,7 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 				question.setQuestionOptions(questionOptions);
 				question.setTestId(BigInteger.valueOf(resultSet.getLong(TESTID)));
 			} else {
-				question = null;
+				return null;
 			}
 		} catch (SQLException e) {
 			myLogger.error("Error at search Question Dao method: " + e);
@@ -384,12 +384,15 @@ public class OnlineTestDaoImpl implements OnlineTestDao {
 	@Override
 	public User updateUser(User user) throws UserException {
 		try {
-
-			// transaction boundary starts
 			preparedStatement = connection.prepareStatement(SqlUtil.UPDATEUSERSQL);
 			preparedStatement.setString(1, user.getUserName());
 			preparedStatement.setString(2, user.getUserPassword());
-			preparedStatement.setLong(3, user.getUserId().longValue());
+			if (user.getUserTest() != null) {
+				preparedStatement.setLong(3, user.getUserTest().getTestId().longValue());
+			} else {
+				preparedStatement.setNull(3, java.sql.Types.BIGINT);
+			}
+			preparedStatement.setLong(4, user.getUserId().longValue());
 			int noOfRec = preparedStatement.executeUpdate();
 			if (noOfRec == 0) {
 				user = null;

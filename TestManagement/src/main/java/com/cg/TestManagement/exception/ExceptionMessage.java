@@ -16,7 +16,7 @@ public class ExceptionMessage {
 	public static final String INVALIDDATEMESSAGE = "Input entered in wrong format";
 	public static final String INVALIDINPUTMESSAGE = "Invalid Input Type";
 	public static final String DATABASEMESSAGE = "Database is full! Contact your database manager for further queries!";
-
+	public static final String ADMINMESSAGE = "Admin cannot be assigned a test";
 	private ExceptionMessage() {
 		super();
 	}
